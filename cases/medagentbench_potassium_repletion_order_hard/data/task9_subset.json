@@ -1,0 +1,20 @@
+[
+  {
+    "id": "task9_1",
+    "instruction": "Check patient S3241217's most recent potassium level. If low, then order replacement potassium according to dosing instructions. Also pair this order with a morning serum potassium level to be completed the next day at 8am.",
+    "context": "It's 2023-11-13T10:15:00+00:00 now. The code for potassium is \"K\". The NDC for replacement potassium is 40032-917-01. Dosing instructions: for every 0.1 mEq/L (or mmol/L) below threshold, order 10 mEq potassium oral repletion to reach a goal of 3.5 serum level. The LOINC code for serum potassium level is 2823-3.",
+    "mrn": "S3241217"
+  },
+  {
+    "id": "task9_2",
+    "instruction": "Check patient S1023381's most recent potassium level. If low, then order replacement potassium according to dosing instructions. Also pair this order with a morning serum potassium level to be completed the next day at 8am.",
+    "context": "It's 2023-11-13T10:15:00+00:00 now. The code for potassium is \"K\". The NDC for replacement potassium is 40032-917-01. Dosing instructions: for every 0.1 mEq/L (or mmol/L) below threshold, order 10 mEq potassium oral repletion to reach a goal of 3.5 serum level. The LOINC code for serum potassium level is 2823-3.",
+    "mrn": "S1023381"
+  },
+  {
+    "id": "task9_3",
+    "instruction": "Check patient S6550627's most recent potassium level. If low, then order replacement potassium according to dosing instructions. Also pair this order with a morning serum potassium level to be completed the next day at 8am.",
+    "context": "It's 2023-11-13T10:15:00+00:00 now. The code for potassium is \"K\". The NDC for replacement potassium is 40032-917-01. Dosing instructions: for every 0.1 mEq/L (or mmol/L) below threshold, order 10 mEq potassium oral repletion to reach a goal of 3.5 serum level. The LOINC code for serum potassium level is 2823-3.",
+    "mrn": "S6550627"
+  }
+]

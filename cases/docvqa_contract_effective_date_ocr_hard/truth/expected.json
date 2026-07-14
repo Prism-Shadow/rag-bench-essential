@@ -1,0 +1,32 @@
+{
+  "case_id": "docvqa_contract_effective_date_ocr_hard",
+  "source": {
+    "benchmark": "DocVQA single-page question",
+    "mirror": "pixparse/docvqa-single-page-questions",
+    "source_family": "UCSF Industry Documents"
+  },
+  "required_outputs": [
+    "answers.json",
+    "evidence.json",
+    "report.md"
+  ],
+  "answer": {
+    "contract_effective_date": "7-1-99"
+  },
+  "evidence": {
+    "required_image": "data/document_page.jpg",
+    "required_label": "Contract Effective Date",
+    "approx_answer_region_bbox": [120, 1660, 780, 1920],
+    "required_visual_tokens": ["7", "1", "99"]
+  },
+  "decoys": [
+    {
+      "name": "date_signed",
+      "description": "Reading the nearby Date Contract Signed field instead of Contract Effective Date."
+    },
+    {
+      "name": "raw_ocr_noise",
+      "description": "Trusting noisy OCR output around the handwritten date without visual inspection."
+    }
+  ]
+}

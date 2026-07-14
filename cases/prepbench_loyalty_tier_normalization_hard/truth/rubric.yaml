@@ -1,0 +1,47 @@
+schema_version: 1
+case_id: prepbench_loyalty_tier_normalization_hard
+scoring:
+  max_score: 7
+  hard_pass_requires:
+    - SP001
+    - SP002
+    - SP003
+points:
+  - id: SP001
+    dimension: D4_delivery
+    goal: Submit a parseable answers.json file.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - completion_contract
+      - delivery_path
+    checks:
+      - type: file_exists
+        path: answers.json
+      - type: json_parse
+        path: answers.json
+  - id: SP002
+    dimension: D1_answer
+    goal: Return the final normalized Gold profit share within tolerance.
+    weight: 3
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+      - program_semantics
+    checks:
+      - type: numeric_answer
+  - id: SP003
+    dimension: D3_key_intermediate
+    goal: Report by-tier row counts, loyalty customers, sales after discount, and profit.
+    weight: 3
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+      - evidence_binding
+    checks:
+      - type: prepbench_by_tier
+      - type: validator_exit
+        expected: 0

@@ -1,0 +1,33 @@
+schema_version: 1
+case_id: spreadsheetbench_working_paper_transpose_hard
+scoring:
+  max_score: 8
+  hard_pass_requires:
+    - SP001
+    - SP002
+points:
+  - id: SP001
+    dimension: D4_delivery
+    goal: Deliver completed workbooks for all required variants.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - completion_contract
+      - delivery_path
+    checks:
+      - type: required_outputs_present
+  - id: SP002
+    dimension: D1_answer
+    goal: Match destination!A1:DQ8 for all variants while preserving source workbook sheets.
+    weight: 7
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+      - delivery_path
+    checks:
+      - type: spreadsheet_workbooks
+      - type: validator_exit
+        expected: 0

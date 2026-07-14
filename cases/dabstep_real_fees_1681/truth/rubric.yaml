@@ -1,0 +1,35 @@
+schema_version: 1
+case_id: dabstep_real_fees_1681
+scoring:
+  max_score: 4
+  hard_pass_requires:
+    - SP001
+    - SP002
+points:
+  - id: SP001
+    dimension: D4_delivery
+    goal: Submit a parseable answers.json file at the workspace root.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - completion_contract
+      - delivery_path
+    checks:
+      - type: file_exists
+        path: answers.json
+      - type: json_parse
+        path: answers.json
+  - id: SP002
+    dimension: D1_answer
+    goal: Return exactly the expected unordered set of fee IDs.
+    weight: 3
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+      - program_semantics
+    checks:
+      - type: dabstep_fee_ids
+      - type: validator_exit
+        expected: 0

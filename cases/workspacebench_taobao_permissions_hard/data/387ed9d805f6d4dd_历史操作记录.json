@@ -1,0 +1,74 @@
+[
+  {
+    "op_id": "OP20260401001",
+    "role": "operation",
+    "operator": "user_002",
+    "action": "activity_apply",
+    "target": "淘抢购活动报名",
+    "time": "2026-04-01 09:22:11",
+    "status": "success"
+  },
+  {
+    "op_id": "OP20260401002",
+    "role": "operation",
+    "operator": "user_002",
+    "action": "price_update",
+    "target": "EB836体重秤",
+    "time": "2026-04-01 09:25:33",
+    "status": "success"
+  },
+  {
+    "op_id": "OP20260401003",
+    "role": "designer",
+    "operator": "user_003",
+    "action": "material_upload",
+    "target": "活动banner图",
+    "time": "2026-04-01 10:10:22",
+    "status": "success"
+  },
+  {
+    "op_id": "OP20260401004",
+    "role": "service",
+    "operator": "user_004",
+    "action": "order_query",
+    "target": "订单列表查询",
+    "time": "2026-04-01 14:05:41",
+    "status": "success"
+  },
+  {
+    "op_id": "OP20260401005",
+    "role": "service",
+    "operator": "user_004",
+    "action": "price_try_view",
+    "target": "商品成本价",
+    "time": "2026-04-01 14:06:12",
+    "status": "deny"
+  },
+  {
+    "op_id": "OP20260401006",
+    "role": "stock",
+    "operator": "user_005",
+    "action": "inventory_check",
+    "target": "活动商品库存",
+    "time": "2026-04-01 15:30:19",
+    "status": "success"
+  },
+  {
+    "op_id": "OP20260401007",
+    "role": "stock",
+    "operator": "user_005",
+    "action": "activity_apply_try",
+    "target": "活动报名尝试",
+    "time": "2026-04-01 15:31:03",
+    "status": "deny"
+  },
+  {
+    "op_id": "OP20260401008",
+    "role": "admin",
+    "operator": "user_001",
+    "action": "log_query",
+    "target": "操作日志查看",
+    "time": "2026-04-01 18:00:00",
+    "status": "success"
+  }
+]

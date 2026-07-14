@@ -1,0 +1,16 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+.bench-cache/
+runs/
+workspaces/
+
+# DCI plaintext and materialized corpus must never enter Git.
+cases/dci_browsecomp_architecture_firm_hard/task.md
+cases/dci_browsecomp_architecture_firm_hard/truth/
+cases/dci_browsecomp_architecture_firm_hard/data/corpus
+
+# Canonical results and traces are intentionally deferred for a later release.
+results/
+traces/

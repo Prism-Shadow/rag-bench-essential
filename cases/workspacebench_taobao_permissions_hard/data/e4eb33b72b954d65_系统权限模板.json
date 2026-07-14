@@ -1,0 +1,28 @@
+{
+  "system_name": "电商活动管理系统",
+  "version": "2.0",
+  "default_permission": {
+    "read": false,
+    "write": false,
+    "download": false,
+    "delete": false
+  },
+  "sensitive_modules": [
+    "activity_apply",
+    "price_update",
+    "item_upshelf",
+    "data_export",
+    "log_view",
+    "user_manager"
+  ],
+  "file_permission_template": {
+    "public": { "read": true, "write": false, "download": true },
+    "internal": { "read": true, "write": false, "download": false },
+    "confidential": { "read": false, "write": false, "download": false }
+  },
+  "api_auth_template": {
+    "need_check": true,
+    "reject_when_overstep": true,
+    "log_required": true
+  }
+}

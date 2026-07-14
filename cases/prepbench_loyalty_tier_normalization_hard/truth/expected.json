@@ -1,0 +1,51 @@
+{
+  "source": "PrepBench case_265 public input tables, narrowed to a hard-tier loyalty normalization audit",
+  "answer": [
+    "0.094106"
+  ],
+  "tolerance": 0.000005,
+  "by_tier": {
+    "Bronze": {
+      "transaction_rows": 12706,
+      "loyalty_customers": 4080,
+      "sales_after_discount": 179637.99,
+      "profit": 53483.36
+    },
+    "Gold": {
+      "transaction_rows": 3255,
+      "loyalty_customers": 502,
+      "sales_after_discount": 42607.37,
+      "profit": 9252.89
+    },
+    "Silver": {
+      "transaction_rows": 9557,
+      "loyalty_customers": 2065,
+      "sales_after_discount": 134543.27,
+      "profit": 35587.59
+    }
+  },
+  "checkpoints": {
+    "raw_loyalty_tier_values": {
+      "Bronze": 3198,
+      "Bronz": 1584,
+      "Silver": 1517,
+      "Sliver": 504,
+      "bronze": 474,
+      "Gold": 346,
+      "silver": 200,
+      "Goald": 111,
+      "gold": 56
+    },
+    "canonical_transaction_rows": {
+      "Bronze": 12706,
+      "Gold": 3255,
+      "Silver": 9557
+    }
+  },
+  "decoys": {
+    "0.091295": "treated missing Loyalty_Discount as 0% or full-price sales instead of leaving Sales_After_Discount and Profit null",
+    "0.097261": "normalized only exact case variants and missed spelling variants such as Goald, Bronz, and Sliver",
+    "0.119419": "computed Gold share of sales after discount instead of profit",
+    "0.127557": "computed Gold share by transaction rows instead of profit"
+  }
+}

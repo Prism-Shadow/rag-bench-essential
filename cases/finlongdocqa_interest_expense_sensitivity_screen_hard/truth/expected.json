@@ -1,0 +1,135 @@
+{
+  "case_id": "finlongdocqa_interest_expense_sensitivity_screen_hard",
+  "formula": "standardized_interest_expense_impact_musd / variable_rate_debt_musd * 1000",
+  "units": {
+    "amounts": "millions USD",
+    "rate_shock": "basis points",
+    "ratio": "millions USD of annual interest expense per $1 billion of variable/floating-rate debt for a +100 bp shock"
+  },
+  "included_tickers": [
+    "ANSS",
+    "APTV",
+    "CL",
+    "ECL",
+    "PWR",
+    "RCL",
+    "STZ"
+  ],
+  "excluded_tickers": [
+    "APH",
+    "AVY",
+    "COP",
+    "FANG",
+    "GDDY",
+    "GE",
+    "GIS",
+    "IDXX",
+    "ROP",
+    "SJM"
+  ],
+  "ranking_high_to_low": [
+    "APTV",
+    "ANSS",
+    "PWR",
+    "ECL",
+    "RCL",
+    "STZ",
+    "CL"
+  ],
+  "top_ticker": "APTV",
+  "bottom_ticker": "CL",
+  "spread_per_1b_musd": 12.794871794871796,
+  "figures": {
+    "ANSS": {
+      "rate_shock_bp": 100.0,
+      "reported_interest_expense_impact_musd": 7.7,
+      "standardized_interest_expense_impact_musd": 7.7,
+      "variable_rate_debt_musd": 755.0,
+      "impact_per_1b_variable_debt_musd": 10.198675496688741,
+      "evidence": [
+        "ANSS_2024_10K.md line 1734 gives term loan borrowings of $755.0 million.",
+        "ANSS_2024_10K.md line 1738 gives a 100 bp interest expense impact of $7.7 million."
+      ]
+    },
+    "APTV": {
+      "rate_shock_bp": 25.0,
+      "reported_interest_expense_impact_musd": 1.0,
+      "standardized_interest_expense_impact_musd": 4.0,
+      "variable_rate_debt_musd": 250.0,
+      "impact_per_1b_variable_debt_musd": 16.0,
+      "evidence": [
+        "APTV_2024_10K.md line 1862 gives approximately $250 million of floating rate debt.",
+        "APTV_2024_10K.md lines 1872-1877 give a +25 bp impact of +$1 million."
+      ]
+    },
+    "CL": {
+      "rate_shock_bp": 100.0,
+      "reported_interest_expense_impact_musd": 3.0,
+      "standardized_interest_expense_impact_musd": 3.0,
+      "variable_rate_debt_musd": 936.0,
+      "impact_per_1b_variable_debt_musd": 3.205128205128205,
+      "evidence": [
+        "CL_2024_10K.md line 1440 gives domestic and foreign commercial paper outstanding of $936 million.",
+        "CL_2024_10K.md line 1512 gives a 1% interest expense impact of $3 million based on year-end 2024 variable-rate debt levels."
+      ]
+    },
+    "ECL": {
+      "rate_shock_bp": 100.0,
+      "reported_interest_expense_impact_musd": 15.0,
+      "standardized_interest_expense_impact_musd": 15.0,
+      "variable_rate_debt_musd": 1500.0,
+      "impact_per_1b_variable_debt_musd": 10.0,
+      "evidence": [
+        "ECL_2024_10K.md line 1212 gives approximately $1.5 billion of floating rate debt.",
+        "ECL_2024_10K.md line 1216 gives a one percentage point impact of approximately $15 million per year."
+      ]
+    },
+    "PWR": {
+      "rate_shock_bp": 50.0,
+      "reported_interest_expense_impact_musd": 3.7,
+      "standardized_interest_expense_impact_musd": 7.4,
+      "variable_rate_debt_musd": 735.4,
+      "impact_per_1b_variable_debt_musd": 10.062550992657059,
+      "evidence": [
+        "PWR_2024_10K.md line 2210 gives $735.4 million outstanding under the senior credit facility.",
+        "PWR_2024_10K.md line 2210 gives a 50 bp impact of approximately $3.7 million."
+      ]
+    },
+    "RCL": {
+      "rate_shock_bp": 100.0,
+      "reported_interest_expense_impact_musd": 14.8,
+      "standardized_interest_expense_impact_musd": 14.8,
+      "variable_rate_debt_musd": 1600.0,
+      "impact_per_1b_variable_debt_musd": 9.25,
+      "evidence": [
+        "RCL_2024_10K.md line 1024 gives approximately $1.6 billion of variable-rate debt net of swaps.",
+        "RCL_2024_10K.md line 1024 and line 1778 give a 1% impact of approximately $14.8 million."
+      ]
+    },
+    "STZ": {
+      "rate_shock_bp": 100.0,
+      "reported_interest_expense_impact_musd": 5.3,
+      "standardized_interest_expense_impact_musd": 5.3,
+      "variable_rate_debt_musd": 806.7,
+      "impact_per_1b_variable_debt_musd": 6.569976447254245,
+      "evidence": [
+        "STZ_2024_10K.md line 1963 gives short-term borrowings of $806.7 million.",
+        "STZ_2024_10K.md lines 2080 and 2101 identify variable-interest-rate debt and give a 1% interest expense impact of $5.3 million."
+      ]
+    }
+  },
+  "tolerances": {
+    "amount_abs_musd": 0.15,
+    "rate_shock_abs_bp": 0.25,
+    "ratio_abs_musd_per_1b": 0.08,
+    "spread_abs_musd_per_1b": 0.08
+  },
+  "decoys": {
+    "RCL_fixed_rate_fair_value": "The $701 million sensitivity is fixed-rate debt fair value, not interest expense on floating-rate debt.",
+    "STZ_fixed_rate_fair_value": "The $533.7 million table value is fixed-rate debt fair-value sensitivity; use the $5.3 million interest-expense impact and the $806.7 million short-term borrowing amount instead.",
+    "SJM_financial_liability_fair_value": "The $607.2 million value is long-term debt fair-value sensitivity from a rate decrease, not interest expense sensitivity.",
+    "GIS_pension_discount_rate": "The $29 million value is benefit-plan expense sensitivity from discount rates, not debt interest expense.",
+    "CL_implied_debt": "Do not infer CL's debt from $3 million / 1%; use the separately stated $936 million commercial paper amount.",
+    "PWR_commercial_paper_average": "PWR's average daily commercial paper amount is not fiscal-year-end variable-rate debt outstanding."
+  }
+}
