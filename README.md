@@ -13,7 +13,7 @@ RAG Agent、Claude Code 和 Codex 的 60 条 trace。
 - `figures/agent_results.png`：总体通过数和逐 case 结果图。
 - `results/trace_metrics.csv`：60 条 trace 的逐条时间和 token 明细。
 - `results/setting_summary.csv`：四个 harness/configuration 的耗时和 token 汇总。
-- `figures/trace_efficiency.png`：四个 harness/configuration 的平均耗时和输出 token 图。
+- `figures/trace_efficiency.png`：四个 harness/configuration 的平均耗时、三类 token 和估算费用图。
 - `RESULTS_ANALYSIS.md`：RAG Agent 的主要改进和剩余失败分析。
 
 ## Results
@@ -31,16 +31,22 @@ trace；更具体的结果见该目录下的 `README.md`。
 
 ![15-case agent results](figures/agent_results.png)
 
-## Time and tokens
+## Time, tokens, and cost
 
-时间按每条 trace 第一条到最后一条事件计算；跨 runtime 的 token 对比使用输出 token。
+时间按每条 trace 第一条到最后一条事件计算。Token 分为 uncached input、cache read 和
+output，主图展示三者堆叠后的平均总量。
 图中的 latency 平均数剔除了 Original PG Agent 的 DCI 长时间停滞和 Claude Code 的
 DocVQA 401；token 平均数只剔除没有发生模型调用的 DocVQA。CSV 同时保留各指标的
-clean mean 和中位数。60 条逐 trace 明细、
+clean mean 和中位数。
+
+四组 trace 均记录为 `deepseek-v4-pro`。费用按
+[DeepSeek 官方价格](https://api-docs.deepseek.com/quick_start/pricing)估算：uncached input
+$0.435/M、cache read $0.003625/M、output $0.87/M。该数值用于比较 harness 的 token
+使用方式，不代表实际 provider/relay 账单。60 条逐 trace 明细、
 4 个 harness/configuration 汇总见
 [`results/`](results/README.md)。
 
-![Trace time and output tokens](figures/trace_efficiency.png)
+![Harness-level latency, tokens, and estimated cost](figures/trace_efficiency.png)
 
 完整简要分析见 [`RESULTS_ANALYSIS.md`](RESULTS_ANALYSIS.md)。
 

@@ -117,10 +117,20 @@ TRACE_STATUS = {
 }
 
 PASS_COLOR = "#2F6BFF"
-TOKEN_COLOR = "#D97706"
+UNCACHED_COLOR = "#2F6BFF"
+CACHE_COLOR = "#14B8A6"
+OUTPUT_COLOR = "#D97706"
 TEXT_COLOR = "#172033"
 MUTED_COLOR = "#667085"
 GRID_COLOR = "#D0D5DD"
+
+# DeepSeek V4 Pro public list prices, checked 2026-07-15.
+# https://api-docs.deepseek.com/quick_start/pricing
+PRICE_PER_MILLION = {
+    "uncached_input_tokens": 0.435,
+    "cache_read_tokens": 0.003625,
+    "output_tokens": 0.87,
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -228,6 +238,82 @@ def codex_tokens(rows: list[dict[str, Any]]) -> tuple[int, int, int, int]:
 TOKEN_PARSERS = {"pg": pg_tokens, "claude": claude_tokens, "codex": codex_tokens}
 
 
+def pg_activity(rows: list[dict[str, Any]]) -> tuple[int, int]:
+    model_calls = sum(
+        row.get("type") == "event_msg"
+        and row.get("payload", {}).get("type") == "token_usage"
+        for row in rows
+    )
+    tool_calls = sum(
+        row.get("type") == "model_msg"
+        and row.get("payload", {}).get("type") == "tool_call"
+        for row in rows
+    )
+    return model_calls, tool_calls
+
+
+def claude_activity(rows: list[dict[str, Any]]) -> tuple[int, int]:
+    model_ids = set()
+    tool_ids = set()
+    for row in rows:
+        message = row.get("message")
+        if row.get("type") != "assistant" or not isinstance(message, dict):
+            continue
+        if (
+            message.get("id")
+            and message.get("model") != "<synthetic>"
+            and isinstance(message.get("usage"), dict)
+        ):
+            model_ids.add(message["id"])
+        content = message.get("content", [])
+        if isinstance(content, list):
+            for item in content:
+                if isinstance(item, dict) and item.get("type") == "tool_use":
+                    tool_ids.add(item.get("id"))
+    tool_ids.discard(None)
+    return len(model_ids), len(tool_ids)
+
+
+def codex_activity(rows: list[dict[str, Any]]) -> tuple[int, int]:
+    model_calls = sum(
+        row.get("type") == "event_msg"
+        and row.get("payload", {}).get("type") == "token_count"
+        for row in rows
+    )
+    tool_ids = {
+        row.get("payload", {}).get("call_id")
+        for row in rows
+        if row.get("type") == "response_item"
+        and row.get("payload", {}).get("type")
+        in {"function_call", "custom_tool_call"}
+    }
+    tool_ids.discard(None)
+    return model_calls, len(tool_ids)
+
+
+ACTIVITY_PARSERS = {
+    "pg": pg_activity,
+    "claude": claude_activity,
+    "codex": codex_activity,
+}
+
+
+def estimate_costs(uncached: int, cached: int, output: int) -> dict[str, float]:
+    components = {
+        "uncached_input_cost_usd": uncached
+        * PRICE_PER_MILLION["uncached_input_tokens"]
+        / 1_000_000,
+        "cache_read_cost_usd": cached
+        * PRICE_PER_MILLION["cache_read_tokens"]
+        / 1_000_000,
+        "output_cost_usd": output
+        * PRICE_PER_MILLION["output_tokens"]
+        / 1_000_000,
+    }
+    components["estimated_cost_usd"] = sum(components.values())
+    return {key: round(value, 6) for key, value in components.items()}
+
+
 def collect_trace_metrics(repo_root: Path) -> list[dict[str, Any]]:
     metrics = []
     expected_files = {f"{case}.jsonl" for case in CASES}
@@ -244,6 +330,8 @@ def collect_trace_metrics(repo_root: Path) -> list[dict[str, Any]]:
             rows = load_trace(path)
             start, end, duration_seconds = duration_metrics(rows)
             uncached, cached, output, processed = TOKEN_PARSERS[parser_name](rows)
+            model_calls, tool_calls = ACTIVITY_PARSERS[parser_name](rows)
+            costs = estimate_costs(uncached, cached, output)
             key = (agent, case)
             latency_exclusion_reason = LATENCY_EXCLUSIONS.get(key, "")
             token_exclusion_reason = TOKEN_EXCLUSIONS.get(key, "")
@@ -263,6 +351,9 @@ def collect_trace_metrics(repo_root: Path) -> list[dict[str, Any]]:
                     "cache_read_tokens": cached,
                     "output_tokens": output,
                     "processed_tokens": processed,
+                    "model_calls": model_calls,
+                    "tool_calls": tool_calls,
+                    **costs,
                     "excluded_from_latency": bool(latency_exclusion_reason),
                     "latency_exclusion_reason": latency_exclusion_reason,
                     "excluded_from_token": bool(token_exclusion_reason),
@@ -308,11 +399,38 @@ def summarize_settings(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "reported_processed_tokens": sum(
                     int(row["processed_tokens"]) for row in rows
                 ),
+                "clean_uncached_input_tokens": sum(
+                    int(row["uncached_input_tokens"]) for row in valid_tokens
+                ),
+                "clean_cache_read_tokens": sum(
+                    int(row["cache_read_tokens"]) for row in valid_tokens
+                ),
                 "clean_output_tokens": sum(
                     int(row["output_tokens"]) for row in valid_tokens
                 ),
+                "clean_processed_tokens": sum(
+                    int(row["processed_tokens"]) for row in valid_tokens
+                ),
+                "mean_uncached_input_tokens": round(
+                    statistics.mean(
+                        int(row["uncached_input_tokens"]) for row in valid_tokens
+                    ),
+                    1,
+                ),
+                "mean_cache_read_tokens": round(
+                    statistics.mean(
+                        int(row["cache_read_tokens"]) for row in valid_tokens
+                    ),
+                    1,
+                ),
                 "mean_output_tokens": round(
                     statistics.mean(int(row["output_tokens"]) for row in valid_tokens),
+                    1,
+                ),
+                "mean_processed_tokens": round(
+                    statistics.mean(
+                        int(row["processed_tokens"]) for row in valid_tokens
+                    ),
                     1,
                 ),
                 "median_output_tokens": round(
@@ -321,6 +439,20 @@ def summarize_settings(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     ),
                     1,
                 ),
+                "mean_estimated_cost_usd": round(
+                    statistics.mean(
+                        float(row["estimated_cost_usd"]) for row in valid_tokens
+                    ),
+                    6,
+                ),
+                "median_estimated_cost_usd": round(
+                    statistics.median(
+                        float(row["estimated_cost_usd"]) for row in valid_tokens
+                    ),
+                    6,
+                ),
+                "model_calls": sum(int(row["model_calls"]) for row in rows),
+                "tool_calls": sum(int(row["tool_calls"]) for row in rows),
             }
         )
     return summary
@@ -358,6 +490,24 @@ def annotate_bars(axis: plt.Axes, bars: Any, formatter: Any) -> None:
     axis.set_xlim(0, maximum * 1.22)
 
 
+def annotate_stacked_totals(
+    axis: plt.Axes, y_values: list[int], totals: list[float], formatter: Any
+) -> None:
+    maximum = max(totals)
+    offset = maximum * 0.025
+    for y, total in zip(y_values, totals):
+        axis.text(
+            total + offset,
+            y,
+            formatter(total),
+            va="center",
+            ha="left",
+            fontsize=8.2,
+            color=TEXT_COLOR,
+        )
+    axis.set_xlim(0, maximum * 1.23)
+
+
 def draw_figure(setting_summary: list[dict[str, Any]]) -> plt.Figure:
     plt.rcParams.update(
         {
@@ -373,14 +523,15 @@ def draw_figure(setting_summary: list[dict[str, Any]]) -> plt.Figure:
         }
     )
 
-    figure = plt.figure(figsize=(12.6, 4.6), facecolor="white")
-    grid = figure.add_gridspec(1, 2, wspace=0.42)
+    figure = plt.figure(figsize=(16.2, 4.8), facecolor="white")
+    grid = figure.add_gridspec(1, 3, wspace=0.48)
     setting_time = figure.add_subplot(grid[0, 0])
     setting_tokens = figure.add_subplot(grid[0, 1])
+    setting_cost = figure.add_subplot(grid[0, 2])
 
     figure.suptitle(
-        "Harness-Level Time and Output Tokens Across 15 Cases",
-        x=0.11,
+        "Harness-Level Latency, Tokens, and Estimated Cost Across 15 Cases",
+        x=0.055,
         y=0.97,
         ha="left",
         fontsize=15,
@@ -391,7 +542,17 @@ def draw_figure(setting_summary: list[dict[str, Any]]) -> plt.Figure:
     agent_labels = [row["agent"] for row in setting_summary]
     agent_y = list(range(len(agent_labels)))
     time_values = [row["mean_duration_seconds"] / 60 for row in setting_summary]
-    token_values = [row["mean_output_tokens"] / 1000 for row in setting_summary]
+    token_components = {
+        "Uncached input": [
+            row["mean_uncached_input_tokens"] / 1_000_000
+            for row in setting_summary
+        ],
+        "Cache read": [
+            row["mean_cache_read_tokens"] / 1_000_000 for row in setting_summary
+        ],
+        "Output": [row["mean_output_tokens"] / 1_000_000 for row in setting_summary],
+    }
+    component_colors = [UNCACHED_COLOR, CACHE_COLOR, OUTPUT_COLOR]
 
     bars = setting_time.barh(agent_y, time_values, color=PASS_COLOR, height=0.54)
     setting_time.set_yticks(agent_y, agent_labels)
@@ -401,16 +562,72 @@ def draw_figure(setting_summary: list[dict[str, Any]]) -> plt.Figure:
     style_axis(setting_time)
     annotate_bars(setting_time, bars, lambda value: f"{value:.1f}m")
 
-    bars = setting_tokens.barh(agent_y, token_values, color=TOKEN_COLOR, height=0.54)
+    token_left = [0.0] * len(agent_labels)
+    for (label, values), color in zip(token_components.items(), component_colors):
+        setting_tokens.barh(
+            agent_y,
+            values,
+            left=token_left,
+            color=color,
+            height=0.54,
+            label=label,
+        )
+        token_left = [left + value for left, value in zip(token_left, values)]
     setting_tokens.set_yticks(agent_y, agent_labels)
     setting_tokens.invert_yaxis()
-    setting_tokens.set_xlabel("Mean output tokens (thousands)")
-    setting_tokens.set_title("b  Mean output tokens", loc="left", fontweight="bold")
+    setting_tokens.set_xlabel("Mean tokens per trace (millions)")
+    setting_tokens.set_title("b  Mean total tokens", loc="left", fontweight="bold")
     style_axis(setting_tokens)
-    annotate_bars(setting_tokens, bars, lambda value: f"{value:.1f}K")
+    annotate_stacked_totals(
+        setting_tokens, agent_y, token_left, lambda value: f"{value:.2f}M"
+    )
+    setting_tokens.legend(
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.18),
+        ncol=3,
+        frameon=False,
+        fontsize=7.5,
+        handlelength=1.2,
+        columnspacing=0.9,
+    )
+
+    cost_components = {
+        "Uncached input": [
+            row["mean_uncached_input_tokens"]
+            * PRICE_PER_MILLION["uncached_input_tokens"]
+            / 1_000_000
+            for row in setting_summary
+        ],
+        "Cache read": [
+            row["mean_cache_read_tokens"]
+            * PRICE_PER_MILLION["cache_read_tokens"]
+            / 1_000_000
+            for row in setting_summary
+        ],
+        "Output": [
+            row["mean_output_tokens"]
+            * PRICE_PER_MILLION["output_tokens"]
+            / 1_000_000
+            for row in setting_summary
+        ],
+    }
+    cost_left = [0.0] * len(agent_labels)
+    for values, color in zip(cost_components.values(), component_colors):
+        setting_cost.barh(
+            agent_y, values, left=cost_left, color=color, height=0.54
+        )
+        cost_left = [left + value for left, value in zip(cost_left, values)]
+    setting_cost.set_yticks(agent_y, agent_labels)
+    setting_cost.invert_yaxis()
+    setting_cost.set_xlabel("Estimated USD per trace")
+    setting_cost.set_title("c  Mean estimated cost", loc="left", fontweight="bold")
+    style_axis(setting_cost)
+    annotate_stacked_totals(
+        setting_cost, agent_y, cost_left, lambda value: f"${value:.3f}"
+    )
 
     figure.text(
-        0.11,
+        0.055,
         0.03,
         "Latency means exclude Original PG Agent on DCI and Claude Code on DocVQA; token means exclude only the zero-token DocVQA runtime failure.",
         ha="left",
@@ -419,15 +636,15 @@ def draw_figure(setting_summary: list[dict[str, Any]]) -> plt.Figure:
         color=MUTED_COLOR,
     )
     figure.text(
-        0.11,
+        0.055,
         0.01,
-        "Elapsed time is the first-to-last timestamp span in each trace. Output tokens are used for cross-runtime comparison.",
+        "Cost uses DeepSeek V4 Pro list prices checked 2026-07-15: $0.435/M uncached input, $0.003625/M cache read, and $0.87/M output; actual provider bills may differ.",
         ha="left",
         va="bottom",
         fontsize=8.5,
         color=MUTED_COLOR,
     )
-    figure.subplots_adjust(left=0.20, right=0.96, top=0.78, bottom=0.25)
+    figure.subplots_adjust(left=0.14, right=0.98, top=0.76, bottom=0.25)
     return figure
 
 

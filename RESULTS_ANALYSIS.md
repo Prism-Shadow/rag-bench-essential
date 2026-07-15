@@ -27,20 +27,33 @@ Original PG Agent 使用近空 `AGENTS.md`，通过 5/15；RAG Agent 通过 10/1
 
 当前剩余问题集中在任务收束、证据绑定和规则边界，而不是基础文件检索。
 
-## Harness 时间与 token
+## Harness 对 latency、token 和 cost 的影响
 
-下表同时给出按指标过滤后的平均数和中位数。耗时是 trace 首尾时间戳跨度；token 使用跨 runtime
-更可比的输出 token。Original PG Agent 的 DCI 只剔除异常 latency，其 8,236 个输出 token
-仍计入 token 汇总；Claude Code 的 DocVQA 因 401 没有发生模型调用，两个指标都不计入均值。
+Original PG Agent 的 DCI 只剔除异常 latency，其有效 token 仍保留；Claude Code 的 DocVQA
+因 401 没有发生模型调用，因此从 latency、token 和 cost 均值中剔除。费用按
+[DeepSeek V4 Pro 官方价格](https://api-docs.deepseek.com/quick_start/pricing)估算，不代表
+实际 provider/relay 账单。
 
-| Setting | Latency n | Token n | 平均耗时 | 中位耗时 | 平均输出 token | 中位输出 token |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Original PG Agent | 14 | 15 | 6m 47s | 5m 10s | 16.1K | 12.2K |
-| RAG Agent | 15 | 15 | 9m 01s | 6m 25s | 21.1K | 19.4K |
-| Claude Code | 14 | 14 | 10m 12s | 5m 53s | 27.7K | 18.6K |
-| Codex | 15 | 15 | 4m 00s | 3m 56s | 13.7K | 15.6K |
+| Harness | PASS | 平均耗时 | 平均总 token | 估算费用/trace |
+| --- | ---: | ---: | ---: | ---: |
+| Original PG Agent | 5/15 | 6m 47s | 0.72M | $0.0278 |
+| RAG Agent | 10/15 | 9m 01s | 1.20M | $0.0368 |
+| Claude Code | 10/15 | 10m 12s | 1.51M | $0.0458 |
+| Codex | 7/15 | 4m 00s | 0.89M | $0.0285 |
 
-RAG Agent 与 Claude Code 都通过 10/15；RAG Agent 的平均耗时和输出 token 分别为
-9.0 分钟和 21.1K，低于 Claude Code 的 10.2 分钟和 27.7K。Codex 更快、输出更少，
-但只通过 7/15，因此不能把较低时间或 token 直接解释为更高效率。逐 trace
-原始值和 harness 汇总见 [`results/`](results/README.md)。
+Latency 与 token 的共同驱动因素是模型往返次数。统一比较 14 个有模型调用的 case 时，
+Original PG、RAG Agent、Claude Code 和 Codex 分别产生 411、473、515 和 303 次模型调用；
+四者工具返回文本总量却很接近，约为 1.40M、1.45M、1.56M 和 1.40M 字符。因此主要差异
+不是读取了多少原始数据，而是累计上下文被重新送入模型多少次。
+
+- **Claude Code** 的模型轮数最多、单轮输出也最长，因此 latency、总 token 和费用都最高。
+- **RAG Agent** 会继续验证口径、交付物和结果，较 Original PG 多出后期检查轮次；后期上下文
+  已经很长，所以模型调用增加 15%，总 processed token 却增加约 46%。这部分开销对应更完整
+  的验证和交付，也伴随通过数从 5/15 提升到 10/15。
+- **Codex** 用更少的模型轮次批量发出更多工具调用，获得相近工具结果量但减少上下文重放，
+  因而最快。它只通过 7/15，说明较低消耗中也包含更早停止或较少复核，不能直接视为更优。
+
+三类 token 中，cache read 占总量的 94% 以上，但官方 cache-hit 单价远低于 uncached input
+和 output。因此总 token 与费用并非线性同步：Claude Code 的平均总 token 约为 Original PG
+的 2.1 倍，估算费用约为 1.65 倍。逐 trace 原始值和 harness 汇总见
+[`results/`](results/README.md)。
