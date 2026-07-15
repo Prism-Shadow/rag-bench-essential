@@ -272,38 +272,6 @@ def collect_trace_metrics(repo_root: Path) -> list[dict[str, Any]]:
     return metrics
 
 
-def summarize_cases(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    summary = []
-    for case, display_name in CASES.items():
-        rows = [row for row in metrics if row["case"] == case]
-        valid_latency = [row for row in rows if not row["excluded_from_latency"]]
-        valid_tokens = [row for row in rows if not row["excluded_from_token"]]
-        durations = [float(row["duration_seconds"]) for row in valid_latency]
-        outputs = [int(row["output_tokens"]) for row in valid_tokens]
-        summary.append(
-            {
-                "case": case,
-                "display_name": display_name,
-                "trace_count": len(rows),
-                "latency_excluded_trace_count": len(rows) - len(valid_latency),
-                "latency_valid_trace_count": len(valid_latency),
-                "token_excluded_trace_count": len(rows) - len(valid_tokens),
-                "token_valid_trace_count": len(valid_tokens),
-                "mean_duration_seconds": round(statistics.mean(durations), 3),
-                "mean_duration_minutes": round(statistics.mean(durations) / 60, 3),
-                "median_duration_seconds": round(statistics.median(durations), 3),
-                "median_duration_minutes": round(statistics.median(durations) / 60, 3),
-                "min_duration_seconds": round(min(durations), 3),
-                "max_duration_seconds": round(max(durations), 3),
-                "mean_output_tokens": round(statistics.mean(outputs), 1),
-                "median_output_tokens": round(statistics.median(outputs), 1),
-                "min_output_tokens": min(outputs),
-                "max_output_tokens": max(outputs),
-            }
-        )
-    return summary
-
-
 def summarize_settings(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
     summary = []
     for agent in AGENTS:
@@ -390,9 +358,7 @@ def annotate_bars(axis: plt.Axes, bars: Any, formatter: Any) -> None:
     axis.set_xlim(0, maximum * 1.22)
 
 
-def draw_figure(
-    case_summary: list[dict[str, Any]], setting_summary: list[dict[str, Any]]
-) -> plt.Figure:
+def draw_figure(setting_summary: list[dict[str, Any]]) -> plt.Figure:
     plt.rcParams.update(
         {
             "font.family": "DejaVu Sans",
@@ -407,19 +373,15 @@ def draw_figure(
         }
     )
 
-    figure = plt.figure(figsize=(14.2, 10.8), facecolor="white")
-    grid = figure.add_gridspec(
-        2, 2, height_ratios=(1.45, 4.6), hspace=0.34, wspace=0.38
-    )
+    figure = plt.figure(figsize=(12.6, 4.6), facecolor="white")
+    grid = figure.add_gridspec(1, 2, wspace=0.42)
     setting_time = figure.add_subplot(grid[0, 0])
     setting_tokens = figure.add_subplot(grid[0, 1])
-    case_time = figure.add_subplot(grid[1, 0])
-    case_tokens = figure.add_subplot(grid[1, 1], sharey=case_time)
 
     figure.suptitle(
-        "Time and Output Tokens Across the Selected 4×15 Traces",
-        x=0.12,
-        y=0.985,
+        "Harness-Level Time and Output Tokens Across 15 Cases",
+        x=0.11,
+        y=0.97,
         ha="left",
         fontsize=15,
         fontweight="bold",
@@ -435,7 +397,7 @@ def draw_figure(
     setting_time.set_yticks(agent_y, agent_labels)
     setting_time.invert_yaxis()
     setting_time.set_xlabel("Mean minutes per trace")
-    setting_time.set_title("a  Setting-level elapsed time", loc="left", fontweight="bold")
+    setting_time.set_title("a  Mean elapsed time", loc="left", fontweight="bold")
     style_axis(setting_time)
     annotate_bars(setting_time, bars, lambda value: f"{value:.1f}m")
 
@@ -443,36 +405,13 @@ def draw_figure(
     setting_tokens.set_yticks(agent_y, agent_labels)
     setting_tokens.invert_yaxis()
     setting_tokens.set_xlabel("Mean output tokens (thousands)")
-    setting_tokens.set_title("b  Setting-level output", loc="left", fontweight="bold")
+    setting_tokens.set_title("b  Mean output tokens", loc="left", fontweight="bold")
     style_axis(setting_tokens)
     annotate_bars(setting_tokens, bars, lambda value: f"{value:.1f}K")
 
-    ordered_cases = sorted(
-        case_summary, key=lambda row: row["mean_duration_seconds"], reverse=True
-    )
-    case_labels = [row["display_name"] for row in ordered_cases]
-    case_y = list(range(len(case_labels)))
-    time_values = [row["mean_duration_seconds"] / 60 for row in ordered_cases]
-    token_values = [row["mean_output_tokens"] / 1000 for row in ordered_cases]
-
-    bars = case_time.barh(case_y, time_values, color=PASS_COLOR, height=0.62)
-    case_time.set_yticks(case_y, case_labels)
-    case_time.invert_yaxis()
-    case_time.set_xlabel("Mean minutes")
-    case_time.set_title("c  Case-level elapsed time", loc="left", fontweight="bold")
-    style_axis(case_time)
-    annotate_bars(case_time, bars, lambda value: f"{value:.1f}")
-
-    bars = case_tokens.barh(case_y, token_values, color=TOKEN_COLOR, height=0.62)
-    case_tokens.tick_params(axis="y", labelleft=False)
-    case_tokens.set_xlabel("Mean output tokens (thousands)")
-    case_tokens.set_title("d  Case-level output", loc="left", fontweight="bold")
-    style_axis(case_tokens)
-    annotate_bars(case_tokens, bars, lambda value: f"{value:.1f}K")
-
     figure.text(
-        0.12,
-        0.017,
+        0.11,
+        0.03,
         "Latency means exclude Original PG Agent on DCI and Claude Code on DocVQA; token means exclude only the zero-token DocVQA runtime failure.",
         ha="left",
         va="bottom",
@@ -480,15 +419,15 @@ def draw_figure(
         color=MUTED_COLOR,
     )
     figure.text(
-        0.12,
-        0.002,
+        0.11,
+        0.01,
         "Elapsed time is the first-to-last timestamp span in each trace. Output tokens are used for cross-runtime comparison.",
         ha="left",
         va="bottom",
         fontsize=8.5,
         color=MUTED_COLOR,
     )
-    figure.subplots_adjust(left=0.22, right=0.96, top=0.92, bottom=0.09)
+    figure.subplots_adjust(left=0.20, right=0.96, top=0.78, bottom=0.25)
     return figure
 
 
@@ -496,15 +435,13 @@ def main() -> None:
     args = parse_args()
     repo_root = args.repo_root.resolve()
     metrics = collect_trace_metrics(repo_root)
-    case_summary = summarize_cases(metrics)
     setting_summary = summarize_settings(metrics)
 
     results_dir = repo_root / "results"
     write_csv(results_dir / "trace_metrics.csv", metrics)
-    write_csv(results_dir / "case_summary.csv", case_summary)
     write_csv(results_dir / "setting_summary.csv", setting_summary)
 
-    figure = draw_figure(case_summary, setting_summary)
+    figure = draw_figure(setting_summary)
     figure_dir = repo_root / "figures"
     figure.savefig(
         figure_dir / "trace_efficiency.png",
@@ -518,7 +455,6 @@ def main() -> None:
     plt.close(figure)
 
     print(results_dir / "trace_metrics.csv")
-    print(results_dir / "case_summary.csv")
     print(results_dir / "setting_summary.csv")
     print(figure_dir / "trace_efficiency.png")
     print(figure_dir / "trace_efficiency.pdf")

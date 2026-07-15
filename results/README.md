@@ -3,8 +3,7 @@
 本目录保存 60 条 selected trace 的时间与 token 统计。
 
 - `trace_metrics.csv`：逐 trace 明细，共 60 行，包含结果、起止时间、耗时、token 分量、运行状态，以及 latency/token 各自的有效性标记。
-- `case_summary.csv`：逐 case 汇总，共 15 行；分别给出 latency 和 token 的有效 trace 数，以及均值、中位数和范围。
-- `setting_summary.csv`：逐 setting 汇总，共 4 行；分别按有效 latency 和有效 token 计算 clean mean 与中位数。
+- `setting_summary.csv`：四个 harness/configuration 的汇总；分别按有效 latency 和有效 token 计算 clean mean 与中位数。
 
 ## 统计口径
 
@@ -12,7 +11,7 @@
 - 跨 runtime 比较使用 `output_tokens`。`processed_tokens` 保留各 runtime 原生上报值，但输入和 cache 语义并不完全一致。
 - PG 使用最后一条累计 `token_usage.session`；Claude Code 按 API message id 去重后求和；Codex 使用最后一条累计 `total_token_usage`。
 - latency 和 token 独立过滤，不会因为某条 trace 的耗时异常就丢掉其有效 token。
-- Setting 和 case 同时提供各指标的 clean mean 与中位数；主图展示均值。
+- Harness/configuration 汇总同时提供各指标的 clean mean 与中位数；主图展示均值。
 
 指标级有效性如下：
 

@@ -27,7 +27,7 @@ Original PG Agent 使用近空 `AGENTS.md`，通过 5/15；RAG Agent 通过 10/1
 
 当前剩余问题集中在任务收束、证据绑定和规则边界，而不是基础文件检索。
 
-## 时间与 token
+## Harness 时间与 token
 
 下表同时给出按指标过滤后的平均数和中位数。耗时是 trace 首尾时间戳跨度；token 使用跨 runtime
 更可比的输出 token。Original PG Agent 的 DCI 只剔除异常 latency，其 8,236 个输出 token
@@ -40,12 +40,7 @@ Original PG Agent 使用近空 `AGENTS.md`，通过 5/15；RAG Agent 通过 10/1
 | Claude Code | 14 | 14 | 10m 12s | 5m 53s | 27.7K | 18.6K |
 | Codex | 15 | 15 | 4m 00s | 3m 56s | 13.7K | 15.6K |
 
-按 case 看，DCI 和 BankerToolBench 的平均耗时分别为 22.8 和 21.1 分钟，明显高于其他
-case。BankerToolBench 还需要平均 44.9K 输出 token，反映其 Excel、PPT、PDF 多交付链路；
-DCI 的高耗时则主要来自大语料搜索和收束困难。DocFinQA 和 MedAgentBench 的平均耗时
-分别为 1.9 和 2.1 分钟。
-
 RAG Agent 与 Claude Code 都通过 10/15；RAG Agent 的平均耗时和输出 token 分别为
 9.0 分钟和 21.1K，低于 Claude Code 的 10.2 分钟和 27.7K。Codex 更快、输出更少，
 但只通过 7/15，因此不能把较低时间或 token 直接解释为更高效率。逐 trace
-原始值和逐 case 稳健汇总见 [`results/`](results/README.md)。
+原始值和 harness 汇总见 [`results/`](results/README.md)。
