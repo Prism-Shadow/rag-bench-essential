@@ -1,0 +1,3 @@
+[OK  ] 10 ids given, 10 expected
+
+RESULT: PASS — fee ID 集合完全匹配 gold。

@@ -1,0 +1,26 @@
+== D4 delivery ==
+  [OK ] readable non-trivial docx text length=41977
+== D1 discrepancy coverage ==
+  [OK ] patent_omissions: Schedule 3.9 patent omissions
+  [OK ] claim_14_caveat: AquaDyne opinion caveat
+  [MISS] northpoint_expired_msa: NorthPoint MSA expired before signing
+  [OK ] kessler_change_of_control: Kessler change-of-control clause omitted
+  [MISS] environmental_rec: Undisclosed Phase I REC
+  [MISS] california_tax_nexus: California tax nexus filing gap
+  [OK ] covid_ebitda_addback: Recurring COVID supply-chain add-back
+  [OK ] pension_liability: Pension unfunded liability discrepancy
+  [OK ] martinez_insurance_gap: Martinez insurance coverage gap
+  [OK ] monterrey_lease_consent: Monterrey lease change-of-control consent omitted
+  [OK ] employee_count: Employee count discrepancy
+  [MISS] section_382_nol: IRC Section 382 limitation on NOLs
+  [MISS] osha_citation: Contested OSHA citation
+  [OK ] karen_beecham_share_claim: Karen Beecham disputed share claim
+  issue coverage: 9/14 hit; required >= 10
+== D2 source and section binding ==
+  [OK ] source families mentioned 7; required >= 4
+  [OK ] SPA section/schedule markers mentioned 7; required >= 5
+== D3 memo controls ==
+  [OK ] severity labels count=37; required >= 8
+  [OK ] recommendation action families hit=10; required >= 8
+
+RESULT: FAIL - memo coverage, binding, or delivery is incomplete.

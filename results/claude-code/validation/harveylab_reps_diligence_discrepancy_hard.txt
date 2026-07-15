@@ -1,0 +1,26 @@
+== D4 delivery ==
+  [OK ] readable non-trivial docx text length=42607
+== D1 discrepancy coverage ==
+  [MISS] patent_omissions: Schedule 3.9 patent omissions
+  [OK ] claim_14_caveat: AquaDyne opinion caveat
+  [OK ] northpoint_expired_msa: NorthPoint MSA expired before signing
+  [OK ] kessler_change_of_control: Kessler change-of-control clause omitted
+  [OK ] environmental_rec: Undisclosed Phase I REC
+  [MISS] california_tax_nexus: California tax nexus filing gap
+  [OK ] covid_ebitda_addback: Recurring COVID supply-chain add-back
+  [OK ] pension_liability: Pension unfunded liability discrepancy
+  [OK ] martinez_insurance_gap: Martinez insurance coverage gap
+  [OK ] monterrey_lease_consent: Monterrey lease change-of-control consent omitted
+  [OK ] employee_count: Employee count discrepancy
+  [MISS] section_382_nol: IRC Section 382 limitation on NOLs
+  [OK ] osha_citation: Contested OSHA citation
+  [OK ] karen_beecham_share_claim: Karen Beecham disputed share claim
+  issue coverage: 11/14 hit; required >= 10
+== D2 source and section binding ==
+  [OK ] source families mentioned 7; required >= 4
+  [OK ] SPA section/schedule markers mentioned 7; required >= 5
+== D3 memo controls ==
+  [OK ] severity labels count=22; required >= 8
+  [OK ] recommendation action families hit=11; required >= 8
+
+RESULT: PASS - memo identifies enough material discrepancies with source binding and deal-team controls.

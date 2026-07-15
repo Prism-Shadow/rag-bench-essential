@@ -1,15 +1,16 @@
 # RAG Bench Essential
 
-这个仓库保存 Agentic RAG BenchLab 当前固化的 15 个主代表 case，以及 RAG Agent 使用的专用 `AGENTS.md`。
-
-当前已加入 PG Agent v1.14 的 15-case 选定 result/trace 包；CC 和 Codex 的
-result/trace 仍待单独清理和校验后加入。
+这个仓库保存 Agentic RAG BenchLab 当前固化的 15 个主代表 case、RAG Agent
+使用的专用 `AGENTS.md`，以及三个 Agent 的 45 条选定 trace 和外部验证结果。
 
 ## 目录
 
 - `cases/`：15 个固定 case。
 - `agent-configs/rag-agent/AGENTS.md`：RAG Agent 使用的专用指令，不是项目根目录的开发指南。
-- `outputs/pg-dsv4pro-v114-selected-20260715/`：v1.14 的 15 条选定 trace、validator log、artifact manifest 和机器可读索引。
+- `results/rag-agent/`：RAG Agent 的 15 条 trace 和验证结果。
+- `results/claude-code/`：Claude Code 的 15 条 trace 和验证结果。
+- `results/codex/`：Codex 的 15 条 trace 和验证结果。
+- `results/manifest.tsv`：45 条结果的统一索引。
 - `CASE_SPEC.md`：case 的 `payload + env + eval` 结构规范。
 - `RUN_PROTOCOL.md`：不暴露 `truth/` 的隔离运行和外部验证流程。
 - `THIRD_PARTY_NOTICES.md`：第三方 benchmark 数据说明。
@@ -47,10 +48,14 @@ DCI/BrowseComp-Plus 的明文 task、truth 和 corpus 受上游发布约束，�
 
 不要直接在 `cases/` 中运行 Agent。运行时应将 `task.md`、`data/` 和可选 `env.md` 复制到独立 workspace；`truth/` 只供 workspace 外部的 validator 使用。
 
-## PG v1.14 结果
+## 结果
 
-`outputs/pg-dsv4pro-v114-selected-20260715/` 覆盖 15/15 case，择优重试后
-PASS 10/15，与当前 CC canonical 的 PASS 数量和集合相同。它不是一次
-single-shot full batch；Spider2-Lite、MultiHiertt 和 MedAgentBench 的重试
-边界以及 MedAgentBench 的 artifact-only validator 口径都在结果包的
-`README.md` 和 `manifest.tsv` 中明确记录。
+`results/` 共保存 45 条 trace，每个 Agent 覆盖全部 15 个 case：
+
+- RAG Agent：10/15 PASS。
+- Claude Code：10/15 PASS。
+- Codex：7/15 PASS。
+
+这些是每个 Agent 的选定代表结果，不主张它们来自同一次连续批量运行。
+每条 trace 均有对应的外部 validator 输出；具体文件和 PASS/FAIL 状态见
+`results/manifest.tsv`。
