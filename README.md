@@ -11,22 +11,24 @@ RAG Agent、Claude Code 和 Codex 的 60 条 trace。
 - `agent-configs/original-pg-agent/AGENTS.md`：Original PG Agent 使用的近空指令。
 - `traces/<agent>/<case>.jsonl`：四组结果各 15 条 trace。
 - `figures/agent_results.png`：总体通过数和逐 case 结果图。
+- `RESULTS_ANALYSIS.md`：RAG Agent 的主要改进和剩余失败分析。
 
 ## Results
 
 | Agent | PASS | 说明 |
 | --- | ---: | --- |
-| Original PG Agent | 3/15 | 使用只有标题的近空 `AGENTS.md` |
+| Original PG Agent | 5/15 | 使用只有标题的近空 `AGENTS.md` |
 | RAG Agent | 10/15 | 使用本仓库 `agent-configs/rag-agent/AGENTS.md` |
 | Claude Code | 10/15 | 15 个 case 各选一条 trace |
 | Codex | 7/15 | 15 个 case 各选一条 trace |
 
-Original PG Agent 的 15 条 trace 位于 `traces/original-pg-agent/`。其中 13 条来自原始
-baseline，当前集合后来加入的 DocFinQA PDF 和 DocVQA OCR 使用相同的近空
-`AGENTS.md` 配置补跑。15 个 case 均有可解析 trace；DCI 和 HarveyLab 是异常终止的失败
-记录，其余 13 条运行正常结束。更具体的来源和结果见该目录下的 `README.md`。
+Original PG Agent 的 15 条 trace 位于 `traces/original-pg-agent/`。其中任务描述发生变化的
+5 个 case 已使用当前任务文本和近空 `AGENTS.md` 重新运行；LongDA 和 MultiHiertt 在重跑后
+通过。15 个 case 均有可解析 trace；更具体的结果见该目录下的 `README.md`。
 
 ![15-case agent results](figures/agent_results.png)
+
+简要分析见 [`RESULTS_ANALYSIS.md`](RESULTS_ANALYSIS.md)。
 
 ## Cases
 

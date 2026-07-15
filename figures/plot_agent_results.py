@@ -17,9 +17,9 @@ AGENTS = ["Original PG Agent\n(empty AGENTS.md)", "RAG Agent", "Claude Code", "C
 ROWS = [
     ("DocFinQA", (1, 1, 1, 1)),
     ("DABstep", (1, 1, 1, 1)),
+    ("LongDA", (1, 1, 1, 1)),
+    ("MultiHiertt", (1, 1, 1, 1)),
     ("Spider2-Lite", (0, 1, 1, 1)),
-    ("LongDA", (0, 1, 1, 1)),
-    ("MultiHiertt", (0, 1, 1, 1)),
     ("PrepBench", (0, 1, 1, 1)),
     ("SpreadsheetBench", (0, 1, 1, 1)),
     ("BankerToolBench", (1, 1, 1, 0)),
@@ -33,8 +33,8 @@ ROWS = [
 ]
 
 GROUPS = [
-    (0, 1, "Passed by all", "2 cases"),
-    (2, 6, "Improved RAG + CC + Codex", "5 cases"),
+    (0, 3, "Passed by all", "4 cases"),
+    (4, 6, "RAG Agent + CC + Codex", "3 cases"),
     (7, 7, "Original PG + RAG + CC", "1 case"),
     (8, 9, "RAG Agent + Claude Code", "2 cases"),
     (10, 14, "Failed by all", "5 cases"),
@@ -71,8 +71,8 @@ def validate_data() -> list[int]:
         raise ValueError("Every case must have one result per agent")
 
     scores = [sum(outcomes[i] for _, outcomes in ROWS) for i in range(len(AGENTS))]
-    if scores != [3, 10, 10, 7]:
-        raise ValueError(f"Expected aggregate scores [3, 10, 10, 7], found {scores}")
+    if scores != [5, 10, 10, 7]:
+        raise ValueError(f"Expected aggregate scores [5, 10, 10, 7], found {scores}")
     return scores
 
 
@@ -177,7 +177,7 @@ def draw_figure() -> plt.Figure:
                 fontweight="bold",
             )
 
-    for separator in (1.5, 6.5, 7.5, 9.5):
+    for separator in (3.5, 6.5, 7.5, 9.5):
         matrix.axhline(separator, color=GRID_COLOR, linewidth=0.9)
 
     for start, end, label, count in GROUPS:
@@ -237,7 +237,7 @@ def draw_figure() -> plt.Figure:
     figure.text(
         0.12,
         0.012,
-        "Each cell represents one selected trace for an agent-case pair. Original PG uses a near-empty AGENTS.md.",
+        "Each cell represents one selected trace. Original PG uses a near-empty AGENTS.md; changed tasks were rerun.",
         ha="left",
         va="bottom",
         fontsize=8.5,
