@@ -11,6 +11,7 @@ cases/dci_browsecomp_architecture_firm_hard/task.md
 cases/dci_browsecomp_architecture_firm_hard/truth/
 cases/dci_browsecomp_architecture_firm_hard/data/corpus
 
-# Canonical results and traces are intentionally deferred for a later release.
-results/
-traces/
+# Keep local top-level result/trace trees out of Git. Curated evidence packages
+# under outputs/ may contain their own tracked result or trace subdirectories.
+/results/
+/traces/

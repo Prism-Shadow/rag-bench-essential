@@ -1,0 +1,85 @@
+{
+  "case": "spider2lite_f1_overtake_audit_hard",
+  "generated_at": "2026-07-15T10:19:32+08:00",
+  "generated_files": [
+    {
+      "exists": true,
+      "kind": "csv",
+      "mtime": "2026-07-15T10:18:11+08:00",
+      "path": "answers/overtake_counts_all.csv",
+      "size_bytes": 60
+    },
+    {
+      "exists": true,
+      "kind": "csv",
+      "mtime": "2026-07-15T10:18:11+08:00",
+      "path": "answers/overtake_counts_first5.csv",
+      "size_bytes": 59
+    },
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-15T10:18:11+08:00",
+      "path": "answers/stats.json",
+      "size_bytes": 714
+    },
+    {
+      "exists": true,
+      "kind": "csv",
+      "mtime": "2026-07-15T10:18:11+08:00",
+      "path": "answers/track_deficit_drivers.csv",
+      "size_bytes": 1158
+    },
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-15T10:18:38+08:00",
+      "path": "evidence.json",
+      "size_bytes": 4714
+    },
+    {
+      "exists": true,
+      "kind": "md",
+      "mtime": "2026-07-15T10:18:55+08:00",
+      "path": "report.md",
+      "size_bytes": 3366
+    },
+    {
+      "exists": true,
+      "kind": "py",
+      "mtime": "2026-07-15T10:18:05+08:00",
+      "path": "solve.py",
+      "size_bytes": 10827
+    }
+  ],
+  "generated_files_truncated": false,
+  "missing_required_outputs": [],
+  "required_outputs": [
+    {
+      "exists": true,
+      "kind": "csv",
+      "mtime": "2026-07-15T10:18:11+08:00",
+      "path": "answers/overtake_counts_all.csv",
+      "size_bytes": 60
+    },
+    {
+      "exists": true,
+      "kind": "csv",
+      "mtime": "2026-07-15T10:18:11+08:00",
+      "path": "answers/overtake_counts_first5.csv",
+      "size_bytes": 59
+    },
+    {
+      "exists": true,
+      "kind": "csv",
+      "mtime": "2026-07-15T10:18:11+08:00",
+      "path": "answers/track_deficit_drivers.csv",
+      "size_bytes": 1158
+    }
+  ],
+  "required_outputs_present": true,
+  "stage": "after_validate",
+  "workspace": "/Users/xjz/Desktop/AgenticRAG-BenchLab/runs/pg-dsv4pro/rerun-20260715-v114-cc-tie-spider2-retry3/spider2lite_f1_overtake_audit_hard/workspace"
+}

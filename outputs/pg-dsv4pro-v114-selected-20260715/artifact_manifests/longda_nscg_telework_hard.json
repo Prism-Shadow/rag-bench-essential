@@ -1,0 +1,29 @@
+{
+  "case": "longda_nscg_telework_hard",
+  "generated_at": "2026-07-15T00:23:09+08:00",
+  "generated_files": [
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-15T00:22:31+08:00",
+      "path": "answers.json",
+      "size_bytes": 104
+    }
+  ],
+  "generated_files_truncated": false,
+  "missing_required_outputs": [],
+  "required_outputs": [
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-15T00:22:31+08:00",
+      "path": "answers.json",
+      "size_bytes": 104
+    }
+  ],
+  "required_outputs_present": true,
+  "stage": "after_validate",
+  "workspace": "/Users/xjz/Desktop/AgenticRAG-BenchLab/runs/pg-dsv4pro/rerun-20260715-v114-fill-missing8/longda_nscg_telework_hard/workspace"
+}

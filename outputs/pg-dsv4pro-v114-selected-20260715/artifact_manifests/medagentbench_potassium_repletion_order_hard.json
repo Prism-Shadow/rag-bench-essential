@@ -1,0 +1,43 @@
+{
+  "case": "medagentbench_potassium_repletion_order_hard",
+  "generated_at": "2026-07-15T10:09:37+08:00",
+  "generated_files": [
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-15T10:09:08+08:00",
+      "path": "actions.json",
+      "size_bytes": 2434
+    },
+    {
+      "exists": true,
+      "kind": "md",
+      "mtime": "2026-07-15T10:09:19+08:00",
+      "path": "report.md",
+      "size_bytes": 1724
+    }
+  ],
+  "generated_files_truncated": false,
+  "missing_required_outputs": [],
+  "required_outputs": [
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-15T10:09:08+08:00",
+      "path": "actions.json",
+      "size_bytes": 2434
+    },
+    {
+      "exists": true,
+      "kind": "md",
+      "mtime": "2026-07-15T10:09:19+08:00",
+      "path": "report.md",
+      "size_bytes": 1724
+    }
+  ],
+  "required_outputs_present": true,
+  "stage": "after_validate",
+  "workspace": "/Users/xjz/Desktop/AgenticRAG-BenchLab/runs/pg-dsv4pro/rerun-20260715-v114-cc-tie-medagent-retry2/medagentbench_potassium_repletion_order_hard/workspace"
+}

@@ -1,0 +1,20 @@
+== D1 official execution outputs ==
+  [OK ] part_a: matched variant 1; counts={'R': 0, 'P': 37398, 'S': 2443, 'T': 13402}
+  [OK ] part_b: matched variant 1; counts={'R': 13, 'P': 3360, 'S': 5291, 'T': 9694}
+  [OK ] part_c: matched variant 1; driver_count=69
+== D2 evidence binding ==
+  [OK ] table binding hits=['lap_positions', 'pit_stops', 'retirements', 'races_ext', 'results', 'drivers']
+  [OK ] R/P/S/T taxonomy terms present
+  [OK ] Race-row event eligibility and grid start state documented
+  [OK ] R/P/S/T priority documented
+  [OK ] pit exit previous-lap rule documented
+  [OK ] overtook/overtaken direction documented
+  [OK ] Part C exclusions documented
+== D4 delivery ==
+  [OK ] answers/overtake_counts_all.csv
+  [OK ] answers/overtake_counts_first5.csv
+  [OK ] answers/track_deficit_drivers.csv
+  [OK ] evidence.json
+  [OK ] report.md non-trivial
+
+RESULT: PASS - all three parts match unified clean-engine gold.

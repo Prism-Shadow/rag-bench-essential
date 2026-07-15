@@ -1,0 +1,29 @@
+{
+  "case": "multihiertt_global_products_atoi_share_hard",
+  "generated_at": "2026-07-15T10:00:50+08:00",
+  "generated_files": [
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-15T10:00:17+08:00",
+      "path": "answers.json",
+      "size_bytes": 25
+    }
+  ],
+  "generated_files_truncated": false,
+  "missing_required_outputs": [],
+  "required_outputs": [
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-15T10:00:17+08:00",
+      "path": "answers.json",
+      "size_bytes": 25
+    }
+  ],
+  "required_outputs_present": true,
+  "stage": "after_validate",
+  "workspace": "/Users/xjz/Desktop/AgenticRAG-BenchLab/runs/pg-dsv4pro/rerun-20260715-v114-cc-tie-multihiertt-retry2/multihiertt_global_products_atoi_share_hard/workspace"
+}

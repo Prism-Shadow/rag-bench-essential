@@ -14,6 +14,14 @@
 
 ## Additional Constraints
 
+- Before solving, separate what is directly observable in the task materials,
+  what actions are under your control, and what the final answer must guarantee.
+- For quantitative, logical, boundary, or guarantee-driven tasks, use an
+  adaptive strategy that narrows uncertainty through observations instead of
+  relying on a single blind pass.
+- Before finalizing a numeric or ranked answer, verify that the chosen method is
+  sufficient for the task's stated guarantee, then recheck the arithmetic and
+  units against the requested output.
 - Use bounded probes first for large, unfamiliar, or expensive-to-read inputs.
   Narrow the scope, cap output, or use a timeout before expanding.
 - Before calculating or producing final outputs, identify the few decisions that
@@ -52,6 +60,21 @@
   outside the visible table bounds or to the left of the title anchor. If you add
   decorative axis labels, keep the actual machine-readable row and column values
   inside the same table rectangle.
+
+## File-Gated Search Tasks
+
+If a task requires output files and involves searching, comparing, or reconciling
+multiple sources, first create `.penguin/notes/<session_id>/PLAN.md` with:
+
+- required output paths;
+- current best answer or candidate;
+- checklist of requirements or clues with source paths and status.
+
+Keep it short. Update it when evidence changes.
+
+Once a defensible candidate exists, write the required output files before doing
+more broad search. Put weak or missing evidence in the report instead of leaving
+required files unwritten.
 
 ## Additional Stop Rules
 

@@ -2,12 +2,14 @@
 
 这个仓库保存 Agentic RAG BenchLab 当前固化的 15 个主代表 case，以及 PG Agent 当前使用的专用 `AGENTS.md`。
 
-本次发布不包含三个 Agent 的 result 和 trace；这些证据待单独清理和校验后再加入。
+当前已加入 PG Agent v1.14 的 15-case 选定 result/trace 包；CC 和 Codex 的
+result/trace 仍待单独清理和校验后加入。
 
 ## 目录
 
 - `cases/`：15 个固定 case。
 - `agent-configs/pg-dsv4pro/current/AGENTS.md`：PG Agent 当前部署的专用指令，不是项目根目录的开发指南。
+- `outputs/pg-dsv4pro-v114-selected-20260715/`：v1.14 的 15 条选定 trace、validator log、artifact manifest 和机器可读索引。
 - `CASE_SPEC.md`：case 的 `payload + env + eval` 结构规范。
 - `RUN_PROTOCOL.md`：不暴露 `truth/` 的隔离运行和外部验证流程。
 - `THIRD_PARTY_NOTICES.md`：第三方 benchmark 数据说明。
@@ -44,3 +46,11 @@ DCI/BrowseComp-Plus 的明文 task、truth 和 corpus 受上游发布约束，�
 ## 运行边界
 
 不要直接在 `cases/` 中运行 Agent。运行时应将 `task.md`、`data/` 和可选 `env.md` 复制到独立 workspace；`truth/` 只供 workspace 外部的 validator 使用。
+
+## PG v1.14 结果
+
+`outputs/pg-dsv4pro-v114-selected-20260715/` 覆盖 15/15 case，择优重试后
+PASS 10/15，与当前 CC canonical 的 PASS 数量和集合相同。它不是一次
+single-shot full batch；Spider2-Lite、MultiHiertt 和 MedAgentBench 的重试
+边界以及 MedAgentBench 的 artifact-only validator 口径都在结果包的
+`README.md` 和 `manifest.tsv` 中明确记录。

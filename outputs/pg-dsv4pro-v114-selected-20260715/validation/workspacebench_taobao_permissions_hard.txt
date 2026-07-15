@@ -1,0 +1,29 @@
+== D1 permission table ==
+  [OK ] CSV columns include ['basis', 'download', 'module', 'read', 'role', 'write']
+  [MISS] CSV admin.inventory_data_view: expected={'read': True, 'write': False, 'download': False} got={'read': True, 'write': True, 'download': False}
+  [MISS] CSV admin.order_data_view: expected={'read': True, 'write': False, 'download': False} got={'read': True, 'write': True, 'download': False}
+  [MISS] CSV admin.log_view: expected={'read': True, 'write': False, 'download': False} got={'read': True, 'write': True, 'download': False}
+  [MISS] CSV operation.material_edit: expected={'read': True, 'write': False, 'download': False} got={'read': False, 'write': False, 'download': False}
+  [MISS] CSV operation.inventory_data_view: expected={'read': True, 'write': False, 'download': False} got={'read': False, 'write': False, 'download': False}
+  [MISS] CSV designer.activity_apply: expected={'read': False, 'write': False, 'download': False} got={'read': True, 'write': False, 'download': False}
+  [MISS] CSV stock.inventory_data_view: expected={'read': True, 'write': False, 'download': False} got={'read': True, 'write': True, 'download': False}
+  CSV permission cells matched 38/45
+== D2 JSON rule binding ==
+  [OK ] default_deny=true
+  [OK ] sensitive_operations.activity_apply: expected=['admin', 'operation'] got=['admin', 'operation']
+  [OK ] sensitive_operations.item_upshelf: expected=['admin', 'operation'] got=['admin', 'operation']
+  [OK ] sensitive_operations.price_update: expected=['admin', 'operation'] got=['admin', 'operation']
+  [MISS] sensitive_operations.material_edit: expected=['admin', 'designer'] got=[]
+  [MISS] sensitive_operations.inventory_data_view: expected=['admin', 'operation', 'stock'] got=[]
+  [MISS] sensitive_operations.order_data_view: expected=['admin', 'operation', 'service'] got=[]
+  [OK ] sensitive_operations.data_export: expected=['admin'] got=['admin']
+  [OK ] sensitive_operations.log_view: expected=['admin'] got=['admin']
+  [OK ] sensitive_operations.user_manager: expected=['admin'] got=['admin']
+== D3 Markdown audit note ==
+  [OK ] Markdown non-trivial
+  [OK ] Markdown required tokens 8/8
+  [OK ] Markdown explains price invisibility for service/stock
+== D4 delivery ==
+  [OK ] all required files present
+
+RESULT: FAIL - see dimension diagnostics above.

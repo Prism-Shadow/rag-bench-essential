@@ -1,0 +1,27 @@
+{
+  "case": "harveylab_reps_diligence_discrepancy_hard",
+  "generated_at": "2026-07-07T11:17:39+08:00",
+  "generated_files": [
+    {
+      "exists": true,
+      "kind": "docx",
+      "mtime": "2026-07-07T11:16:59+08:00",
+      "path": "reps-vs-diligence-memo.docx",
+      "size_bytes": 47399
+    }
+  ],
+  "generated_files_truncated": false,
+  "missing_required_outputs": [],
+  "required_outputs": [
+    {
+      "exists": true,
+      "kind": "docx",
+      "mtime": "2026-07-07T11:16:59+08:00",
+      "path": "reps-vs-diligence-memo.docx",
+      "size_bytes": 47399
+    }
+  ],
+  "required_outputs_present": true,
+  "stage": "after_validate",
+  "workspace": "/Users/xjz/Desktop/AgenticRAG-BenchLab/runs/pg-dsv4pro/rerun-20260707-max64k-harvey/harveylab_reps_diligence_discrepancy_hard/workspace"
+}

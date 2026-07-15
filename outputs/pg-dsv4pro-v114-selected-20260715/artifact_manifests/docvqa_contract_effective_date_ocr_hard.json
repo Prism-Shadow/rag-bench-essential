@@ -1,0 +1,59 @@
+{
+  "case": "docvqa_contract_effective_date_ocr_hard",
+  "generated_at": "2026-07-07T11:45:53+08:00",
+  "generated_files": [
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-07T11:42:46+08:00",
+      "path": "answers.json",
+      "size_bytes": 42
+    },
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-07T11:42:52+08:00",
+      "path": "evidence.json",
+      "size_bytes": 209
+    },
+    {
+      "exists": true,
+      "kind": "md",
+      "mtime": "2026-07-07T11:43:07+08:00",
+      "path": "report.md",
+      "size_bytes": 2317
+    }
+  ],
+  "generated_files_truncated": false,
+  "missing_required_outputs": [],
+  "required_outputs": [
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-07T11:42:46+08:00",
+      "path": "answers.json",
+      "size_bytes": 42
+    },
+    {
+      "exists": true,
+      "json_parse": "ok",
+      "kind": "json",
+      "mtime": "2026-07-07T11:42:52+08:00",
+      "path": "evidence.json",
+      "size_bytes": 209
+    },
+    {
+      "exists": true,
+      "kind": "md",
+      "mtime": "2026-07-07T11:43:07+08:00",
+      "path": "report.md",
+      "size_bytes": 2317
+    }
+  ],
+  "required_outputs_present": true,
+  "stage": "after_validate",
+  "workspace": "/Users/xjz/Desktop/AgenticRAG-BenchLab/runs/pg-dsv4pro/rerun-20260707-v114-max64k-docvqa-clean/docvqa_contract_effective_date_ocr_hard/workspace"
+}

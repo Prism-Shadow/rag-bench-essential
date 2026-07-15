@@ -1,0 +1,55 @@
+{
+  "case": "spreadsheetbench_working_paper_transpose_hard",
+  "generated_at": "2026-07-07T12:01:32+08:00",
+  "generated_files": [
+    {
+      "exists": true,
+      "kind": "xlsx",
+      "mtime": "2026-07-07T11:56:43+08:00",
+      "path": "outputs/working_paper_variant_a_completed.xlsx",
+      "size_bytes": 55563
+    },
+    {
+      "exists": true,
+      "kind": "xlsx",
+      "mtime": "2026-07-07T11:56:48+08:00",
+      "path": "outputs/working_paper_variant_b_completed.xlsx",
+      "size_bytes": 55591
+    },
+    {
+      "exists": true,
+      "kind": "xlsx",
+      "mtime": "2026-07-07T11:56:51+08:00",
+      "path": "outputs/working_paper_variant_c_completed.xlsx",
+      "size_bytes": 55590
+    }
+  ],
+  "generated_files_truncated": false,
+  "missing_required_outputs": [],
+  "required_outputs": [
+    {
+      "exists": true,
+      "kind": "xlsx",
+      "mtime": "2026-07-07T11:56:43+08:00",
+      "path": "outputs/working_paper_variant_a_completed.xlsx",
+      "size_bytes": 55563
+    },
+    {
+      "exists": true,
+      "kind": "xlsx",
+      "mtime": "2026-07-07T11:56:48+08:00",
+      "path": "outputs/working_paper_variant_b_completed.xlsx",
+      "size_bytes": 55591
+    },
+    {
+      "exists": true,
+      "kind": "xlsx",
+      "mtime": "2026-07-07T11:56:51+08:00",
+      "path": "outputs/working_paper_variant_c_completed.xlsx",
+      "size_bytes": 55590
+    }
+  ],
+  "required_outputs_present": true,
+  "stage": "after_validate",
+  "workspace": "/Users/xjz/Desktop/AgenticRAG-BenchLab/runs/pg-dsv4pro/rerun-20260707-max64k-spreadsheet-only/spreadsheetbench_working_paper_transpose_hard/workspace"
+}

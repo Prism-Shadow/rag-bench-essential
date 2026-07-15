@@ -1,0 +1,28 @@
+{
+  "case": "dci_browsecomp_architecture_firm_hard",
+  "generated_at": "2026-07-07T12:04:56+08:00",
+  "generated_files": [],
+  "generated_files_truncated": false,
+  "missing_required_outputs": [
+    "answers.json",
+    "evidence.json",
+    "report.md"
+  ],
+  "required_outputs": [
+    {
+      "exists": false,
+      "path": "answers.json"
+    },
+    {
+      "exists": false,
+      "path": "evidence.json"
+    },
+    {
+      "exists": false,
+      "path": "report.md"
+    }
+  ],
+  "required_outputs_present": false,
+  "stage": "after_validate",
+  "workspace": "/Users/xjz/Desktop/AgenticRAG-BenchLab/runs/pg-dsv4pro/rerun-20260707-max64k-cc-codex-gap3/dci_browsecomp_architecture_firm_hard/workspace"
+}

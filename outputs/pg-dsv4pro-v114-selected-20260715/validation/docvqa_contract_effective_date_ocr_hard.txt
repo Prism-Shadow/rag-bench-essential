@@ -1,0 +1,4 @@
+RESULT: FAIL
+- contract_effective_date expected 7-1-99, got '2-7-39'
+- visual evidence missing token '1'
+- visual evidence missing token '99'
