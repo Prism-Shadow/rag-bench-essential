@@ -1,6 +1,6 @@
 # RAG Bench Essential
 
-这个仓库保存 Agentic RAG BenchLab 当前固化的 15 个主代表 case，以及 PG Agent 当前使用的专用 `AGENTS.md`。
+这个仓库保存 Agentic RAG BenchLab 当前固化的 15 个主代表 case，以及 RAG Agent 使用的专用 `AGENTS.md`。
 
 当前已加入 PG Agent v1.14 的 15-case 选定 result/trace 包；CC 和 Codex 的
 result/trace 仍待单独清理和校验后加入。
@@ -8,7 +8,7 @@ result/trace 仍待单独清理和校验后加入。
 ## 目录
 
 - `cases/`：15 个固定 case。
-- `agent-configs/pg-dsv4pro/current/AGENTS.md`：PG Agent 当前部署的专用指令，不是项目根目录的开发指南。
+- `agent-configs/rag-agent/AGENTS.md`：RAG Agent 使用的专用指令，不是项目根目录的开发指南。
 - `outputs/pg-dsv4pro-v114-selected-20260715/`：v1.14 的 15 条选定 trace、validator log、artifact manifest 和机器可读索引。
 - `CASE_SPEC.md`：case 的 `payload + env + eval` 结构规范。
 - `RUN_PROTOCOL.md`：不暴露 `truth/` 的隔离运行和外部验证流程。

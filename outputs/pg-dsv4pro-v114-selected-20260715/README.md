@@ -5,7 +5,7 @@ artifact manifest for each of the 15 retained cases.
 
 ## Result
 
-- Prompt: `agent-configs/pg-dsv4pro/current/AGENTS.md`
+- Prompt: `agent-configs/rag-agent/AGENTS.md`
 - Full prompt SHA-256: `4e700e4c3ef8363dd7bac259f04a626cf45539af48881621f7ab984d32d56f83`
 - Trace-embedded AGENTS body SHA-256: `8271c0128f91e74bd6ac20c24b065001e6743a9bd8d70c87318a06a8ff990b56`
 - Coverage: 15/15
