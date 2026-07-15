@@ -34,8 +34,9 @@ trace；更具体的结果见该目录下的 `README.md`。
 ## Time and tokens
 
 时间按每条 trace 第一条到最后一条事件计算；跨 runtime 的 token 对比使用输出 token。
-图中的平均数剔除了 Original PG Agent 的 DCI 长时间停滞终止，以及 Claude Code 的
-DocVQA 401/零 token 运行；CSV 同时保留 clean mean 和中位数。60 条逐 trace 明细、
+图中的 latency 平均数剔除了 Original PG Agent 的 DCI 长时间停滞和 Claude Code 的
+DocVQA 401；token 平均数只剔除没有发生模型调用的 DocVQA。CSV 同时保留各指标的
+clean mean 和中位数。60 条逐 trace 明细、
 15 个 case 汇总和 4 个 setting 汇总见
 [`results/`](results/README.md)。
 

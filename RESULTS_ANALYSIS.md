@@ -29,16 +29,16 @@ Original PG Agent 使用近空 `AGENTS.md`，通过 5/15；RAG Agent 通过 10/1
 
 ## 时间与 token
 
-下表同时给出剔除明确执行异常后的平均数和中位数。耗时是 trace 首尾时间戳跨度；token 使用跨 runtime
-更可比的输出 token。Original PG Agent 的 DCI 停滞终止和 Claude Code 的 DocVQA 401
-不进入稳健汇总。
+下表同时给出按指标过滤后的平均数和中位数。耗时是 trace 首尾时间戳跨度；token 使用跨 runtime
+更可比的输出 token。Original PG Agent 的 DCI 只剔除异常 latency，其 8,236 个输出 token
+仍计入 token 汇总；Claude Code 的 DocVQA 因 401 没有发生模型调用，两个指标都不计入均值。
 
-| Setting | 有效 trace | 平均耗时 | 中位耗时 | 平均输出 token | 中位输出 token |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Original PG Agent | 14 | 6m 47s | 5m 10s | 16.7K | 12.4K |
-| RAG Agent | 15 | 9m 01s | 6m 25s | 21.1K | 19.4K |
-| Claude Code | 14 | 10m 12s | 5m 53s | 27.7K | 18.6K |
-| Codex | 15 | 4m 00s | 3m 56s | 13.7K | 15.6K |
+| Setting | Latency n | Token n | 平均耗时 | 中位耗时 | 平均输出 token | 中位输出 token |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Original PG Agent | 14 | 15 | 6m 47s | 5m 10s | 16.1K | 12.2K |
+| RAG Agent | 15 | 15 | 9m 01s | 6m 25s | 21.1K | 19.4K |
+| Claude Code | 14 | 14 | 10m 12s | 5m 53s | 27.7K | 18.6K |
+| Codex | 15 | 15 | 4m 00s | 3m 56s | 13.7K | 15.6K |
 
 按 case 看，DCI 和 BankerToolBench 的平均耗时分别为 22.8 和 21.1 分钟，明显高于其他
 case。BankerToolBench 还需要平均 44.9K 输出 token，反映其 Excel、PPT、PDF 多交付链路；

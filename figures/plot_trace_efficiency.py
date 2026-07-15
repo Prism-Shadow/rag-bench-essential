@@ -87,8 +87,9 @@ PASS_CASES = {
     },
 }
 
-# These are execution failures that do not measure a normal agent attempt.
-OUTLIERS = {
+# Latency and token validity are metric-specific. A stalled trace can have an
+# unusable wall-clock span while still reporting real model tokens.
+LATENCY_EXCLUSIONS = {
     (
         "Original PG Agent",
         "dci_browsecomp_architecture_firm_hard",
@@ -97,6 +98,13 @@ OUTLIERS = {
         "Claude Code",
         "docvqa_contract_effective_date_ocr_hard",
     ): "401 runtime error with zero model tokens",
+}
+
+TOKEN_EXCLUSIONS = {
+    (
+        "Claude Code",
+        "docvqa_contract_effective_date_ocr_hard",
+    ): "401 runtime error; no model invocation and zero reported model tokens",
 }
 
 TRACE_STATUS = {
@@ -237,7 +245,8 @@ def collect_trace_metrics(repo_root: Path) -> list[dict[str, Any]]:
             start, end, duration_seconds = duration_metrics(rows)
             uncached, cached, output, processed = TOKEN_PARSERS[parser_name](rows)
             key = (agent, case)
-            exclusion_reason = OUTLIERS.get(key, "")
+            latency_exclusion_reason = LATENCY_EXCLUSIONS.get(key, "")
+            token_exclusion_reason = TOKEN_EXCLUSIONS.get(key, "")
             metrics.append(
                 {
                     "case": case,
@@ -254,8 +263,10 @@ def collect_trace_metrics(repo_root: Path) -> list[dict[str, Any]]:
                     "cache_read_tokens": cached,
                     "output_tokens": output,
                     "processed_tokens": processed,
-                    "excluded_from_robust": bool(exclusion_reason),
-                    "exclusion_reason": exclusion_reason,
+                    "excluded_from_latency": bool(latency_exclusion_reason),
+                    "latency_exclusion_reason": latency_exclusion_reason,
+                    "excluded_from_token": bool(token_exclusion_reason),
+                    "token_exclusion_reason": token_exclusion_reason,
                 }
             )
     return metrics
@@ -265,16 +276,19 @@ def summarize_cases(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
     summary = []
     for case, display_name in CASES.items():
         rows = [row for row in metrics if row["case"] == case]
-        valid = [row for row in rows if not row["excluded_from_robust"]]
-        durations = [float(row["duration_seconds"]) for row in valid]
-        outputs = [int(row["output_tokens"]) for row in valid]
+        valid_latency = [row for row in rows if not row["excluded_from_latency"]]
+        valid_tokens = [row for row in rows if not row["excluded_from_token"]]
+        durations = [float(row["duration_seconds"]) for row in valid_latency]
+        outputs = [int(row["output_tokens"]) for row in valid_tokens]
         summary.append(
             {
                 "case": case,
                 "display_name": display_name,
                 "trace_count": len(rows),
-                "excluded_trace_count": len(rows) - len(valid),
-                "valid_trace_count": len(valid),
+                "latency_excluded_trace_count": len(rows) - len(valid_latency),
+                "latency_valid_trace_count": len(valid_latency),
+                "token_excluded_trace_count": len(rows) - len(valid_tokens),
+                "token_valid_trace_count": len(valid_tokens),
                 "mean_duration_seconds": round(statistics.mean(durations), 3),
                 "mean_duration_minutes": round(statistics.mean(durations) / 60, 3),
                 "median_duration_seconds": round(statistics.median(durations), 3),
@@ -294,37 +308,50 @@ def summarize_settings(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
     summary = []
     for agent in AGENTS:
         rows = [row for row in metrics if row["agent"] == agent]
-        valid = [row for row in rows if not row["excluded_from_robust"]]
+        valid_latency = [row for row in rows if not row["excluded_from_latency"]]
+        valid_tokens = [row for row in rows if not row["excluded_from_token"]]
         summary.append(
             {
                 "agent": agent,
                 "trace_count": len(rows),
                 "pass_count": sum(row["result"] == "PASS" for row in rows),
-                "excluded_trace_count": len(rows) - len(valid),
-                "valid_trace_count": len(valid),
+                "latency_excluded_trace_count": len(rows) - len(valid_latency),
+                "latency_valid_trace_count": len(valid_latency),
+                "token_excluded_trace_count": len(rows) - len(valid_tokens),
+                "token_valid_trace_count": len(valid_tokens),
                 "raw_total_duration_seconds": round(
                     sum(float(row["duration_seconds"]) for row in rows), 3
                 ),
                 "clean_total_duration_seconds": round(
-                    sum(float(row["duration_seconds"]) for row in valid), 3
+                    sum(float(row["duration_seconds"]) for row in valid_latency), 3
                 ),
                 "mean_duration_seconds": round(
-                    statistics.mean(float(row["duration_seconds"]) for row in valid),
+                    statistics.mean(
+                        float(row["duration_seconds"]) for row in valid_latency
+                    ),
                     3,
                 ),
                 "median_duration_seconds": round(
-                    statistics.median(float(row["duration_seconds"]) for row in valid),
+                    statistics.median(
+                        float(row["duration_seconds"]) for row in valid_latency
+                    ),
                     3,
                 ),
                 "reported_processed_tokens": sum(
                     int(row["processed_tokens"]) for row in rows
                 ),
-                "clean_output_tokens": sum(int(row["output_tokens"]) for row in valid),
+                "clean_output_tokens": sum(
+                    int(row["output_tokens"]) for row in valid_tokens
+                ),
                 "mean_output_tokens": round(
-                    statistics.mean(int(row["output_tokens"]) for row in valid), 1
+                    statistics.mean(int(row["output_tokens"]) for row in valid_tokens),
+                    1,
                 ),
                 "median_output_tokens": round(
-                    statistics.median(int(row["output_tokens"]) for row in valid), 1
+                    statistics.median(
+                        int(row["output_tokens"]) for row in valid_tokens
+                    ),
+                    1,
                 ),
             }
         )
@@ -446,7 +473,7 @@ def draw_figure(
     figure.text(
         0.12,
         0.017,
-        "Means exclude two execution outliers: Original PG Agent on DCI (stalled/terminated) and Claude Code on DocVQA (401, zero model tokens).",
+        "Latency means exclude Original PG Agent on DCI and Claude Code on DocVQA; token means exclude only the zero-token DocVQA runtime failure.",
         ha="left",
         va="bottom",
         fontsize=8.5,
