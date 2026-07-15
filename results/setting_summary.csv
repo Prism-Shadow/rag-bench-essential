@@ -1,0 +1,5 @@
+agent,trace_count,pass_count,excluded_trace_count,valid_trace_count,raw_total_duration_seconds,clean_total_duration_seconds,median_duration_seconds,reported_processed_tokens,clean_output_tokens,median_output_tokens
+Original PG Agent,15,5,1,14,33928.757,5698.379,310.034,10819580,233481,12350.5
+RAG Agent,15,10,0,15,8112.462,8112.462,385.396,18037757,316860,19441
+Claude Code,15,10,1,14,8745.378,8571.814,353.043,21166305,387817,18578.5
+Codex,15,7,0,15,3604.528,3604.528,235.936,13362259,204816,15601

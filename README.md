@@ -11,6 +11,9 @@ RAG Agent、Claude Code 和 Codex 的 60 条 trace。
 - `agent-configs/original-pg-agent/AGENTS.md`：Original PG Agent 使用的近空指令。
 - `traces/<agent>/<case>.jsonl`：四组结果各 15 条 trace。
 - `figures/agent_results.png`：总体通过数和逐 case 结果图。
+- `results/trace_metrics.csv`：60 条 trace 的逐条时间和 token 明细。
+- `results/case_summary.csv`：剔除执行异常后的逐 case 稳健汇总。
+- `figures/trace_efficiency.png`：四个 setting 和 15 个 case 的耗时、输出 token 图。
 - `RESULTS_ANALYSIS.md`：RAG Agent 的主要改进和剩余失败分析。
 
 ## Results
@@ -28,7 +31,16 @@ trace；更具体的结果见该目录下的 `README.md`。
 
 ![15-case agent results](figures/agent_results.png)
 
-简要分析见 [`RESULTS_ANALYSIS.md`](RESULTS_ANALYSIS.md)。
+## Time and tokens
+
+时间按每条 trace 第一条到最后一条事件计算；跨 runtime 的 token 对比使用输出 token。
+稳健中位数剔除了 Original PG Agent 的 DCI 长时间停滞终止，以及 Claude Code 的
+DocVQA 401/零 token 运行。60 条逐 trace 明细、15 个 case 汇总和 4 个 setting 汇总见
+[`results/`](results/README.md)。
+
+![Trace time and output tokens](figures/trace_efficiency.png)
+
+完整简要分析见 [`RESULTS_ANALYSIS.md`](RESULTS_ANALYSIS.md)。
 
 ## Cases
 

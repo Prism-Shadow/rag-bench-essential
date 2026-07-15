@@ -26,3 +26,25 @@ Original PG Agent 使用近空 `AGENTS.md`，通过 5/15；RAG Agent 通过 10/1
 | FinLongDocQA | 入选条件绑定 | 错误排除 CL 和 STZ，进而影响排序和最终 spread。 |
 
 当前剩余问题集中在任务收束、证据绑定和规则边界，而不是基础文件检索。
+
+## 时间与 token
+
+下表使用剔除明确执行异常后的中位数。耗时是 trace 首尾时间戳跨度；token 使用跨 runtime
+更可比的输出 token。Original PG Agent 的 DCI 停滞终止和 Claude Code 的 DocVQA 401
+不进入稳健汇总。
+
+| Setting | 有效 trace | 中位耗时 | 中位输出 token |
+| --- | ---: | ---: | ---: |
+| Original PG Agent | 14 | 5m 10s | 12.4K |
+| RAG Agent | 15 | 6m 25s | 19.4K |
+| Claude Code | 14 | 5m 53s | 18.6K |
+| Codex | 15 | 3m 56s | 15.6K |
+
+按 case 看，BankerToolBench 和 DCI 的中位耗时分别为 24.8 和 24.4 分钟，明显高于其他
+case。BankerToolBench 还需要中位 47.2K 输出 token，反映其 Excel、PPT、PDF 多交付链路；
+DCI 的高耗时则主要来自大语料搜索和收束困难。DocFinQA、MedAgentBench 和 LongDA 的
+中位耗时均低于 2.5 分钟。
+
+RAG Agent 与 Claude Code 都通过 10/15；二者中位耗时和输出 token 接近。Codex 更快、
+输出更少，但只通过 7/15，因此不能把较低时间或 token 直接解释为更高效率。逐 trace
+原始值和逐 case 稳健汇总见 [`results/`](results/README.md)。
