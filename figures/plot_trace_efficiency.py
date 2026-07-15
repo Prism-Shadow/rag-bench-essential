@@ -275,10 +275,13 @@ def summarize_cases(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "trace_count": len(rows),
                 "excluded_trace_count": len(rows) - len(valid),
                 "valid_trace_count": len(valid),
+                "mean_duration_seconds": round(statistics.mean(durations), 3),
+                "mean_duration_minutes": round(statistics.mean(durations) / 60, 3),
                 "median_duration_seconds": round(statistics.median(durations), 3),
                 "median_duration_minutes": round(statistics.median(durations) / 60, 3),
                 "min_duration_seconds": round(min(durations), 3),
                 "max_duration_seconds": round(max(durations), 3),
+                "mean_output_tokens": round(statistics.mean(outputs), 1),
                 "median_output_tokens": round(statistics.median(outputs), 1),
                 "min_output_tokens": min(outputs),
                 "max_output_tokens": max(outputs),
@@ -305,6 +308,10 @@ def summarize_settings(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "clean_total_duration_seconds": round(
                     sum(float(row["duration_seconds"]) for row in valid), 3
                 ),
+                "mean_duration_seconds": round(
+                    statistics.mean(float(row["duration_seconds"]) for row in valid),
+                    3,
+                ),
                 "median_duration_seconds": round(
                     statistics.median(float(row["duration_seconds"]) for row in valid),
                     3,
@@ -313,6 +320,9 @@ def summarize_settings(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     int(row["processed_tokens"]) for row in rows
                 ),
                 "clean_output_tokens": sum(int(row["output_tokens"]) for row in valid),
+                "mean_output_tokens": round(
+                    statistics.mean(int(row["output_tokens"]) for row in valid), 1
+                ),
                 "median_output_tokens": round(
                     statistics.median(int(row["output_tokens"]) for row in valid), 1
                 ),
@@ -324,7 +334,7 @@ def summarize_settings(metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -391,13 +401,13 @@ def draw_figure(
 
     agent_labels = [row["agent"] for row in setting_summary]
     agent_y = list(range(len(agent_labels)))
-    time_values = [row["median_duration_seconds"] / 60 for row in setting_summary]
-    token_values = [row["median_output_tokens"] / 1000 for row in setting_summary]
+    time_values = [row["mean_duration_seconds"] / 60 for row in setting_summary]
+    token_values = [row["mean_output_tokens"] / 1000 for row in setting_summary]
 
     bars = setting_time.barh(agent_y, time_values, color=PASS_COLOR, height=0.54)
     setting_time.set_yticks(agent_y, agent_labels)
     setting_time.invert_yaxis()
-    setting_time.set_xlabel("Median minutes per trace")
+    setting_time.set_xlabel("Mean minutes per trace")
     setting_time.set_title("a  Setting-level elapsed time", loc="left", fontweight="bold")
     style_axis(setting_time)
     annotate_bars(setting_time, bars, lambda value: f"{value:.1f}m")
@@ -405,30 +415,30 @@ def draw_figure(
     bars = setting_tokens.barh(agent_y, token_values, color=TOKEN_COLOR, height=0.54)
     setting_tokens.set_yticks(agent_y, agent_labels)
     setting_tokens.invert_yaxis()
-    setting_tokens.set_xlabel("Median output tokens (thousands)")
+    setting_tokens.set_xlabel("Mean output tokens (thousands)")
     setting_tokens.set_title("b  Setting-level output", loc="left", fontweight="bold")
     style_axis(setting_tokens)
     annotate_bars(setting_tokens, bars, lambda value: f"{value:.1f}K")
 
     ordered_cases = sorted(
-        case_summary, key=lambda row: row["median_duration_seconds"], reverse=True
+        case_summary, key=lambda row: row["mean_duration_seconds"], reverse=True
     )
     case_labels = [row["display_name"] for row in ordered_cases]
     case_y = list(range(len(case_labels)))
-    time_values = [row["median_duration_seconds"] / 60 for row in ordered_cases]
-    token_values = [row["median_output_tokens"] / 1000 for row in ordered_cases]
+    time_values = [row["mean_duration_seconds"] / 60 for row in ordered_cases]
+    token_values = [row["mean_output_tokens"] / 1000 for row in ordered_cases]
 
     bars = case_time.barh(case_y, time_values, color=PASS_COLOR, height=0.62)
     case_time.set_yticks(case_y, case_labels)
     case_time.invert_yaxis()
-    case_time.set_xlabel("Median minutes")
+    case_time.set_xlabel("Mean minutes")
     case_time.set_title("c  Case-level elapsed time", loc="left", fontweight="bold")
     style_axis(case_time)
     annotate_bars(case_time, bars, lambda value: f"{value:.1f}")
 
     bars = case_tokens.barh(case_y, token_values, color=TOKEN_COLOR, height=0.62)
     case_tokens.tick_params(axis="y", labelleft=False)
-    case_tokens.set_xlabel("Median output tokens (thousands)")
+    case_tokens.set_xlabel("Mean output tokens (thousands)")
     case_tokens.set_title("d  Case-level output", loc="left", fontweight="bold")
     style_axis(case_tokens)
     annotate_bars(case_tokens, bars, lambda value: f"{value:.1f}K")
@@ -436,7 +446,7 @@ def draw_figure(
     figure.text(
         0.12,
         0.017,
-        "Medians exclude two execution outliers: Original PG Agent on DCI (stalled/terminated) and Claude Code on DocVQA (401, zero model tokens).",
+        "Means exclude two execution outliers: Original PG Agent on DCI (stalled/terminated) and Claude Code on DocVQA (401, zero model tokens).",
         ha="left",
         va="bottom",
         fontsize=8.5,

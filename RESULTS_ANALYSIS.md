@@ -29,22 +29,23 @@ Original PG Agent 使用近空 `AGENTS.md`，通过 5/15；RAG Agent 通过 10/1
 
 ## 时间与 token
 
-下表使用剔除明确执行异常后的中位数。耗时是 trace 首尾时间戳跨度；token 使用跨 runtime
+下表同时给出剔除明确执行异常后的平均数和中位数。耗时是 trace 首尾时间戳跨度；token 使用跨 runtime
 更可比的输出 token。Original PG Agent 的 DCI 停滞终止和 Claude Code 的 DocVQA 401
 不进入稳健汇总。
 
-| Setting | 有效 trace | 中位耗时 | 中位输出 token |
-| --- | ---: | ---: | ---: |
-| Original PG Agent | 14 | 5m 10s | 12.4K |
-| RAG Agent | 15 | 6m 25s | 19.4K |
-| Claude Code | 14 | 5m 53s | 18.6K |
-| Codex | 15 | 3m 56s | 15.6K |
+| Setting | 有效 trace | 平均耗时 | 中位耗时 | 平均输出 token | 中位输出 token |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Original PG Agent | 14 | 6m 47s | 5m 10s | 16.7K | 12.4K |
+| RAG Agent | 15 | 9m 01s | 6m 25s | 21.1K | 19.4K |
+| Claude Code | 14 | 10m 12s | 5m 53s | 27.7K | 18.6K |
+| Codex | 15 | 4m 00s | 3m 56s | 13.7K | 15.6K |
 
-按 case 看，BankerToolBench 和 DCI 的中位耗时分别为 24.8 和 24.4 分钟，明显高于其他
-case。BankerToolBench 还需要中位 47.2K 输出 token，反映其 Excel、PPT、PDF 多交付链路；
-DCI 的高耗时则主要来自大语料搜索和收束困难。DocFinQA、MedAgentBench 和 LongDA 的
-中位耗时均低于 2.5 分钟。
+按 case 看，DCI 和 BankerToolBench 的平均耗时分别为 22.8 和 21.1 分钟，明显高于其他
+case。BankerToolBench 还需要平均 44.9K 输出 token，反映其 Excel、PPT、PDF 多交付链路；
+DCI 的高耗时则主要来自大语料搜索和收束困难。DocFinQA 和 MedAgentBench 的平均耗时
+分别为 1.9 和 2.1 分钟。
 
-RAG Agent 与 Claude Code 都通过 10/15；二者中位耗时和输出 token 接近。Codex 更快、
-输出更少，但只通过 7/15，因此不能把较低时间或 token 直接解释为更高效率。逐 trace
+RAG Agent 与 Claude Code 都通过 10/15；RAG Agent 的平均耗时和输出 token 分别为
+9.0 分钟和 21.1K，低于 Claude Code 的 10.2 分钟和 27.7K。Codex 更快、输出更少，
+但只通过 7/15，因此不能把较低时间或 token 直接解释为更高效率。逐 trace
 原始值和逐 case 稳健汇总见 [`results/`](results/README.md)。
