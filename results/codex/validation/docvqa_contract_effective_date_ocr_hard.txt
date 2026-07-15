@@ -1,3 +1,0 @@
-RESULT: FAIL
-- contract_effective_date expected 7-1-99, got '2-7-99'
-- visual evidence missing token '1'

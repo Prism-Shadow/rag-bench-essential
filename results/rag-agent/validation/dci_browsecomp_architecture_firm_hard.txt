@@ -1,5 +1,0 @@
-== D4 delivery ==
-  [MISS] answers.json
-  [MISS] evidence.json
-  [MISS] report.md
-RESULT: FAIL - missing required delivery artifact(s).

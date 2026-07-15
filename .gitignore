@@ -10,7 +10,3 @@ workspaces/
 cases/dci_browsecomp_architecture_firm_hard/task.md
 cases/dci_browsecomp_architecture_firm_hard/truth/
 cases/dci_browsecomp_architecture_firm_hard/data/corpus
-
-# Keep uncurated top-level traces out of Git. The reviewed three-agent package
-# under results/ is intentionally tracked.
-/traces/

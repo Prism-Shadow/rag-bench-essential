@@ -1,7 +1,5 @@
 cases/longda_nscg_telework_hard/data/epcg23.csv filter=lfs diff=lfs merge=lfs -text
 cases/spider2lite_f1_overtake_audit_hard/data/f1.sqlite filter=lfs diff=lfs merge=lfs -text
 
-# Preserve upstream benchmark payload bytes; do not report their existing
-# whitespace conventions as repository-authored patch errors.
+# Preserve upstream benchmark payload bytes.
 cases/**/data/** -whitespace
-cases/**/truth/expected_variants/** -whitespace

@@ -1,21 +1,16 @@
-# RAG Bench Essential
+# RAG Bench
 
-这个仓库保存 Agentic RAG BenchLab 当前固化的 15 个主代表 case、RAG Agent
-使用的专用 `AGENTS.md`，以及三个 Agent 的 45 条选定 trace 和外部验证结果。
+本仓库保存 15 个 benchmark case、RAG Agent 的 `AGENTS.md`，以及 RAG Agent、
+Claude Code 和 Codex 的 45 条 trace。
 
-## 目录
+## 内容
 
-- `cases/`：15 个固定 case。
-- `agent-configs/rag-agent/AGENTS.md`：RAG Agent 使用的专用指令，不是项目根目录的开发指南。
-- `results/rag-agent/`：RAG Agent 的 15 条 trace 和验证结果。
-- `results/claude-code/`：Claude Code 的 15 条 trace 和验证结果。
-- `results/codex/`：Codex 的 15 条 trace 和验证结果。
-- `results/manifest.tsv`：45 条结果的统一索引。
-- `CASE_SPEC.md`：case 的 `payload + env + eval` 结构规范。
-- `RUN_PROTOCOL.md`：不暴露 `truth/` 的隔离运行和外部验证流程。
-- `THIRD_PARTY_NOTICES.md`：第三方 benchmark 数据说明。
+- `cases/<case>/task.md`：任务描述。
+- `cases/<case>/data/`：任务数据。
+- `agent-configs/rag-agent/AGENTS.md`：RAG Agent 指令。
+- `traces/<agent>/<case>.jsonl`：三个 Agent 各 15 条 trace。
 
-## 15 个主代表 case
+## Cases
 
 1. `spider2lite_f1_overtake_audit_hard`
 2. `dci_browsecomp_architecture_firm_hard`
@@ -33,29 +28,6 @@
 14. `harveylab_reps_diligence_discrepancy_hard`
 15. `medagentbench_potassium_repletion_order_hard`
 
-## 数据说明
 
-普通 case 的 payload 和外部 validator 一起保存。两个较大文件通过 Git LFS 管理：
-
-- `cases/longda_nscg_telework_hard/data/epcg23.csv`
-- `cases/spider2lite_f1_overtake_audit_hard/data/f1.sqlite`
-
-clone 后运行 `git lfs pull` 获取完整 payload。
-
-DCI/BrowseComp-Plus 的明文 task、truth 和 corpus 受上游发布约束，本仓库只保存受限 case 占位和数据获取说明，不上传明文。
-
-## 运行边界
-
-不要直接在 `cases/` 中运行 Agent。运行时应将 `task.md`、`data/` 和可选 `env.md` 复制到独立 workspace；`truth/` 只供 workspace 外部的 validator 使用。
-
-## 结果
-
-`results/` 共保存 45 条 trace，每个 Agent 覆盖全部 15 个 case：
-
-- RAG Agent：10/15 PASS。
-- Claude Code：10/15 PASS。
-- Codex：7/15 PASS。
-
-这些是每个 Agent 的选定代表结果，不主张它们来自同一次连续批量运行。
-每条 trace 均有对应的外部 validator 输出；具体文件和 PASS/FAIL 状态见
-`results/manifest.tsv`。
+DCI/BrowseComp-Plus 的明文任务和语料受上游发布限制，因此该 case 只保留说明，
+不上传受限内容。第三方数据权利说明见 `THIRD_PARTY_NOTICES.md`。

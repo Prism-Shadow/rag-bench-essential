@@ -1,8 +1,0 @@
-{
-  "source": "DABstep official dev split, task_id=1681 (Adyen, arXiv:2506.23719). Gold answer held out.",
-  "task_id": "1681",
-  "question": "For the 10th of the year 2023, what are the Fee IDs applicable to Belles_cookbook_store?",
-  "answer_type": "id_set",
-  "answer": "741, 709, 454, 813, 381, 536, 473, 572, 477, 286",
-  "note": "Scored as an unordered set of fee IDs (DABstep list scoring is order-independent)."
-}

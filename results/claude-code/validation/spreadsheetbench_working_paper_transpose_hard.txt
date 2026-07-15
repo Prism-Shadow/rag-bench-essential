@@ -1,6 +1,0 @@
-/opt/homebrew/lib/python3.14/site-packages/openpyxl/worksheet/header_footer.py:48: UserWarning: Cannot parse header or footer so it will be ignored
-  warn("""Cannot parse header or footer so it will be ignored""")
-variant_a: PASS outputs/working_paper_variant_a_completed.xlsx matches destination!A1:DQ8 and preserves source sheets
-variant_b: PASS outputs/working_paper_variant_b_completed.xlsx matches destination!A1:DQ8 and preserves source sheets
-variant_c: PASS outputs/working_paper_variant_c_completed.xlsx matches destination!A1:DQ8 and preserves source sheets
-RESULT: PASS (3 variants matched)
