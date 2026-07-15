@@ -22,9 +22,9 @@ RAG Agent、Claude Code 和 Codex 的 60 条 trace。
 | Claude Code | 10/15 | 15 个 case 各选一条 trace |
 | Codex | 7/15 | 15 个 case 各选一条 trace |
 
-Original PG Agent 的 15 条 trace 位于 `traces/original-pg-agent/`。其中任务描述发生变化的
-5 个 case 已使用当前任务文本和近空 `AGENTS.md` 重新运行；LongDA 和 MultiHiertt 在重跑后
-通过。15 个 case 均有可解析 trace；更具体的结果见该目录下的 `README.md`。
+Original PG Agent 的 15 条 trace 位于 `traces/original-pg-agent/`，全部对应仓库当前的
+`task.md`。最新补跑的 5 个 case 中，LongDA 和 MultiHiertt 通过。15 个 case 均有可解析
+trace；更具体的结果见该目录下的 `README.md`。
 
 ![15-case agent results](figures/agent_results.png)
 

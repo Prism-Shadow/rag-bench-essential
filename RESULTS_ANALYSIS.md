@@ -12,8 +12,8 @@ Original PG Agent 使用近空 `AGENTS.md`，通过 5/15；RAG Agent 通过 10/1
 - **先探测再处理。** SpreadsheetBench 中，RAG Agent 先检查 sheet、重复区块和锚点，再生成并
   验证三个 workbook，减少了根据局部内容猜测表格结构的问题。
 
-其中 Spider2-Lite 是本次同任务重跑中最直接的对照。LongDA 和 MultiHiertt 在近空配置下也已
-通过，说明这两个 case 的变化来自任务口径被写清，不应记作 `AGENTS.md` 的能力提升。
+其中 Spider2-Lite 是本次同任务重跑中最直接的对照。LongDA 和 MultiHiertt 在当前同一版题目下，
+近空配置和 RAG Agent 都通过，因此这两个 case 没有体现出 `AGENTS.md` 带来的结果差异。
 
 ## 仍未通过的 5 个 case
 
