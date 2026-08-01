@@ -3,8 +3,7 @@
 Source alignment: this is a **MultiHiertt-derived hard case** built from the
 official MultiHiertt development split. The original benchmark question is kept
 verbatim below. The agent-visible input is a document library rather than a
-single preselected document, so first locate the relevant document and evidence,
-then answer the original question.
+single preselected document; answer the question from that library.
 
 ## Data
 
@@ -46,5 +45,4 @@ Write **`<workspace-root>/answers.json`** in exactly this shape:
 { "answer": ["..."] }
 ```
 
-After writing `answers.json`, briefly report which document/evidence you used
-and the calculation you performed.
+No source narrative, calculation report, or intermediate values are required.

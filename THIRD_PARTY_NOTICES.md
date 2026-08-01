@@ -4,7 +4,7 @@ The case payloads in this private research repository are derived from their
 named upstream benchmarks and datasets, including Spider 2.0, BrowseComp-Plus,
 DocFinQA, DocVQA, LongData, MultiHiertt, WorkspaceBench, DVWorld,
 BankerToolBench, FinLongDocQA, DABstep, PrepBench, SpreadsheetBench,
-HarveyLab/REPS, and MedAgentBench.
+HarveyLab/REPS, and FDABench/BIRD app-store data.
 
 The repository `LICENSE` applies to repository-authored code and documentation.
 It does not replace or broaden the upstream license, access restriction, or

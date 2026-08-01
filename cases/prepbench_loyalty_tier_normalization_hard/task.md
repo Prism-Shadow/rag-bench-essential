@@ -65,25 +65,10 @@ Report the share as a decimal rounded to 6 places. For example, report
 
 Produce `answers.json`:
 
-   ```json
-   {
-     "answer": ["0.000000"],
-     "by_tier": [
-       {
-         "tier": "Gold",
-         "transaction_rows": 0,
-         "loyalty_customers": 0,
-         "sales_after_discount": 0.0,
-         "profit": 0.0
-       }
-     ],
-     "checkpoints": {}
-   }
-   ```
-
-   `by_tier` should contain exactly `Bronze`, `Gold`, and `Silver` rows.
-   `transaction_rows` and `loyalty_customers` should count all rows/customers in
-   the canonical tier, including rows whose discount is missing. Monetary values
-   should be rounded to 2 decimals after summing non-null values.
+```json
+{
+  "answer": ["0.000000"]
+}
+```
 
 After writing the file, report the final share and the output path.

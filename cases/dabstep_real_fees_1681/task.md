@@ -50,5 +50,4 @@ single string, matching the guidelines):
 }
 ```
 
-After writing `answers.json`, report how you determined applicability and the Fee
-IDs you selected.
+After writing `answers.json`, report the Fee IDs you selected.

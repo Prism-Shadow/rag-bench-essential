@@ -85,7 +85,7 @@ add 1 to the `overtaking_driver`'s overtook count and 1 to the
 
 ## Output contract
 
-Produce all deliverables below.
+Produce the three result files below.
 
 1. `answers/overtake_counts_all.csv`
 
@@ -113,25 +113,4 @@ Produce all deliverables below.
    <driver full name>
    ```
 
-4. `evidence.json`
-
-   Bind each part to the tables and rules you used. Include enough detail for a
-   reviewer to see:
-
-   - how eligible overtake events are constructed, including the
-    `lap_type = 'Race'` filter, lap 1 use of positive `results.grid` values
-    with `grid = 0` excluded, and the direction of `overtaking_driver` versus
-    `overtaken_driver`;
-   - which tables identify pit-data races, race positions, pit stops,
-     retirements, grid positions, and driver names;
-   - the per-part scope for Part A, Part B, and Part C;
-   - the `R`, `P`, `S`, and `T` priority order;
-   - the exact rules for `R`, pit entry, pit exit, start movement, and `T`;
-   - how Part C counts `overtook` versus `was_overtaken` using `T` events only.
-
-5. `report.md`
-
-   Give a short audit note describing your method, any edge cases you handled,
-   and the three final outputs.
-
-After writing the files, report the source trail and the output file paths.
+After writing the files, report the three output file paths.

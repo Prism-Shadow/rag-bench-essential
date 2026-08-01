@@ -49,5 +49,4 @@ answer-structure order above):
 { "answer": ["...", "...", "...", "...", "...", "...", "..."] }
 ```
 
-After writing `answers.json`, briefly report the columns, response codes, and method
-you used and where in the documentation you found them.
+No method report, source narrative, or intermediate calculations are required.

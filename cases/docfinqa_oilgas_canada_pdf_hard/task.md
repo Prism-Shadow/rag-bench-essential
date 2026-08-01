@@ -1,8 +1,8 @@
-# DocFinQA PDF Evidence Audit: Canada Oil and Gas MMBoe
+# DocFinQA PDF Analysis: Canada Oil and Gas MMBoe
 
 This case adapts a real DocFinQA long-context financial question. The input is
 the original Devon Energy 2007 annual report PDF, not a pre-extracted text file.
-Answer from the PDF and bind the calculation to page-level evidence.
+Answer the question from the PDF.
 
 ## Data
 
@@ -23,43 +23,16 @@ MMBoe is attributed to Canada?
 
 ## Output Contract
 
-Produce these files in the workspace root:
+Produce this file in the workspace root:
 
 1. `answers.json`
 
    ```json
    {
-     "answer": ["..."],
-     "calculation": {
-       "canada_total_mmboe": 0,
-       "company_total_mmboe": 0,
-       "percentage": 0
-     }
+     "answer": "..."
    }
    ```
 
-   Report a single percentage string in `answer`, rounded to two decimals with
-   a `%` sign.
-
-2. `evidence.json`
-
-   Include the PDF path, page number, and a short quote or extracted text from
-   the load-bearing table.
-
-   ```json
-   {
-     "sources": [
-       {
-         "file": "data/annual_report.pdf",
-         "page": 0,
-         "supports": ["canada_total_mmboe", "company_total_mmboe"],
-         "quote": "..."
-       }
-     ]
-   }
-   ```
-
-3. `report.md`
-
-   A short note explaining how you navigated the long PDF, which table you used,
-   and why the cited table supports the final calculation.
+Report the percentage in `answer`, rounded to two decimal places. A `%` sign is
+recommended but not required. No calculation fields, evidence file, or report
+are required.

@@ -35,5 +35,5 @@ small aggregate checks) to decide the exact query plan.
 ## Important caution
 
 The task is event-oriented. Simple per-driver position deltas are not enough to
-answer all parts reliably. The evidence file should make clear how each counted
-event maps to the requested categories and direction.
+answer all parts reliably; the analysis must reconstruct pairwise events before
+applying the requested categories and direction.

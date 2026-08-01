@@ -48,39 +48,16 @@ workbook in `data/data_new.xlsx`.
 
 ## Output Contract
 
-Write exactly these files in the workspace root:
+Write exactly these two final chart artifacts in the workspace root:
 
-1. `answers.json`
-
-This JSON must include:
-
-- `case_id`: `dvworld_dvevol_crime_association_network_hard`
-- `chart_type`: `network_association_graph`
-- `source_file`: `data/data_new.xlsx`
-- `year`: `2016`
-- `node_count`: `7`
-- `edge_count`: the computed number of retained edges
-- `threshold_abs_corr`: `0.4`
-- `node_order`: the fixed node order from the task
-- `title`: `Crime Type Association Network (|corr| >= 0.40)`
-
-2. `derived_edges.csv`
-
-The CSV must have this exact column order:
-
-```text
-source,target,corr,abs_corr,sign,strength_bin,edge_width,edge_color_hex
-```
-
-Sort rows by descending `abs_corr`, then ascending `source`, then ascending
-`target`.
-
-3. `chart_spec.json`
+1. `chart_spec.json`
 
 Use this semantic schema:
 
 ```json
 {
+  "source_file": "data/data_new.xlsx",
+  "year": 2016,
   "title": "Crime Type Association Network (|corr| >= 0.40)",
   "mark": "network",
   "layout": {
@@ -95,7 +72,18 @@ Use this semantic schema:
     "stroke": "#333333"
   },
   "edges": {
-    "data": "derived_edges.csv",
+    "values": [
+      {
+        "source": "Assault",
+        "target": "Burglary",
+        "corr": 0.0,
+        "abs_corr": 0.0,
+        "sign": "positive",
+        "strength_bin": "0.70+",
+        "edge_width": 4.0,
+        "edge_color_hex": "#D7191C"
+      }
+    ],
     "source": "source",
     "target": "target",
     "weight": "corr",
@@ -119,6 +107,12 @@ Use this semantic schema:
 }
 ```
 
-4. `figure.png`
+The example edge values above illustrate the schema only. Include every retained
+edge computed from the workbook. Sort `edges.values` by descending `abs_corr`,
+then ascending `source`, then ascending `target`.
 
-Create a valid PNG image of the chart.
+2. `figure.png`
+
+Create the actual rendered PNG chart. A placeholder image does not satisfy the
+task. All node labels must be readable outside their circles, the top label must
+not overlap the title, and no chart content may be clipped.

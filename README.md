@@ -1,56 +1,17 @@
-# RAG Bench
+# RAG Bench Essential
 
-本仓库保存 15 个 benchmark case、RAG Agent 的 `AGENTS.md`，以及 Original PG Agent、
-RAG Agent、Claude Code 和 Codex 的 60 条 trace。
+本仓库保存当前固定的 15 个数据分析 benchmark case 的 agent 可见内容。
 
-## 内容
+每个普通 case 位于 `cases/<case_id>/`，包含：
 
-- `cases/<case>/task.md`：任务描述。
-- `cases/<case>/data/`：任务数据。
-- `agent-configs/rag-agent/AGENTS.md`：RAG Agent 指令。
-- `agent-configs/original-pg-agent/AGENTS.md`：Original PG Agent 使用的近空指令。
-- `traces/<agent>/<case>.jsonl`：四组结果各 15 条 trace。
-- `figures/agent_results.png`：总体通过数和逐 case 结果图。
-- `results/trace_metrics.csv`：60 条 trace 的逐条时间和 token 明细。
-- `results/setting_summary.csv`：四个 harness/configuration 的耗时和 token 汇总。
-- `figures/trace_efficiency.png`：四个 harness/configuration 的平均耗时、三类 token 和估算费用图。
-- `RESULTS_ANALYSIS.md`：RAG Agent 的主要改进和剩余失败分析。
+- `task.md`：任务描述与最终交付要求；
+- `data/`：任务输入数据；
+- 可选的 `env.md`：运行环境假设。
 
-## Results
+本仓库不包含 gold answer、rubric、validator、reference solution、历史运行结果或
+agent trace。评分内容与 agent workspace 分离，避免 benchmark 泄漏。
 
-| Agent | PASS | 说明 |
-| --- | ---: | --- |
-| Original PG Agent | 5/15 | 使用只有标题的近空 `AGENTS.md` |
-| RAG Agent | 10/15 | 使用本仓库 `agent-configs/rag-agent/AGENTS.md` |
-| Claude Code | 10/15 | 15 个 case 各选一条 trace |
-| Codex | 7/15 | 15 个 case 各选一条 trace |
-
-Original PG Agent 的 15 条 trace 位于 `traces/original-pg-agent/`，全部对应仓库当前的
-`task.md`。最新补跑的 5 个 case 中，LongDA 和 MultiHiertt 通过。15 个 case 均有可解析
-trace；更具体的结果见该目录下的 `README.md`。
-
-![15-case agent results](figures/agent_results.png)
-
-## Time, tokens, and cost
-
-时间按每条 trace 第一条到最后一条事件计算。Token 分为 uncached input、cache read 和
-output，主图展示三者堆叠后的平均总量。
-图中的 latency 平均数剔除了 Original PG Agent 的 DCI 长时间停滞和 Claude Code 的
-DocVQA 401；token 平均数只剔除没有发生模型调用的 DocVQA。CSV 同时保留各指标的
-clean mean 和中位数。
-
-四组 trace 均记录为 `deepseek-v4-pro`。费用按
-[DeepSeek 官方价格](https://api-docs.deepseek.com/quick_start/pricing)估算：uncached input
-$0.435/M、cache read $0.003625/M、output $0.87/M。该数值用于比较 harness 的 token
-使用方式，不代表实际 provider/relay 账单。60 条逐 trace 明细、
-4 个 harness/configuration 汇总见
-[`results/`](results/README.md)。
-
-![Harness-level latency, tokens, and estimated cost](figures/trace_efficiency.png)
-
-完整简要分析见 [`RESULTS_ANALYSIS.md`](RESULTS_ANALYSIS.md)。
-
-## Cases
+## Fixed 15
 
 1. `spider2lite_f1_overtake_audit_hard`
 2. `dci_browsecomp_architecture_firm_hard`
@@ -66,8 +27,21 @@ $0.435/M、cache read $0.003625/M、output $0.87/M。该数值用于比较 harne
 12. `prepbench_loyalty_tier_normalization_hard`
 13. `spreadsheetbench_working_paper_transpose_hard`
 14. `harveylab_reps_diligence_discrepancy_hard`
-15. `medagentbench_potassium_repletion_order_hard`
+15. `fdabench_app_sentiment_xsource_hard_v2`
 
+## DCI case
 
-DCI/BrowseComp-Plus 的明文任务和语料受上游发布限制，因此该 case 只保留说明，
-不上传受限内容。第三方数据权利说明见 `THIRD_PARTY_NOTICES.md`。
+BrowseComp-Plus / DCI 的明文任务、ground truth 和 materialized corpus 不上传 Git。
+仓库仅保留来源和本地 materialization 说明；授权用户需要通过官方分发渠道获取数据。
+
+## Data and Git LFS
+
+LongDA 的大 CSV 和 Spider2-Lite 的 SQLite 文件由 Git LFS 管理。clone 后如未自动
+下载，可执行：
+
+```bash
+git lfs pull
+```
+
+第三方数据仍受各自上游许可证和访问条款约束，详见
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
