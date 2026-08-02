@@ -7,6 +7,5 @@ runs/
 workspaces/
 sources/
 
-# DCI plaintext and materialized corpus must never enter Git.
-cases/dci_browsecomp_architecture_firm_hard/task.md
+# DCI materialized corpus remains local.
 cases/dci_browsecomp_architecture_firm_hard/data/corpus

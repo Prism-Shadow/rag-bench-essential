@@ -37,7 +37,7 @@ def main() -> int:
             continue
         target = workspace / name
         if item.is_dir():
-            shutil.copytree(item, target)
+            shutil.copytree(item, target, symlinks=True)
         else:
             shutil.copy2(item, target)
 
