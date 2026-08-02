@@ -1,0 +1,17 @@
+schema_version: 1
+case_id: dci_browsecomp_architecture_firm_hard
+scoring:
+  max_score: 1
+  hard_pass_requires:
+    - SP001
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Identify the accepted architecture firm in answers.json.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - retrieval_miss
+    checks:
+      - type: dci_answer

@@ -1,0 +1,48 @@
+schema_version: 1
+case_id: spreadsheetbench_working_paper_transpose_hard
+scoring:
+  max_score: 3
+  hard_pass_requires:
+    - SP001
+    - SP002
+    - SP003
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Complete variant A and preserve its source workbook sheets.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+      - completion_contract
+    checks:
+      - type: spreadsheet_workbook_variant
+        variant: variant_a
+  - id: SP002
+    dimension: D1_answer
+    goal: Complete variant B and preserve its source workbook sheets.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+      - completion_contract
+    checks:
+      - type: spreadsheet_workbook_variant
+        variant: variant_b
+  - id: SP003
+    dimension: D1_answer
+    goal: Complete variant C and preserve its source workbook sheets.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+      - completion_contract
+    checks:
+      - type: spreadsheet_workbook_variant
+        variant: variant_c

@@ -1,0 +1,19 @@
+schema_version: 1
+judge_id: dvworld_network_visual_v1
+prompt_version: dvworld-network-visual-v1
+prompt_file: vision_judge_prompt.md
+model_env: BENCH_VISION_JUDGE_MODEL
+api_key_env: BENCH_VISION_JUDGE_API_KEY
+base_url_env: BENCH_VISION_JUDGE_BASE_URL
+base_url_default: https://openrouter.ai/api/v1
+temperature: 0
+max_output_tokens: 500
+max_attempts: 2
+input:
+  type: image
+  path: figure.png
+required_boolean_gates:
+  - network_graph_rendered
+  - labels_readable_outside_nodes
+  - title_clear_no_overlap
+  - no_clipping_or_blocking_overlap

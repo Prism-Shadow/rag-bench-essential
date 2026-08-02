@@ -1,0 +1,19 @@
+{
+  "source": "LongDA (arXiv:2601.02598), survey NSCG. Underlying microdata: NSF NCSES 2023 National Survey of College Graduates public-use file (published reference NSF 25-331). Gold from LongDA benchmark.csv and reproduced exactly from the microdata by truth/solution.py.",
+  "answer_structure": "[size10, size11_24, size25_99, size100_499, size500_999, size1000_4999, size5000plus]",
+  "answer": ["3147", "1044", "1754", "3146", "1479", "3315", "9656"],
+  "abs_tolerance": 1.0,
+  "checkpoints": {
+    "telework_column": "TELEC (telework status); teleworker = code 4 'allowed to telework and did'",
+    "employer_size_column": "EMSIZE (codes 1-8); buckets 7 (5000-24999) and 8 (25000+) merge into size5000plus",
+    "weight_column": "WTSURVY (final survey weight)",
+    "statistic": "weighted count in thousands = sum(WTSURVY for TELEC=4) / 1000 per employer-size bucket",
+    "reproduced_answer": [3147, 1044, 1754, 3146, 1479, 3315, 9656]
+  },
+  "decoys": {
+    "include_required_TELEC3": "adding the 'required to telework' category (code 3) inflates every bucket",
+    "all_eight_size_codes": "reporting 8 buckets (not merging 5000-24999 with 25000+) yields a mismatched-length answer",
+    "unweighted_counts": "counting rows instead of summing WTSURVY gives the unweighted column, not population thousands",
+    "forget_thousands": "summing weights without dividing by 1000 overstates by ~1000x"
+  }
+}

@@ -3,3 +3,4 @@ cases/spider2lite_f1_overtake_audit_hard/data/f1.sqlite filter=lfs diff=lfs merg
 
 # Preserve upstream benchmark payload bytes.
 cases/**/data/** -whitespace
+cases/**/truth/expected_variants/** -whitespace

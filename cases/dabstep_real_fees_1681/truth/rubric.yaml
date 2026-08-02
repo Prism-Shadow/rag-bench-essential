@@ -1,0 +1,19 @@
+schema_version: 1
+case_id: dabstep_real_fees_1681
+scoring:
+  max_score: 1
+  hard_pass_requires:
+    - SP001
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Return exactly the expected unordered set of applicable fee IDs.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+      - program_semantics
+      - completion_contract
+    checks:
+      - type: dabstep_fee_ids

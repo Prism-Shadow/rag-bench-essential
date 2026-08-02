@@ -1,0 +1,41 @@
+schema_version: 1
+case_id: harveylab_reps_diligence_discrepancy_hard
+scoring:
+  max_score: 9
+  hard_pass_requires:
+    - SP001
+    - SP002
+    - SP003
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Cover the required number of diligence-versus-representation discrepancy issues.
+    weight: 5
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - retrieval_miss
+      - program_semantics
+    checks:
+      - type: harvey_issue_coverage
+  - id: SP002
+    dimension: D1_answer
+    goal: Bind findings to recognizable source files and sections.
+    weight: 2
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - evidence_binding
+    checks:
+      - type: harvey_source_binding
+  - id: SP003
+    dimension: D1_answer
+    goal: Include practical severity and recommendation controls in the memo.
+    weight: 2
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - completion_contract
+    checks:
+      - type: harvey_memo_controls

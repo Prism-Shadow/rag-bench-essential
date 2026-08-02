@@ -1,0 +1,18 @@
+schema_version: 1
+case_id: docvqa_contract_effective_date_ocr_hard
+scoring:
+  max_score: 1
+  hard_pass_requires:
+    - SP001
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Return a date that unambiguously represents July 1, 1999.
+    weight: 1
+    judge: validator
+    hard_gate: true
+    failure_layers:
+      - retrieval_miss
+    checks:
+      - type: validator_exit
+        expected: 0

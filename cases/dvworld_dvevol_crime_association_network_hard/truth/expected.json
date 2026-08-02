@@ -1,0 +1,84 @@
+{
+  "case_id": "dvworld_dvevol_crime_association_network_hard",
+  "source": {
+    "benchmark": "DV-World",
+    "family": "DV-Evolution",
+    "upstream_case": "dv-evol-015"
+  },
+  "required_outputs": [
+    "chart_spec.json",
+    "figure.png"
+  ],
+  "key_intermediates": {
+    "source_file": "data/data_new.xlsx",
+    "year": 2016,
+    "state_rows_after_region_filter": 36,
+    "crime_rate_fields": [
+      "Murder_Rate",
+      "Rape_Revised_Rate",
+      "Robbery_Rate",
+      "Assault_Rate",
+      "Burglary_Rate",
+      "Larceny_Rate",
+      "Vehicle_Theft_Rate"
+    ],
+    "node_order": [
+      "Murder",
+      "Rape_Revised",
+      "Robbery",
+      "Assault",
+      "Burglary",
+      "Larceny",
+      "Vehicle_Theft"
+    ],
+    "threshold_abs_corr": 0.4
+  },
+  "chart": {
+    "chart_type": "network_association_graph",
+    "title": "Crime Type Association Network (|corr| >= 0.40)",
+    "node_count": 7,
+    "edge_count": 16,
+    "layout": {
+      "type": "circular",
+      "start": "top",
+      "direction": "anticlockwise"
+    },
+    "node_fill": "#F2F2F2",
+    "node_stroke": "#333333",
+    "edge_color_positive": "#D7191C",
+    "edge_color_negative": "#2C7BB6",
+    "width_by_bin": {
+      "0.40-0.54": 1.3,
+      "0.55-0.69": 2.6,
+      "0.70+": 4.0
+    }
+  },
+  "edges": [
+    {"source": "Assault", "target": "Burglary", "corr": 0.797500345441, "abs_corr": 0.797500345441, "sign": "positive", "strength_bin": "0.70+", "edge_width": 4.0, "edge_color_hex": "#D7191C"},
+    {"source": "Burglary", "target": "Larceny", "corr": 0.761403862098, "abs_corr": 0.761403862098, "sign": "positive", "strength_bin": "0.70+", "edge_width": 4.0, "edge_color_hex": "#D7191C"},
+    {"source": "Assault", "target": "Larceny", "corr": 0.669849085442, "abs_corr": 0.669849085442, "sign": "positive", "strength_bin": "0.55-0.69", "edge_width": 2.6, "edge_color_hex": "#D7191C"},
+    {"source": "Murder", "target": "Burglary", "corr": 0.635121515288, "abs_corr": 0.635121515288, "sign": "positive", "strength_bin": "0.55-0.69", "edge_width": 2.6, "edge_color_hex": "#D7191C"},
+    {"source": "Rape_Revised", "target": "Assault", "corr": 0.608818779527, "abs_corr": 0.608818779527, "sign": "positive", "strength_bin": "0.55-0.69", "edge_width": 2.6, "edge_color_hex": "#D7191C"},
+    {"source": "Robbery", "target": "Assault", "corr": 0.55444840152, "abs_corr": 0.55444840152, "sign": "positive", "strength_bin": "0.55-0.69", "edge_width": 2.6, "edge_color_hex": "#D7191C"},
+    {"source": "Murder", "target": "Robbery", "corr": 0.530365572425, "abs_corr": 0.530365572425, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Larceny", "target": "Vehicle_Theft", "corr": 0.509278293946, "abs_corr": 0.509278293946, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Murder", "target": "Assault", "corr": 0.508512797392, "abs_corr": 0.508512797392, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Burglary", "target": "Vehicle_Theft", "corr": 0.498801488722, "abs_corr": 0.498801488722, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Assault", "target": "Vehicle_Theft", "corr": 0.490811999198, "abs_corr": 0.490811999198, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Rape_Revised", "target": "Larceny", "corr": 0.482959845426, "abs_corr": 0.482959845426, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Murder", "target": "Larceny", "corr": 0.474344426651, "abs_corr": 0.474344426651, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Robbery", "target": "Burglary", "corr": 0.454147336572, "abs_corr": 0.454147336572, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Rape_Revised", "target": "Burglary", "corr": 0.445427072523, "abs_corr": 0.445427072523, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"},
+    {"source": "Robbery", "target": "Vehicle_Theft", "corr": 0.419490875429, "abs_corr": 0.419490875429, "sign": "positive", "strength_bin": "0.40-0.54", "edge_width": 1.3, "edge_color_hex": "#D7191C"}
+  ],
+  "tolerances": {
+    "float_abs": 0.000001
+  },
+  "decoys": [
+    "Using all years instead of Year == 2016 changes the correlation matrix and edge set.",
+    "Keeping aggregate region/division rows instead of state-level rows inflates correlations.",
+    "Using crime count columns instead of *_Rate fields produces a different network.",
+    "Filtering by corr >= 0.40 instead of abs(corr) >= 0.40 silently drops negative strong edges if present.",
+    "Applying the bin edges inclusively on the wrong side can assign widths incorrectly at boundaries."
+  ]
+}

@@ -7,10 +7,6 @@ runs/
 workspaces/
 sources/
 
-# Evaluation-only material must not enter this payload repository.
-cases/**/truth/
-
 # DCI plaintext and materialized corpus must never enter Git.
 cases/dci_browsecomp_architecture_firm_hard/task.md
-cases/dci_browsecomp_architecture_firm_hard/truth/
 cases/dci_browsecomp_architecture_firm_hard/data/corpus

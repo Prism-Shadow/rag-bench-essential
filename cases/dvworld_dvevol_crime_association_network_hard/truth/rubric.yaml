@@ -1,0 +1,35 @@
+schema_version: 1
+case_id: dvworld_dvevol_crime_association_network_hard
+scoring:
+  max_score: 2
+  hard_pass_requires:
+    - SP001
+    - SP002
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Deliver a machine-readable final chart definition with exact network semantics.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+      - completion_contract
+    checks:
+      - type: json_parse
+        path: chart_spec.json
+      - type: dvworld_chart_spec
+      - type: png_valid
+        path: figure.png
+  - id: SP002
+    dimension: D1_answer
+    goal: Render a readable network graph with separated labels and no clipping or blocking overlap.
+    weight: 1
+    judge: llm
+    hard_gate: true
+    failure_layers:
+      - completion_contract
+      - delivery_path
+    llm_judge:
+      config: vision_judge.yaml

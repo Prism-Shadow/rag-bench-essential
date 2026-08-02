@@ -1,0 +1,44 @@
+schema_version: 1
+case_id: workspacebench_taobao_permissions_hard
+scoring:
+  max_score: 10
+  hard_pass_requires:
+    - SP001
+    - SP002
+    - SP003
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Encode the full role-module permission matrix in the CSV.
+    weight: 5
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - evidence_binding
+    checks:
+      - type: taobao_csv
+  - id: SP002
+    dimension: D1_answer
+    goal: Encode default-deny and sensitive-operation role rules in machine-readable JSON.
+    weight: 3
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - evidence_binding
+    checks:
+      - type: json_parse
+        path: 淘宝活动/权限校验规则.json
+      - type: taobao_json_rules
+  - id: SP003
+    dimension: D1_answer
+    goal: Explain the permission decisions with required basis tokens and explicit deny rationale.
+    weight: 2
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - evidence_binding
+      - completion_contract
+    checks:
+      - type: taobao_markdown

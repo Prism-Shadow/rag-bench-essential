@@ -1,0 +1,19 @@
+schema_version: 1
+case_id: prepbench_loyalty_tier_normalization_hard
+scoring:
+  max_score: 1
+  hard_pass_requires:
+    - SP001
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Return the final normalized Gold profit share within tolerance.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+      - program_semantics
+      - completion_contract
+    checks:
+      - type: numeric_answer
