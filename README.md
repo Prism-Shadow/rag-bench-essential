@@ -33,11 +33,9 @@ workspace。`scripts/stage_case.py` 只会复制 `task.md`、`data/` 和 `env.md
 
 ## DCI case
 
-BrowseComp-Plus / DCI 的明文任务、ground truth 和 materialized corpus 不上传 Git。
-仓库仅保留来源和本地 materialization 说明；授权用户需要通过官方分发渠道获取数据。
-
-因此 DCI 的 evaluation 包可以审计，但完整运行前仍需按
-`cases/dci_browsecomp_architecture_firm_hard/README.md` 从官方来源 materialize payload。
+BrowseComp-Plus / DCI 的 canonical task 已包含在仓库中，大 corpus 不上传 Git。完整运行前按
+[`cases/dci_browsecomp_architecture_firm_hard/README.md`](cases/dci_browsecomp_architecture_firm_hard/README.md)
+从 Hugging Face 官方数据集一键 materialize payload。
 
 ## Quick start
 
