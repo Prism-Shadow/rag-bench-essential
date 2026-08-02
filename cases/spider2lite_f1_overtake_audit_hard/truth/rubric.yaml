@@ -1,0 +1,45 @@
+schema_version: 1
+case_id: spider2lite_f1_overtake_audit_hard
+scoring:
+  max_score: 3
+  hard_pass_requires:
+    - SP001
+    - SP002
+    - SP003
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Part A pit-data-race category counts match the gold artifact.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+    checks:
+      - type: spider_part_output
+        part: part_a
+  - id: SP002
+    dimension: D1_answer
+    goal: Part B first-five-lap category counts match the gold artifact.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+    checks:
+      - type: spider_part_output
+        part: part_b
+  - id: SP003
+    dimension: D1_answer
+    goal: Part C track-deficit driver set matches the gold artifact.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+    checks:
+      - type: spider_part_output
+        part: part_c

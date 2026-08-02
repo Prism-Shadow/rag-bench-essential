@@ -1,0 +1,110 @@
+{
+  "source": "Workspace-Bench-Lite Backend Developer heterogeneous workspace permission case, adapted into a deterministic BenchLab case",
+  "required_files": [
+    "淘宝活动/权限配置表.csv",
+    "淘宝活动/权限配置说明书.md",
+    "淘宝活动/权限校验规则.json"
+  ],
+  "roles": {
+    "admin": "管理员",
+    "operation": "运营",
+    "designer": "美工",
+    "service": "客服",
+    "stock": "仓储"
+  },
+  "modules": [
+    "activity_apply",
+    "item_upshelf",
+    "price_update",
+    "material_edit",
+    "inventory_data_view",
+    "order_data_view",
+    "data_export",
+    "log_view",
+    "user_manager"
+  ],
+  "permissions": {
+    "admin": {
+      "activity_apply": {"read": true, "write": true, "download": false},
+      "item_upshelf": {"read": true, "write": true, "download": false},
+      "price_update": {"read": true, "write": true, "download": false},
+      "material_edit": {"read": true, "write": true, "download": false},
+      "inventory_data_view": {"read": true, "write": false, "download": false},
+      "order_data_view": {"read": true, "write": false, "download": false},
+      "data_export": {"read": true, "write": true, "download": true},
+      "log_view": {"read": true, "write": false, "download": false},
+      "user_manager": {"read": true, "write": true, "download": false}
+    },
+    "operation": {
+      "activity_apply": {"read": true, "write": true, "download": false},
+      "item_upshelf": {"read": true, "write": true, "download": false},
+      "price_update": {"read": true, "write": true, "download": false},
+      "material_edit": {"read": true, "write": false, "download": false},
+      "inventory_data_view": {"read": true, "write": false, "download": false},
+      "order_data_view": {"read": true, "write": false, "download": false},
+      "data_export": {"read": false, "write": false, "download": false},
+      "log_view": {"read": false, "write": false, "download": false},
+      "user_manager": {"read": false, "write": false, "download": false}
+    },
+    "designer": {
+      "activity_apply": {"read": false, "write": false, "download": false},
+      "item_upshelf": {"read": false, "write": false, "download": false},
+      "price_update": {"read": false, "write": false, "download": false},
+      "material_edit": {"read": true, "write": true, "download": false},
+      "inventory_data_view": {"read": false, "write": false, "download": false},
+      "order_data_view": {"read": false, "write": false, "download": false},
+      "data_export": {"read": false, "write": false, "download": false},
+      "log_view": {"read": false, "write": false, "download": false},
+      "user_manager": {"read": false, "write": false, "download": false}
+    },
+    "service": {
+      "activity_apply": {"read": true, "write": false, "download": false},
+      "item_upshelf": {"read": false, "write": false, "download": false},
+      "price_update": {"read": false, "write": false, "download": false},
+      "material_edit": {"read": false, "write": false, "download": false},
+      "inventory_data_view": {"read": false, "write": false, "download": false},
+      "order_data_view": {"read": true, "write": false, "download": false},
+      "data_export": {"read": false, "write": false, "download": false},
+      "log_view": {"read": false, "write": false, "download": false},
+      "user_manager": {"read": false, "write": false, "download": false}
+    },
+    "stock": {
+      "activity_apply": {"read": false, "write": false, "download": false},
+      "item_upshelf": {"read": false, "write": false, "download": false},
+      "price_update": {"read": false, "write": false, "download": false},
+      "material_edit": {"read": false, "write": false, "download": false},
+      "inventory_data_view": {"read": true, "write": false, "download": false},
+      "order_data_view": {"read": false, "write": false, "download": false},
+      "data_export": {"read": false, "write": false, "download": false},
+      "log_view": {"read": false, "write": false, "download": false},
+      "user_manager": {"read": false, "write": false, "download": false}
+    }
+  },
+  "sensitive_operations": {
+    "activity_apply": ["admin", "operation"],
+    "item_upshelf": ["admin", "operation"],
+    "price_update": ["admin", "operation"],
+    "material_edit": ["admin", "designer"],
+    "inventory_data_view": ["admin", "operation", "stock"],
+    "order_data_view": ["admin", "operation", "service"],
+    "data_export": ["admin"],
+    "log_view": ["admin"],
+    "user_manager": ["admin"]
+  },
+  "required_markdown_tokens": [
+    "默认禁止",
+    "activity_apply",
+    "price_update",
+    "material_edit",
+    "data_export",
+    "客服",
+    "仓储",
+    "价格"
+  ],
+  "decoys": {
+    "service_price_read_true": "historical log explicitly denies customer service price viewing",
+    "stock_activity_apply_true": "historical log explicitly denies warehouse activity apply attempts",
+    "operation_data_export_true": "operation can manage campaign workflow but data export is admin-only",
+    "designer_material_write_false": "designer owns material upload/editing and should have material write permission"
+  }
+}

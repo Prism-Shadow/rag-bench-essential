@@ -1,0 +1,18 @@
+schema_version: 1
+case_id: docfinqa_oilgas_canada_pdf_hard
+scoring:
+  max_score: 1
+  hard_pass_requires:
+    - SP001
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Return the correct Canada share as a percentage.
+    weight: 1
+    judge: validator
+    hard_gate: true
+    failure_layers:
+      - calculation
+    checks:
+      - type: validator_exit
+        expected: 0

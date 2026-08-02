@@ -1,0 +1,27 @@
+{
+  "source": "FDABench-hard-style cross-source v2 over the real BIRD app_store corpus (FDA0026 lineage; prompt de-spoiled and method packet lengthened)",
+  "answer": [
+    "213.37"
+  ],
+  "tolerance": 0.005,
+  "checkpoints": {
+    "multi_genre_app_count": 395,
+    "valid_multi_genre_review_count": 2484,
+    "raw_subjectivity_sum": 1256.65,
+    "baseline_used": 0.42
+  },
+  "evidence": {
+    "baseline_value": 0.42,
+    "baseline_source_contains": "methodology",
+    "baseline_decoy_value": 0.55,
+    "baseline_decoy_source_contains": "market"
+  },
+  "decoys": {
+    "-109.55": "routing failure: used the market brief's market-wide subjectivity 0.55 as the baseline instead of the methodology baseline 0.42",
+    "2648.27": "dropped the multi-genre filter and computed MGES over all apps",
+    "-582.11": "counted reviews with undefined (nan) subjectivity in N, subtracting a spurious baseline for each",
+    "530.16": "double-counted reviews by joining on the listings table (listing-multiplicity artifact) instead of summing reviews once",
+    "1256.65": "forgot the cross-source step: reported the raw subjectivity sum without subtracting the baseline",
+    "0.51": "reported the mean review subjectivity instead of the excess-subjectivity total (no baseline, no aggregation)"
+  }
+}

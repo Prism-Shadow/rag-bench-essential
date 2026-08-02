@@ -1,0 +1,40 @@
+{
+  "case_id": "docfinqa_oilgas_canada_pdf_hard",
+  "source": {
+    "benchmark": "DocFinQA validation-derived question",
+    "document": "Devon Energy Corporation 2007 Annual Report",
+    "document_url": "https://www.annualreports.com/HostedData/AnnualReportArchive/d/NYSE_DVN_2007.pdf"
+  },
+  "required_outputs": [
+    "answers.json"
+  ],
+  "answer": {
+    "answer": "24.69%",
+    "canada_total_mmboe": 60,
+    "company_total_mmboe": 243,
+    "percentage": 24.691358024691358
+  },
+  "evidence": {
+    "required_file": "data/annual_report.pdf",
+    "required_pages": [56, 58],
+    "required_snippets": [
+      "Oil, Gas and NGL Production",
+      "Canada",
+      "60",
+      "Total",
+      "243"
+    ]
+  },
+  "decoys": [
+    {
+      "name": "operating_statistics_by_area",
+      "page": 27,
+      "description": "The 2007 operating statistics table contains Canada 58 and Company 224 for historical production, which yields 25.89%, not the DocFinQA target."
+    },
+    {
+      "name": "year_end_reserves",
+      "page": 27,
+      "description": "The same page contains Canada 734 and Company 2496 for year-end reserves, which yields 29.41% and was a known wrong evidence-binding path."
+    }
+  ]
+}

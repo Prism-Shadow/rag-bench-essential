@@ -1,0 +1,90 @@
+schema_version: 1
+case_id: longda_nscg_telework_hard
+scoring:
+  max_score: 7
+  hard_pass_requires:
+    - SP001
+    - SP002
+    - SP003
+    - SP004
+    - SP005
+    - SP006
+    - SP007
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Return the size10 weighted count within 1 thousand.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+    checks:
+      - type: numeric_vector_element
+        index: 0
+  - id: SP002
+    dimension: D1_answer
+    goal: Return the size11_24 weighted count within 1 thousand.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+    checks:
+      - type: numeric_vector_element
+        index: 1
+  - id: SP003
+    dimension: D1_answer
+    goal: Return the size25_99 weighted count within 1 thousand.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+    checks:
+      - type: numeric_vector_element
+        index: 2
+  - id: SP004
+    dimension: D1_answer
+    goal: Return the size100_499 weighted count within 1 thousand.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+    checks:
+      - type: numeric_vector_element
+        index: 3
+  - id: SP005
+    dimension: D1_answer
+    goal: Return the size500_999 weighted count within 1 thousand.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+    checks:
+      - type: numeric_vector_element
+        index: 4
+  - id: SP006
+    dimension: D1_answer
+    goal: Return the size1000_4999 weighted count within 1 thousand.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+    checks:
+      - type: numeric_vector_element
+        index: 5
+  - id: SP007
+    dimension: D1_answer
+    goal: Return the size5000plus weighted count within 1 thousand.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - calculation
+    checks:
+      - type: numeric_vector_element
+        index: 6

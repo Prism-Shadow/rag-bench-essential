@@ -1,0 +1,24 @@
+schema_version: 1
+judge_id: banker_cake_pdf_visual_v1
+prompt_version: banker-cake-pdf-visual-v1
+prompt_file: vision_judge_prompt.md
+model_env: BENCH_VISION_JUDGE_MODEL
+api_key_env: BENCH_VISION_JUDGE_API_KEY
+base_url_env: BENCH_VISION_JUDGE_BASE_URL
+base_url_default: https://openrouter.ai/api/v1
+temperature: 0
+max_output_tokens: 600
+max_attempts: 2
+input:
+  type: pdf_pages
+  path: CAKE Sensitivity Analysis_vF.pdf
+  pages: [1, 2]
+  dpi: 150
+  renderer: pdftoppm
+required_boolean_gates:
+  - two_nonblank_pages
+  - all_four_tables_visibly_present
+  - discussion_content_visibly_present
+  - headlines_and_discussion_are_substantive
+  - tables_and_text_readable
+  - no_clipping_overlap_or_broken_render

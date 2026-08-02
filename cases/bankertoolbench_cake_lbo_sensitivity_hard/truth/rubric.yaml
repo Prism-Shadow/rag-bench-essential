@@ -1,0 +1,54 @@
+schema_version: 1
+case_id: bankertoolbench_cake_lbo_sensitivity_hard
+scoring:
+  max_score: 9
+  hard_pass_requires:
+    - SP001
+    - SP002
+    - SP003
+    - SP004
+points:
+  - id: SP001
+    dimension: D1_answer
+    goal: Build the CAKE LBO workbook with the required IRR sensitivity tables and axes.
+    weight: 5
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - program_semantics
+      - calculation
+    checks:
+      - type: banker_workbook
+  - id: SP002
+    dimension: D1_answer
+    goal: Produce the summary deck with the required slide count and key content tokens.
+    weight: 2
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - completion_contract
+      - delivery_path
+    checks:
+      - type: banker_ppt
+  - id: SP003
+    dimension: D1_answer
+    goal: Produce a readable PDF export of the presentation.
+    weight: 1
+    judge: rule
+    hard_gate: true
+    failure_layers:
+      - completion_contract
+      - delivery_path
+    checks:
+      - type: banker_pdf
+  - id: SP004
+    dimension: D1_answer
+    goal: Deliver a visibly usable two-page PDF with readable tables and no blocking render defects.
+    weight: 1
+    judge: llm
+    hard_gate: true
+    failure_layers:
+      - completion_contract
+      - delivery_path
+    llm_judge:
+      config: vision_judge.yaml

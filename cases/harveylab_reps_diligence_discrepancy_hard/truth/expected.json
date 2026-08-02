@@ -1,0 +1,231 @@
+{
+  "case_id": "harveylab_reps_diligence_discrepancy_hard",
+  "source": "Harvey LAB corporate M&A task",
+  "required_output": "reps-vs-diligence-memo.docx",
+  "minimum_issue_hits": 10,
+  "minimum_source_mentions": 4,
+  "minimum_section_mentions": 5,
+  "minimum_recommendation_mentions": 8,
+  "minimum_severity_mentions": 8,
+  "issues": [
+    {
+      "id": "patent_omissions",
+      "label": "Schedule 3.9 patent omissions",
+      "severity": "High",
+      "groups": [
+        ["schedule 3.9", "3.9"],
+        ["12 issued", "12 patents", "lists only 12"],
+        ["14 issued", "14 patents"],
+        ["10,891,234", "10891234"],
+        ["10,891,235", "10891235"],
+        ["pf-4200", "pf 4200"],
+        ["aquadyne"]
+      ]
+    },
+    {
+      "id": "claim_14_caveat",
+      "label": "AquaDyne opinion caveat",
+      "severity": "High",
+      "groups": [
+        ["claim 14"],
+        ["non-infringement", "non infringement"],
+        ["withheld testing", "testing data"],
+        ["11,234,567", "11234567"],
+        ["aquadyne"]
+      ]
+    },
+    {
+      "id": "northpoint_expired_msa",
+      "label": "NorthPoint MSA expired before signing",
+      "severity": "High",
+      "groups": [
+        ["northpoint"],
+        ["february 28, 2025", "feb. 28, 2025", "2/28/2025"],
+        ["march 14, 2025", "3/14/2025"],
+        ["full force and effect"],
+        ["18.6", "$18.6"],
+        ["13%"]
+      ]
+    },
+    {
+      "id": "kessler_change_of_control",
+      "label": "Kessler change-of-control clause omitted",
+      "severity": "Critical",
+      "groups": [
+        ["kessler"],
+        ["change of control", "change-of-control"],
+        ["60 days", "60-day"],
+        ["schedule 3.15", "3.15"],
+        ["29.4", "$29.4"],
+        ["20.6", "20-21", "21%"]
+      ]
+    },
+    {
+      "id": "environmental_rec",
+      "label": "Undisclosed Phase I REC",
+      "severity": "High",
+      "groups": [
+        ["phase i"],
+        ["recognized environmental condition", "rec"],
+        ["solvent"],
+        ["dayton"],
+        ["schedule 3.12", "3.12"],
+        ["phase ii"]
+      ]
+    },
+    {
+      "id": "california_tax_nexus",
+      "label": "California tax nexus filing gap",
+      "severity": "High",
+      "groups": [
+        ["california"],
+        ["san jose"],
+        ["3.8", "$3.8"],
+        ["income tax returns", "tax returns"],
+        ["not filing", "not been filing", "no returns", "failed to file"]
+      ]
+    },
+    {
+      "id": "covid_ebitda_addback",
+      "label": "Recurring COVID supply-chain add-back",
+      "severity": "Medium",
+      "groups": [
+        ["covid"],
+        ["0.60", "$0.60", "600,000"],
+        ["0.45", "$0.45"],
+        ["0.55", "$0.55"],
+        ["9.5x", "9.5 x"],
+        ["5.7", "$5.7"]
+      ]
+    },
+    {
+      "id": "pension_liability",
+      "label": "Pension unfunded liability discrepancy",
+      "severity": "High",
+      "groups": [
+        ["pension"],
+        ["4.3", "$4.3"],
+        ["6.8", "$6.8"],
+        ["2.5", "$2.5"],
+        ["actuarial", "actuary"]
+      ]
+    },
+    {
+      "id": "martinez_insurance_gap",
+      "label": "Martinez insurance coverage gap",
+      "severity": "High",
+      "groups": [
+        ["martinez"],
+        ["12", "$12"],
+        ["10", "$10"],
+        ["2", "$2"],
+        ["insurance"],
+        ["coverage gap", "shortfall"]
+      ]
+    },
+    {
+      "id": "monterrey_lease_consent",
+      "label": "Monterrey lease change-of-control consent omitted",
+      "severity": "High",
+      "groups": [
+        ["monterrey"],
+        ["lease"],
+        ["change of control", "change-of-control"],
+        ["required consents", "schedule 5.3", "5.3"],
+        ["38.2", "$38.2"],
+        ["26.7", "26-27", "27%"]
+      ]
+    },
+    {
+      "id": "employee_count",
+      "label": "Employee count discrepancy",
+      "severity": "Medium",
+      "groups": [
+        ["employee"],
+        ["730"],
+        ["740"],
+        ["10 employees", "10-employee"],
+        ["q4 2024", "q4"]
+      ]
+    },
+    {
+      "id": "section_382_nol",
+      "label": "IRC Section 382 limitation on NOLs",
+      "severity": "Medium",
+      "groups": [
+        ["382"],
+        ["nol", "net operating loss"],
+        ["4.1", "$4.1"],
+        ["ownership change"],
+        ["limitation", "limited"]
+      ]
+    },
+    {
+      "id": "osha_citation",
+      "label": "Contested OSHA citation",
+      "severity": "Medium",
+      "groups": [
+        ["osha"],
+        ["lockout", "tagout"],
+        ["28,700", "28700"],
+        ["contested"],
+        ["fully resolved", "not resolved"]
+      ]
+    },
+    {
+      "id": "karen_beecham_share_claim",
+      "label": "Karen Beecham disputed share claim",
+      "severity": "High",
+      "groups": [
+        ["karen beecham"],
+        ["5%"],
+        ["3.1%"],
+        ["shares"],
+        ["encumbrance", "title"],
+        ["closing", "release", "escrow"]
+      ]
+    }
+  ],
+  "source_tokens": [
+    "diligence report",
+    "ip diligence",
+    "ebitda bridge",
+    "key contract",
+    "ridgeline",
+    "disclosure schedule",
+    "spa"
+  ],
+  "section_tokens": [
+    "schedule",
+    "section",
+    "3.9",
+    "3.12",
+    "3.15",
+    "3.17",
+    "5.3"
+  ],
+  "recommendation_tokens": [
+    "update",
+    "correct",
+    "disclose",
+    "indemnity",
+    "escrow",
+    "consent",
+    "waiver",
+    "purchase price",
+    "phase ii",
+    "supplemental opinion",
+    "voluntary disclosure",
+    "release"
+  ],
+  "severity_tokens": [
+    "critical",
+    "high",
+    "medium"
+  ],
+  "decoys": {
+    "spa_only": "Memo summarizes SPA reps without comparing diligence conflicts.",
+    "diligence_only": "Memo lists diligence findings without tying them to SPA sections or schedules.",
+    "generic_risk": "Memo gives generic deal risks but misses planted discrepancy facts."
+  }
+}

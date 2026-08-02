@@ -1,0 +1,32 @@
+{
+  "source": {
+    "benchmark": "Spider2-Lite",
+    "repo": "https://github.com/xlang-ai/Spider2",
+    "database_id": "f1",
+    "instances": ["local344", "local336", "local356"],
+    "normalization": "Unified clean-engine event semantics for this audit case"
+  },
+  "outputs": {
+    "part_a": "answers/overtake_counts_all.csv",
+    "part_b": "answers/overtake_counts_first5.csv",
+    "part_c": "answers/track_deficit_drivers.csv"
+  },
+  "evidence": {
+    "required_tables": [
+      "lap_positions",
+      "pit_stops",
+      "retirements",
+      "races_ext",
+      "drivers"
+    ],
+    "category_codes": ["R", "P", "S", "T"],
+    "part_c_soft_gate": false
+  },
+  "notes": {
+    "event_definition": "Construct valid overtake events only from lap_positions rows where lap_type = 'Race'. Lap 1 uses positive results.grid values as the previous state; grid = 0 is not a normal grid slot. Later laps use the previous Race lap. Retirement lap_positions rows do not create events.",
+    "classification": "Apply R, then P, then S, then T. R uses retirements as a label on an already valid event. P uses same-lap or previous-lap pit_stops with no time-gap threshold.",
+    "part_a": "Unified clean-engine gold for pit-data races across all eligible race laps.",
+    "part_b": "Unified clean-engine gold for all races on event laps 1 through 5 under the positive-grid lap-1 semantics.",
+    "part_c": "Unified clean-engine hard-gated track-only driver list for all races and all eligible race laps."
+  }
+}
