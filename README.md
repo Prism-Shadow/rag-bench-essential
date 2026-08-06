@@ -31,6 +31,19 @@ workspace。`scripts/stage_case.py` 只会复制 `task.md`、`data/` 和 `env.md
 14. `harveylab_reps_diligence_discrepancy_hard`
 15. `fdabench_app_sentiment_xsource_hard_v2`
 
+## Results
+
+| Setting | 版本与配置 | Gemini 视觉 | Acc | 时间（15 case wall 合计） | Total tokens | Cost |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Penguin w/o Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / no skill / Goal off | 允许 | 8/15（53.3%） | 136.5 min | 18,506,930 | $0.2407 |
+| Penguin w/o Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / no skill / Goal off | 允许 | 9/15（60.0%） | 89.8 min | 17,779,786 | $0.2231 |
+| Penguin w/ Auto Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / auto Agent State / Goal off | 允许 | 10/15（66.7%） | 94.4 min | 13,752,946 | $0.2158 |
+| Penguin w/ Manual Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 允许 | 9/15（60.0%） | 97.7 min | 16,435,689 | $0.2250 |
+| Penguin w/ Manual Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 允许 | 11/15（73.3%） | 97.8 min | 12,382,401 | $0.1995 |
+| Penguin w/ Manual Skill + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal on | 允许 | 11/15（73.3%） | 87.6 min | 17,650,180 | $0.2267 |
+| Claude Code | Claude Code CLI 2.1.191 / Claude Opus 4.8 / effort=max | 不允许 | 9/15（60.0%） | 159.1 min | 16,929,780 | $34.27 |
+| Codex | Codex CLI 0.146.0-alpha.9.2 / GPT-5.5 xhigh / no skill | 不允许 | 10/15（66.7%） | 108.9 min | 12,218,450 | $18.94 |
+
 ## DCI case
 
 BrowseComp-Plus / DCI 的 canonical task 已包含在仓库中，大 corpus 不上传 Git。完整运行前按
