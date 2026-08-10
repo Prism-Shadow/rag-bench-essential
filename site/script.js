@@ -44,8 +44,8 @@ const copy = {
     model: "Model",
     accuracy: "Accuracy",
     averageTime: "Avg. time / case",
-    tokens: "Tokens / run",
-    recordedCost: "Recorded cost / run",
+    tokens: "Tokens / case",
+    recordedCost: "Recorded cost / case",
     accuracyAxis: "Accuracy (%)",
     costAxis: "Cost per case (USD)",
     loadError: "Unable to load published results.",
@@ -89,8 +89,8 @@ const copy = {
     model: "模型",
     accuracy: "Accuracy",
     averageTime: "平均单题耗时",
-    tokens: "Token / 轮",
-    recordedCost: "已记录成本 / 轮",
+    tokens: "Token / 单题",
+    recordedCost: "记录成本 / 单题",
     accuracyAxis: "Accuracy（%）",
     costAxis: "单题成本（美元）",
     loadError: "无法加载已发布结果。",
@@ -107,16 +107,16 @@ const state = {
 const sortableColumns = {
   accuracy: { label: "accuracy", defaultDirection: "desc" },
   minutes_per_case: { label: "averageTime", defaultDirection: "asc" },
-  tokens_m_per_run: { label: "tokens", defaultDirection: "asc" },
-  recorded_cost_usd_per_run: { label: "recordedCost", defaultDirection: "asc" },
+  tokens_m_per_case: { label: "tokens", defaultDirection: "asc" },
+  recorded_cost_usd_per_case: { label: "recordedCost", defaultDirection: "asc" },
 };
 
 function minutesPerCase(row) {
   return row.time_seconds_per_run / 60 / row.accuracy_total;
 }
 
-function tokensMPerRun(row) {
-  return row.tokens_per_run / 1_000_000;
+function tokensMPerCase(row) {
+  return row.tokens_per_run / 1_000_000 / row.accuracy_total;
 }
 
 function escapeHtml(value) {
@@ -135,7 +135,8 @@ function accuracyPercent(row) {
 function valueForSort(row, key) {
   if (key === "accuracy") return row.accuracy_passes;
   if (key === "minutes_per_case") return minutesPerCase(row);
-  if (key === "tokens_m_per_run") return tokensMPerRun(row);
+  if (key === "tokens_m_per_case") return tokensMPerCase(row);
+  if (key === "recorded_cost_usd_per_case") return costPerCase(row);
   return row[key];
 }
 
@@ -153,10 +154,6 @@ function frameworkLogo(row) {
   }
   const slug = row.framework === "Claude Code" ? "anthropic" : "openai";
   return `<img class="vendor-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/${slug}.svg" alt="" />`;
-}
-
-function formatCost(value) {
-  return value < 1 ? `$${value.toFixed(4)}` : `$${value.toFixed(2)}`;
 }
 
 function sortableHeader(key) {
@@ -180,8 +177,8 @@ function renderTable() {
     <th>${t.model}</th>
     ${sortableHeader("accuracy")}
     ${sortableHeader("minutes_per_case")}
-    ${sortableHeader("tokens_m_per_run")}
-    ${sortableHeader("recorded_cost_usd_per_run")}
+    ${sortableHeader("tokens_m_per_case")}
+    ${sortableHeader("recorded_cost_usd_per_case")}
   </tr>`;
 
   tableBody.innerHTML = sortedResults()
@@ -204,8 +201,8 @@ function renderTable() {
           </span>
         </td>
         <td class="numeric ${state.sort.key === "minutes_per_case" ? "is-active" : ""}" data-column="minutes_per_case">${minutesPerCase(row).toFixed(2)}m</td>
-        <td class="numeric ${state.sort.key === "tokens_m_per_run" ? "is-active" : ""}" data-column="tokens_m_per_run">${tokensMPerRun(row).toFixed(2)}M</td>
-        <td class="numeric ${state.sort.key === "recorded_cost_usd_per_run" ? "is-active" : ""}" data-column="recorded_cost_usd_per_run">${formatCost(row.recorded_cost_usd_per_run)}</td>
+        <td class="numeric ${state.sort.key === "tokens_m_per_case" ? "is-active" : ""}" data-column="tokens_m_per_case">${tokensMPerCase(row).toFixed(2)}M</td>
+        <td class="numeric ${state.sort.key === "recorded_cost_usd_per_case" ? "is-active" : ""}" data-column="recorded_cost_usd_per_case">${formatCaseCost(costPerCase(row))}</td>
       </tr>`;
     })
     .join("");

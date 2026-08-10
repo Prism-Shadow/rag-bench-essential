@@ -73,7 +73,7 @@ def results_table(payload: dict, locale: str) -> str:
     if locale == "zh":
         header = (
             "| Setting | 版本与配置 | Accuracy | 平均单题耗时（分钟） | "
-            "总 Token（百万/轮） | 已记录成本（美元/轮） | 结果口径 |"
+            "平均单题 Token（百万） | 平均单题记录成本（美元） | 结果口径 |"
         )
         basis_labels = {
             "current-evaluator": "当前 evaluator",
@@ -82,7 +82,7 @@ def results_table(payload: dict, locale: str) -> str:
     else:
         header = (
             "| Setting | Version and configuration | Accuracy | Avg. time / case (min) | "
-            "Total tokens (M/run) | Recorded cost (USD/run) | Result basis |"
+            "Avg. tokens (M/case) | Recorded cost (USD/case) | Result basis |"
         )
         basis_labels = {
             "current-evaluator": "Current evaluator",
@@ -98,8 +98,8 @@ def results_table(payload: dict, locale: str) -> str:
             f"| {setting} | {configuration} | "
             f"{row['accuracy_passes']}/{row['accuracy_total']} ({percentage:.1f}%) | "
             f"{row['time_seconds_per_run'] / 60 / row['accuracy_total']:.2f} | "
-            f"{row['tokens_per_run'] / 1_000_000:.2f} | "
-            f"${format_cost(row['recorded_cost_usd_per_run'])} | "
+            f"{row['tokens_per_run'] / 1_000_000 / row['accuracy_total']:.2f} | "
+            f"${format_cost(row['recorded_cost_usd_per_run'] / row['accuracy_total'])} | "
             f"{basis_labels[row['result_basis']]} |"
         )
     return "\n".join(lines)
