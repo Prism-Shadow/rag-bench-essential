@@ -12,7 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Score one RAG Bench Essential workspace.")
+    parser = argparse.ArgumentParser(description="Score one Data Analysis Bench workspace.")
     parser.add_argument("--case-id", required=True)
     parser.add_argument("--workspace", required=True, type=Path)
     parser.add_argument(

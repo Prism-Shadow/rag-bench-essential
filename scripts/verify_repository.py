@@ -6,6 +6,8 @@ from pathlib import Path
 
 import yaml
 
+from sync_results import check_readmes, load_results, validate_results
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CASES_DIR = REPO_ROOT / "cases"
@@ -65,6 +67,10 @@ def main() -> int:
     cache_files = list(CASES_DIR.rglob("truth/__pycache__")) + list(CASES_DIR.rglob("truth/**/*.pyc"))
     if cache_files:
         errors.append(f"generated Python cache files present: {cache_files}")
+
+    results = load_results()
+    errors.extend(validate_results(results))
+    errors.extend(check_readmes(results))
 
     if errors:
         print("repository verification failed:", file=sys.stderr)

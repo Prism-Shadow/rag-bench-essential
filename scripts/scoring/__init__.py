@@ -1,1 +1,1 @@
-"""Scoring helpers for RAG Bench Essential."""
+"""Scoring helpers for Data Analysis Bench."""
