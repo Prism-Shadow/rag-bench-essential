@@ -33,19 +33,19 @@ Data Analysis Bench 使用 15 道任务评测数据分析智能体，覆盖长�
 
 ## 实验结果
 
-每个 setting 保留一轮完整的 15-case 结果。Accuracy 按 PASS 数量统计；时间、Token 和成本均为单题平均值。Penguin setting 允许使用 `google/gemini-3.6-flash` 处理视觉输入，但没有保留 OpenRouter 视觉代理费用。Claude Code 和 Codex 没有这个辅助视觉工具。
+每个 setting 保留一轮完整的 15-case 结果。Accuracy 按 PASS 数量统计；时间为单题平均值；Token 和成本为整轮合计。Penguin setting 允许使用 `google/gemini-3.6-flash` 处理视觉输入，但没有保留 OpenRouter 视觉代理费用。Claude Code 和 Codex 没有这个辅助视觉工具。
 
 <!-- RESULTS_TABLE_START -->
-| Setting | 版本与配置 | Accuracy | 平均单题耗时（分钟） | 平均单题 Token（百万） | 平均单题成本（美元） | 结果口径 |
+| Setting | 版本与配置 | Accuracy | 平均单题耗时（分钟） | Token 用量（百万） | 成本（美元） | 结果口径 |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
-| Penguin · 手动调优 | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / 手动调优 / Goal 关闭 | 11/15 (73.3%) | 6.52 | 0.83 | $0.0133 | 历史 evaluator |
-| Penguin · 手动调优 + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / 手动调优 / Goal 开启 | 11/15 (73.3%) | 5.84 | 1.18 | $0.0151 | 历史 evaluator |
-| Penguin · Agent 自调优 | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / 单轮 Agent 自调优 / Goal 关闭 | 10/15 (66.7%) | 6.29 | 0.92 | $0.0144 | 历史 evaluator |
-| Claude Code | Claude Code CLI 2.1.191 / Claude Opus 4.8 / effort=max | 10/15 (66.7%) | 10.61 | 1.13 | $2.28 | 当前 evaluator |
-| Codex | Codex CLI 0.146.0-alpha.9.2 / GPT-5.5 xhigh | 10/15 (66.7%) | 7.26 | 0.81 | $1.26 | 历史 evaluator |
-| Penguin | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / Goal 关闭 | 9/15 (60.0%) | 5.99 | 1.19 | $0.0149 | 历史 evaluator |
-| Penguin · 手动调优 | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / 手动调优 / Goal 关闭 | 9/15 (60.0%) | 6.51 | 1.10 | $0.0150 | 历史 evaluator |
-| Penguin | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / Goal 关闭 | 8/15 (53.3%) | 9.10 | 1.23 | $0.0160 | 历史 evaluator |
+| Penguin · 手动调优 | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / 手动调优 / Goal 关闭 | 11/15 (73.3%) | 6.52 | 12.38 | $0.1995 | 历史 evaluator |
+| Penguin · 手动调优 + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / 手动调优 / Goal 开启 | 11/15 (73.3%) | 5.84 | 17.65 | $0.2267 | 历史 evaluator |
+| Penguin · Agent 自调优 | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / 单轮 Agent 自调优 / Goal 关闭 | 10/15 (66.7%) | 6.29 | 13.75 | $0.2158 | 历史 evaluator |
+| Claude Code | Claude Code CLI 2.1.191 / Claude Opus 4.8 / effort=max | 10/15 (66.7%) | 10.61 | 16.93 | $34.27 | 当前 evaluator |
+| Codex | Codex CLI 0.146.0-alpha.9.2 / GPT-5.5 xhigh | 10/15 (66.7%) | 7.26 | 12.22 | $18.94 | 历史 evaluator |
+| Penguin | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / Goal 关闭 | 9/15 (60.0%) | 5.99 | 17.78 | $0.2231 | 历史 evaluator |
+| Penguin · 手动调优 | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / 手动调优 / Goal 关闭 | 9/15 (60.0%) | 6.51 | 16.44 | $0.2250 | 历史 evaluator |
+| Penguin | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / Goal 关闭 | 8/15 (53.3%) | 9.10 | 18.51 | $0.2407 | 历史 evaluator |
 <!-- RESULTS_TABLE_END -->
 
 Claude Code 的 10/15 已包含 2026-08-10 修复 evaluator 后的 BankerToolBench 重评。原视觉 verdict 与产物 SHA 绑定，因此仍然有效。其余七个 setting 没有保留重评所需的 workspace 产物，所以结果明确标记为历史 evaluator 口径，不猜测新分数。

@@ -23,7 +23,7 @@ const copy = {
     highestScoreDesc: "PenguinHarness v0.1.5 manual tuning.",
     resultsEyebrow: "Results",
     resultsTitle: "15-case results",
-    resultsDescription: "One run per setting. Accuracy counts PASS cases.",
+    resultsDescription: "One run per setting. Accuracy is the PASS rate.",
     tableHint: "Swipe to view the full table →",
     loadingResults: "Loading published results…",
     chartTitle: "Performance and cost by setup",
@@ -42,10 +42,10 @@ const copy = {
     rank: "#",
     setting: "Setting",
     model: "Model",
-    accuracy: "Accuracy",
+    accuracy: "Accuracy (%)",
     averageTime: "Avg. time / case",
-    tokens: "Tokens / case",
-    recordedCost: "Cost / case",
+    tokens: "Token usage (M)",
+    recordedCost: "Cost ($)",
     accuracyAxis: "Accuracy (%)",
     costAxis: "Cost per case (USD)",
     loadError: "Unable to load published results.",
@@ -68,7 +68,7 @@ const copy = {
     highestScoreDesc: "PenguinHarness v0.1.5 手动调优。",
     resultsEyebrow: "实验结果",
     resultsTitle: "15 道任务结果表",
-    resultsDescription: "每个 setting 保留一轮结果。Accuracy 为 PASS 数量。",
+    resultsDescription: "每个 setting 保留一轮结果。Accuracy 为 PASS 比例。",
     tableHint: "滑动查看完整表格 →",
     loadingResults: "正在加载已发布结果…",
     chartTitle: "不同配置的效果与成本",
@@ -87,10 +87,10 @@ const copy = {
     rank: "#",
     setting: "Setting",
     model: "模型",
-    accuracy: "Accuracy",
+    accuracy: "准确率（%）",
     averageTime: "平均单题耗时",
-    tokens: "Token / 单题",
-    recordedCost: "成本 / 单题",
+    tokens: "Token 用量（M）",
+    recordedCost: "成本（$）",
     accuracyAxis: "Accuracy（%）",
     costAxis: "单题成本（美元）",
     loadError: "无法加载已发布结果。",
@@ -107,16 +107,16 @@ const state = {
 const sortableColumns = {
   accuracy: { label: "accuracy", defaultDirection: "desc" },
   minutes_per_case: { label: "averageTime", defaultDirection: "asc" },
-  tokens_m_per_case: { label: "tokens", defaultDirection: "asc" },
-  recorded_cost_usd_per_case: { label: "recordedCost", defaultDirection: "asc" },
+  tokens_m_per_run: { label: "tokens", defaultDirection: "asc" },
+  recorded_cost_usd_per_run: { label: "recordedCost", defaultDirection: "asc" },
 };
 
 function minutesPerCase(row) {
   return row.time_seconds_per_run / 60 / row.accuracy_total;
 }
 
-function tokensMPerCase(row) {
-  return row.tokens_per_run / 1_000_000 / row.accuracy_total;
+function tokensMPerRun(row) {
+  return row.tokens_per_run / 1_000_000;
 }
 
 function escapeHtml(value) {
@@ -135,8 +135,7 @@ function accuracyPercent(row) {
 function valueForSort(row, key) {
   if (key === "accuracy") return row.accuracy_passes;
   if (key === "minutes_per_case") return minutesPerCase(row);
-  if (key === "tokens_m_per_case") return tokensMPerCase(row);
-  if (key === "recorded_cost_usd_per_case") return costPerCase(row);
+  if (key === "tokens_m_per_run") return tokensMPerRun(row);
   return row[key];
 }
 
@@ -154,6 +153,10 @@ function frameworkLogo(row) {
   }
   const slug = row.framework === "Claude Code" ? "anthropic" : "openai";
   return `<img class="vendor-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/${slug}.svg" alt="" />`;
+}
+
+function formatRunCost(value) {
+  return value < 1 ? `$${value.toFixed(4)}` : `$${value.toFixed(2)}`;
 }
 
 function sortableHeader(key) {
@@ -177,8 +180,8 @@ function renderTable() {
     <th>${t.model}</th>
     ${sortableHeader("accuracy")}
     ${sortableHeader("minutes_per_case")}
-    ${sortableHeader("tokens_m_per_case")}
-    ${sortableHeader("recorded_cost_usd_per_case")}
+    ${sortableHeader("tokens_m_per_run")}
+    ${sortableHeader("recorded_cost_usd_per_run")}
   </tr>`;
 
   tableBody.innerHTML = sortedResults()
@@ -197,12 +200,12 @@ function renderTable() {
         <td class="numeric accuracy-cell ${state.sort.key === "accuracy" ? "is-active" : ""}" data-column="accuracy">
           <span class="accuracy-measure">
             <span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:${percentage}%"></span></span>
-            <strong>${row.accuracy_passes}/${row.accuracy_total}</strong>
+            <strong>${percentage.toFixed(1)}%</strong>
           </span>
         </td>
         <td class="numeric ${state.sort.key === "minutes_per_case" ? "is-active" : ""}" data-column="minutes_per_case">${minutesPerCase(row).toFixed(2)}m</td>
-        <td class="numeric ${state.sort.key === "tokens_m_per_case" ? "is-active" : ""}" data-column="tokens_m_per_case">${tokensMPerCase(row).toFixed(2)}M</td>
-        <td class="numeric ${state.sort.key === "recorded_cost_usd_per_case" ? "is-active" : ""}" data-column="recorded_cost_usd_per_case">${formatCaseCost(costPerCase(row))}</td>
+        <td class="numeric ${state.sort.key === "tokens_m_per_run" ? "is-active" : ""}" data-column="tokens_m_per_run">${tokensMPerRun(row).toFixed(2)}</td>
+        <td class="numeric ${state.sort.key === "recorded_cost_usd_per_run" ? "is-active" : ""}" data-column="recorded_cost_usd_per_run">${formatRunCost(row.recorded_cost_usd_per_run)}</td>
       </tr>`;
     })
     .join("");
