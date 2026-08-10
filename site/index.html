@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#000000" />
     <meta
       name="description"
       content="RAG Bench Essential is a fixed suite of 15 production-shaped data analysis tasks with public payloads and external evaluation packages."
@@ -22,6 +22,11 @@
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div class="neon-bg" aria-hidden="true">
+      <div class="neon-blob neon-blob-a"></div>
+      <div class="neon-blob neon-blob-b"></div>
+      <div class="neon-blob neon-blob-c"></div>
+    </div>
     <header class="site-header">
       <div class="nav-shell">
         <a class="brand" href="#top" aria-label="RAG Bench Essential home">
@@ -47,7 +52,7 @@
             <img src="https://penguin.ooo/penguin-logo.svg" alt="" />
             <span>RAG Bench Essential</span>
           </div>
-          <h1>A fixed benchmark for agents that finish the whole job.</h1>
+          <h1>A fixed benchmark for agents that finish the <span>whole job.</span></h1>
           <p class="hero-copy">
             Fifteen production-shaped data tasks with public payloads, external scoring, and hard-gate PASS.
           </p>
@@ -58,7 +63,7 @@
           <dl class="hero-stats" aria-label="Benchmark summary">
             <div><dt>Fixed cases</dt><dd>15</dd></div>
             <div><dt>Published settings</dt><dd>8</dd></div>
-            <div><dt>Best result</dt><dd>11/15</dd></div>
+            <div class="accent"><dt>Best result</dt><dd>11/15</dd></div>
             <div><dt>Scoring</dt><dd>External</dd></div>
           </dl>
         </div>
@@ -72,6 +77,8 @@
             <p>One retained run per setting. Accuracy is official hard PASS, not partial rubric credit.</p>
           </header>
 
+          <div class="chart-grid" data-results-charts aria-label="Accuracy, token, and cost comparison charts"></div>
+
           <p class="table-hint" aria-hidden="true">Swipe to view the full table →</p>
           <div class="table-wrap" tabindex="0" aria-label="Complete benchmark result table; scroll horizontally on small screens">
             <table>
@@ -79,14 +86,14 @@
                 <tr><th>Setting</th><th>Version &amp; configuration</th><th>Acc</th><th>Wall</th><th>Tokens</th><th>Cost</th></tr>
               </thead>
               <tbody>
-                <tr><td>Penguin w/o Skill</td><td>v0.0.1 · DeepSeek V4 Flash · Goal off</td><td>8/15</td><td>136.5m</td><td>18.51M</td><td>$0.2407</td></tr>
-                <tr><td>Penguin w/o Skill</td><td>v0.1.5 · DeepSeek V4 Flash · Goal off</td><td>9/15</td><td>89.8m</td><td>17.78M</td><td>$0.2231</td></tr>
-                <tr><td>Penguin w/ Auto Skill</td><td>v0.1.5 · Auto Agent State · Goal off</td><td>10/15</td><td>94.4m</td><td>13.75M</td><td>$0.2158</td></tr>
-                <tr><td>Penguin w/ Manual Skill</td><td>v0.0.1 · Full injection · Goal off</td><td>9/15</td><td>97.7m</td><td>16.44M</td><td>$0.2250</td></tr>
-                <tr class="highlight"><td>Penguin w/ Manual Skill</td><td>v0.1.5 · Full injection · Goal off</td><td>11/15</td><td>97.8m</td><td>12.38M</td><td>$0.1995</td></tr>
-                <tr><td>Penguin Manual + Goal</td><td>v0.1.5 · Full injection · Goal on</td><td>11/15</td><td>87.6m</td><td>17.65M</td><td>$0.2267</td></tr>
-                <tr><td>Claude Code</td><td>CLI 2.1.191 · Claude Opus 4.8 · max</td><td>10/15</td><td>159.1m</td><td>16.93M</td><td>$34.27</td></tr>
-                <tr><td>Codex</td><td>CLI 0.146.0-alpha.9.2 · GPT-5.5 · xhigh</td><td>10/15</td><td>108.9m</td><td>12.22M</td><td>$18.94</td></tr>
+                <tr data-chart-label="No Skill · 0.0.1"><td>Penguin w/o Skill</td><td>v0.0.1 · DeepSeek V4 Flash · Goal off</td><td>8/15</td><td>136.5m</td><td>18.51M</td><td>$0.2407</td></tr>
+                <tr data-chart-label="No Skill · 0.1.5"><td>Penguin w/o Skill</td><td>v0.1.5 · DeepSeek V4 Flash · Goal off</td><td>9/15</td><td>89.8m</td><td>17.78M</td><td>$0.2231</td></tr>
+                <tr data-chart-label="Auto Skill"><td>Penguin w/ Auto Skill</td><td>v0.1.5 · Auto Agent State · Goal off</td><td>10/15</td><td>94.4m</td><td>13.75M</td><td>$0.2158</td></tr>
+                <tr data-chart-label="Manual · 0.0.1"><td>Penguin w/ Manual Skill</td><td>v0.0.1 · Full injection · Goal off</td><td>9/15</td><td>97.7m</td><td>16.44M</td><td>$0.2250</td></tr>
+                <tr class="highlight" data-chart-label="Manual · 0.1.5"><td>Penguin w/ Manual Skill</td><td>v0.1.5 · Full injection · Goal off</td><td>11/15</td><td>97.8m</td><td>12.38M</td><td>$0.1995</td></tr>
+                <tr data-chart-label="Manual + Goal"><td>Penguin Manual + Goal</td><td>v0.1.5 · Full injection · Goal on</td><td>11/15</td><td>87.6m</td><td>17.65M</td><td>$0.2267</td></tr>
+                <tr data-chart-label="Claude Code"><td>Claude Code</td><td>CLI 2.1.191 · Claude Opus 4.8 · max</td><td>10/15</td><td>159.1m</td><td>16.93M</td><td>$34.27</td></tr>
+                <tr data-chart-label="Codex"><td>Codex</td><td>CLI 0.146.0-alpha.9.2 · GPT-5.5 · xhigh</td><td>10/15</td><td>108.9m</td><td>12.22M</td><td>$18.94</td></tr>
               </tbody>
             </table>
           </div>
@@ -103,10 +110,22 @@
             <h2>Public task in. External verdict out.</h2>
             <p>The execution path stays simple; the result claim stays auditable.</p>
           </header>
-          <div class="evaluation-grid">
-            <article><span>01</span><h3>Isolated workspace</h3><p>The agent sees only the public task, data, and optional environment notes.</p></article>
-            <article><span>02</span><h3>External truth</h3><p>Gold answers, validators, rubrics, and visual prompts remain outside the workspace.</p></article>
-            <article><span>03</span><h3>Hard-gate PASS</h3><p>Answer, evidence, semantics, and delivery must all satisfy the case contract.</p></article>
+          <div class="evaluation-layout">
+            <div class="artifact-stack" aria-label="Examples of benchmark source artifacts">
+              <figure class="artifact artifact-chart">
+                <img src="https://raw.githubusercontent.com/Prism-Shadow/rag-bench-essential/main/cases/dvworld_dvevol_crime_association_network_hard/data/source_fig.png" alt="Crime type correlation matrix from a visualization case" loading="lazy" />
+                <figcaption>Visualization &amp; chart semantics</figcaption>
+              </figure>
+              <figure class="artifact artifact-doc">
+                <img src="https://raw.githubusercontent.com/Prism-Shadow/rag-bench-essential/main/cases/docvqa_contract_effective_date_ocr_hard/data/document_page.jpg" alt="Scanned contract page from an OCR case" loading="lazy" />
+                <figcaption>Long documents &amp; OCR</figcaption>
+              </figure>
+            </div>
+            <div class="evaluation-grid">
+              <article><span>01</span><h3>Isolated workspace</h3><p>The agent sees only the public task, data, and optional environment notes.</p></article>
+              <article><span>02</span><h3>External truth</h3><p>Gold answers, validators, rubrics, and visual prompts remain outside the workspace.</p></article>
+              <article><span>03</span><h3>Hard-gate PASS</h3><p>Answer, evidence, semantics, and delivery must all satisfy the case contract.</p></article>
+            </div>
           </div>
         </div>
       </section>
