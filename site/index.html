@@ -6,18 +6,18 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="RAG Bench Essential is a fixed suite of 15 production-shaped data analysis tasks with public payloads and external evaluation packages."
+      content="Data Analysis Bench is a fixed suite of 15 production-shaped tasks spanning documents, tables, spreadsheets, databases, and cross-source analysis."
     />
-    <meta property="og:title" content="RAG Bench Essential" />
+    <meta property="og:title" content="Data Analysis Bench" />
     <meta
       property="og:description"
-      content="15 difficult, reproducible cases for evaluating agentic retrieval, analysis, evidence binding, and delivery."
+      content="15 difficult, reproducible cases for evaluating end-to-end data analysis and delivery."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://prism-shadow.github.io/rag-bench-essential/" />
     <link rel="canonical" href="https://prism-shadow.github.io/rag-bench-essential/" />
     <link rel="icon" href="https://penguin.ooo/penguin-logo.svg" />
-    <title>RAG Bench Essential — Fixed 15</title>
+    <title>Data Analysis Bench — Fixed 15</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
   </head>
@@ -29,13 +29,14 @@
     </div>
     <header class="site-header">
       <div class="nav-shell">
-        <a class="brand" href="#top" aria-label="RAG Bench Essential home">
+        <a class="brand" href="#top" aria-label="Data Analysis Bench home">
           <img src="https://penguin.ooo/penguin-logo.svg" alt="" />
-          <span>RAG Bench Essential</span>
+          <span>Data Analysis Bench</span>
         </a>
         <nav class="nav-links" aria-label="Primary navigation">
           <a href="#results">Results</a>
-          <a href="#evaluation">Evaluation</a>
+          <a href="#coverage">Cases</a>
+          <a href="https://github.com/Prism-Shadow/rag-bench-essential/blob/main/EVALUATION.md">Evaluation</a>
           <a href="https://github.com/Prism-Shadow/rag-bench-essential">GitHub</a>
           <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">
             <span aria-hidden="true">◐</span>
@@ -50,11 +51,11 @@
         <div class="hero-inner">
           <div class="hero-brand">
             <img src="https://penguin.ooo/penguin-logo.svg" alt="" />
-            <span>RAG Bench Essential</span>
+            <span>Data Analysis Bench</span>
           </div>
-          <h1>A fixed benchmark for agents that finish the <span>whole job.</span></h1>
+          <h1>A fixed benchmark for <span>end-to-end data analysis.</span></h1>
           <p class="hero-copy">
-            Fifteen production-shaped data tasks with public payloads, external scoring, and hard-gate PASS.
+            Fifteen production-shaped tasks spanning long documents, tables, spreadsheets, databases, and cross-source analysis.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="#results">View results <span aria-hidden="true">→</span></a>
@@ -64,22 +65,17 @@
             <div>
               <dd>15</dd>
               <dt>Frozen benchmark cases</dt>
-              <small>The same 15 tasks are used for every setting.</small>
+              <dd class="metric-desc">The same 15 tasks are used for every setting.</dd>
             </div>
             <div>
               <dd>8</dd>
               <dt>Published settings</dt>
-              <small>Eight agent, version, model, and skill configurations.</small>
+              <dd class="metric-desc">Eight agent, version, model, and skill configurations.</dd>
             </div>
             <div class="accent">
               <dd>11/15</dd>
               <dt>Highest hard-PASS score</dt>
-              <small>The best setting passed every required gate on 11 cases.</small>
-            </div>
-            <div>
-              <dd>External</dd>
-              <dt>Independent evaluation</dt>
-              <small>Gold answers and validators stay outside the agent workspace.</small>
+              <dd class="metric-desc">The best setting passed every required gate on 11 cases.</dd>
             </div>
           </dl>
         </div>
@@ -93,23 +89,77 @@
             <p>One retained run per setting. Accuracy is official hard PASS, not partial rubric credit.</p>
           </header>
 
-          <div class="chart-grid" data-results-charts aria-label="Accuracy, token, and cost comparison charts"></div>
-
           <p class="table-hint" aria-hidden="true">Swipe to view the full table →</p>
           <div class="table-wrap" tabindex="0" aria-label="Complete benchmark result table; scroll horizontally on small screens">
             <table>
               <thead>
-                <tr><th>Setting</th><th>Version &amp; configuration</th><th>Acc</th><th>Wall</th><th>Tokens</th><th>Cost</th></tr>
+                <tr>
+                  <th class="rank-column">#</th>
+                  <th>Setting</th>
+                  <th>Model</th>
+                  <th class="numeric sortable is-active" data-column="accuracy"><button type="button" data-sort="accuracy">Accuracy <span class="sort-arrow">↓</span></button></th>
+                  <th class="numeric sortable" data-column="wall"><button type="button" data-sort="wall">Wall <span class="sort-arrow">↕</span></button></th>
+                  <th class="numeric sortable" data-column="tokens"><button type="button" data-sort="tokens">Tokens <span class="sort-arrow">↕</span></button></th>
+                  <th class="numeric sortable" data-column="cost"><button type="button" data-sort="cost">Cost <span class="sort-arrow">↕</span></button></th>
+                </tr>
               </thead>
-              <tbody>
-                <tr data-chart-label="No Skill · 0.0.1"><td>Penguin w/o Skill</td><td>v0.0.1 · DeepSeek V4 Flash · Goal off</td><td>8/15</td><td>136.5m</td><td>18.51M</td><td>$0.2407</td></tr>
-                <tr data-chart-label="No Skill · 0.1.5"><td>Penguin w/o Skill</td><td>v0.1.5 · DeepSeek V4 Flash · Goal off</td><td>9/15</td><td>89.8m</td><td>17.78M</td><td>$0.2231</td></tr>
-                <tr data-chart-label="Auto Skill"><td>Penguin w/ Auto Skill</td><td>v0.1.5 · Auto Agent State · Goal off</td><td>10/15</td><td>94.4m</td><td>13.75M</td><td>$0.2158</td></tr>
-                <tr data-chart-label="Manual · 0.0.1"><td>Penguin w/ Manual Skill</td><td>v0.0.1 · Full injection · Goal off</td><td>9/15</td><td>97.7m</td><td>16.44M</td><td>$0.2250</td></tr>
-                <tr class="highlight" data-chart-label="Manual · 0.1.5"><td>Penguin w/ Manual Skill</td><td>v0.1.5 · Full injection · Goal off</td><td>11/15</td><td>97.8m</td><td>12.38M</td><td>$0.1995</td></tr>
-                <tr data-chart-label="Manual + Goal"><td>Penguin Manual + Goal</td><td>v0.1.5 · Full injection · Goal on</td><td>11/15</td><td>87.6m</td><td>17.65M</td><td>$0.2267</td></tr>
-                <tr data-chart-label="Claude Code"><td>Claude Code</td><td>CLI 2.1.191 · Claude Opus 4.8 · max</td><td>10/15</td><td>159.1m</td><td>16.93M</td><td>$34.27</td></tr>
-                <tr data-chart-label="Codex"><td>Codex</td><td>CLI 0.146.0-alpha.9.2 · GPT-5.5 · xhigh</td><td>10/15</td><td>108.9m</td><td>12.22M</td><td>$18.94</td></tr>
+              <tbody class="results-body">
+                <tr data-order="4" data-accuracy="11" data-wall="97.8" data-tokens="12.38" data-cost="0.1995">
+                  <td class="rank-cell"><span class="rank-badge rank-1">1</span></td>
+                  <td><span class="setup-cell"><img src="https://penguin.ooo/penguin-logo.svg" alt="" />PenguinHarness v0.1.5</span><span class="config-meta">Manual Skill · Goal off</span></td>
+                  <td>DeepSeek V4 Flash</td>
+                  <td class="numeric accuracy-cell is-active" data-column="accuracy"><span class="accuracy-measure"><span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:73.33%"></span></span><strong>11/15</strong></span></td>
+                  <td class="numeric" data-column="wall">97.8m</td><td class="numeric" data-column="tokens">12.38M</td><td class="numeric" data-column="cost">$0.1995</td>
+                </tr>
+                <tr data-order="5" data-accuracy="11" data-wall="87.6" data-tokens="17.65" data-cost="0.2267">
+                  <td class="rank-cell"><span class="rank-badge rank-2">2</span></td>
+                  <td><span class="setup-cell"><img src="https://penguin.ooo/penguin-logo.svg" alt="" />PenguinHarness v0.1.5</span><span class="config-meta">Manual Skill · Goal on</span></td>
+                  <td>DeepSeek V4 Flash</td>
+                  <td class="numeric accuracy-cell is-active" data-column="accuracy"><span class="accuracy-measure"><span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:73.33%"></span></span><strong>11/15</strong></span></td>
+                  <td class="numeric" data-column="wall">87.6m</td><td class="numeric" data-column="tokens">17.65M</td><td class="numeric" data-column="cost">$0.2267</td>
+                </tr>
+                <tr data-order="2" data-accuracy="10" data-wall="94.4" data-tokens="13.75" data-cost="0.2158">
+                  <td class="rank-cell"><span class="rank-badge rank-3">3</span></td>
+                  <td><span class="setup-cell"><img src="https://penguin.ooo/penguin-logo.svg" alt="" />PenguinHarness v0.1.5</span><span class="config-meta">Auto Agent State · Goal off</span></td>
+                  <td>DeepSeek V4 Flash</td>
+                  <td class="numeric accuracy-cell is-active" data-column="accuracy"><span class="accuracy-measure"><span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:66.67%"></span></span><strong>10/15</strong></span></td>
+                  <td class="numeric" data-column="wall">94.4m</td><td class="numeric" data-column="tokens">13.75M</td><td class="numeric" data-column="cost">$0.2158</td>
+                </tr>
+                <tr data-order="6" data-accuracy="10" data-wall="159.1" data-tokens="16.93" data-cost="34.27">
+                  <td class="rank-cell"><span class="rank-badge">4</span></td>
+                  <td><span class="setup-cell"><img class="vendor-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/anthropic.svg" alt="" />Claude Code</span><span class="config-meta">CLI 2.1.191 · max</span></td>
+                  <td>Claude Opus 4.8</td>
+                  <td class="numeric accuracy-cell is-active" data-column="accuracy"><span class="accuracy-measure"><span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:66.67%"></span></span><strong>10/15</strong></span></td>
+                  <td class="numeric" data-column="wall">159.1m</td><td class="numeric" data-column="tokens">16.93M</td><td class="numeric" data-column="cost">$34.27</td>
+                </tr>
+                <tr data-order="7" data-accuracy="10" data-wall="108.9" data-tokens="12.22" data-cost="18.94">
+                  <td class="rank-cell"><span class="rank-badge">5</span></td>
+                  <td><span class="setup-cell"><img class="vendor-logo" src="https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/openai.svg" alt="" />Codex</span><span class="config-meta">CLI 0.146.0-alpha.9.2 · xhigh</span></td>
+                  <td>GPT-5.5</td>
+                  <td class="numeric accuracy-cell is-active" data-column="accuracy"><span class="accuracy-measure"><span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:66.67%"></span></span><strong>10/15</strong></span></td>
+                  <td class="numeric" data-column="wall">108.9m</td><td class="numeric" data-column="tokens">12.22M</td><td class="numeric" data-column="cost">$18.94</td>
+                </tr>
+                <tr data-order="1" data-accuracy="9" data-wall="89.8" data-tokens="17.78" data-cost="0.2231">
+                  <td class="rank-cell"><span class="rank-badge">6</span></td>
+                  <td><span class="setup-cell"><img src="https://penguin.ooo/penguin-logo.svg" alt="" />PenguinHarness v0.1.5</span><span class="config-meta">No Skill · Goal off</span></td>
+                  <td>DeepSeek V4 Flash</td>
+                  <td class="numeric accuracy-cell is-active" data-column="accuracy"><span class="accuracy-measure"><span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:60%"></span></span><strong>9/15</strong></span></td>
+                  <td class="numeric" data-column="wall">89.8m</td><td class="numeric" data-column="tokens">17.78M</td><td class="numeric" data-column="cost">$0.2231</td>
+                </tr>
+                <tr data-order="3" data-accuracy="9" data-wall="97.7" data-tokens="16.44" data-cost="0.2250">
+                  <td class="rank-cell"><span class="rank-badge">7</span></td>
+                  <td><span class="setup-cell"><img src="https://penguin.ooo/penguin-logo.svg" alt="" />PenguinHarness v0.0.1</span><span class="config-meta">Manual Skill · Goal off</span></td>
+                  <td>DeepSeek V4 Flash</td>
+                  <td class="numeric accuracy-cell is-active" data-column="accuracy"><span class="accuracy-measure"><span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:60%"></span></span><strong>9/15</strong></span></td>
+                  <td class="numeric" data-column="wall">97.7m</td><td class="numeric" data-column="tokens">16.44M</td><td class="numeric" data-column="cost">$0.2250</td>
+                </tr>
+                <tr data-order="0" data-accuracy="8" data-wall="136.5" data-tokens="18.51" data-cost="0.2407">
+                  <td class="rank-cell"><span class="rank-badge">8</span></td>
+                  <td><span class="setup-cell"><img src="https://penguin.ooo/penguin-logo.svg" alt="" />PenguinHarness v0.0.1</span><span class="config-meta">No Skill · Goal off</span></td>
+                  <td>DeepSeek V4 Flash</td>
+                  <td class="numeric accuracy-cell is-active" data-column="accuracy"><span class="accuracy-measure"><span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:53.33%"></span></span><strong>8/15</strong></span></td>
+                  <td class="numeric" data-column="wall">136.5m</td><td class="numeric" data-column="tokens">18.51M</td><td class="numeric" data-column="cost">$0.2407</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -119,55 +169,45 @@
         </div>
       </section>
 
-      <section id="evaluation" class="section section-anchor">
+      <section id="coverage" class="section section-anchor coverage-section">
         <div class="section-shell">
           <header class="section-heading">
-            <p class="eyebrow">Evaluation</p>
-            <h2>Public task in. External verdict out.</h2>
-            <p>The execution path stays simple; the result claim stays auditable.</p>
+            <p class="eyebrow">Benchmark coverage</p>
+            <h2>Fifteen hard cases from fifteen public benchmark families.</h2>
+            <p>Each case keeps the source task recognizable while focusing on end-to-end analysis, evidence, and delivery.</p>
           </header>
-          <div class="evaluation-layout">
-            <div class="artifact-stack" aria-label="Examples of benchmark source artifacts">
-              <figure class="artifact artifact-chart">
-                <img src="https://raw.githubusercontent.com/Prism-Shadow/rag-bench-essential/main/cases/dvworld_dvevol_crime_association_network_hard/data/source_fig.png" alt="Crime type correlation matrix from a visualization case" loading="lazy" />
-                <figcaption>Visualization &amp; chart semantics</figcaption>
-              </figure>
-              <figure class="artifact artifact-doc">
-                <img src="https://raw.githubusercontent.com/Prism-Shadow/rag-bench-essential/main/cases/docvqa_contract_effective_date_ocr_hard/data/document_page.jpg" alt="Scanned contract page from an OCR case" loading="lazy" />
-                <figcaption>Long documents &amp; OCR</figcaption>
-              </figure>
-            </div>
-            <div class="evaluation-grid">
-              <article><span>01</span><h3>Isolated workspace</h3><p>The agent sees only the public task, data, and optional environment notes.</p></article>
-              <article><span>02</span><h3>External truth</h3><p>Gold answers, validators, rubrics, and visual prompts remain outside the workspace.</p></article>
-              <article><span>03</span><h3>Hard-gate PASS</h3><p>Answer, evidence, semantics, and delivery must all satisfy the case contract.</p></article>
-            </div>
+          <div class="coverage-grid">
+            <article>
+              <h3>Retrieval &amp; long documents</h3>
+              <p>Find the right evidence in long, financial, OCR, and legal documents.</p>
+              <div class="bench-tags"><span>DCI BrowseComp</span><span>DocFinQA</span><span>DocVQA</span><span>LongDA</span><span>FinLongDocQA</span><span>HarveyLab</span></div>
+            </article>
+            <article>
+              <h3>Tables &amp; spreadsheets</h3>
+              <p>Understand hierarchical tables, formulas, transformations, and workbook delivery.</p>
+              <div class="bench-tags"><span>MultiHiertt</span><span>BankerToolBench</span><span>PrepBench</span><span>SpreadsheetBench</span></div>
+            </article>
+            <article>
+              <h3>Databases &amp; cross-source work</h3>
+              <p>Query structured data and reconcile information across tools and sources.</p>
+              <div class="bench-tags"><span>Spider2Lite</span><span>WorkspaceBench</span><span>FDABench</span></div>
+            </article>
+            <article>
+              <h3>Analysis &amp; visualization</h3>
+              <p>Turn source data into correct analytical conclusions and visual semantics.</p>
+              <div class="bench-tags"><span>DVWorld</span><span>DABStep</span></div>
+            </article>
           </div>
+          <p class="coverage-note">This is a curated hard-case suite, not a replacement for each source benchmark’s full leaderboard.</p>
         </div>
       </section>
 
-      <section class="section">
-        <div class="cta section-shell">
-          <h2>Inspect the cases or run your own agent.</h2>
-          <p>Everything needed to understand the suite and reproduce its evaluation is in the repository.</p>
-          <div class="cta-actions">
-            <a class="button button-primary" href="https://github.com/Prism-Shadow/rag-bench-essential">View repository</a>
-            <a class="button button-secondary" href="https://github.com/Prism-Shadow/rag-bench-essential/blob/main/EVALUATION.md">Evaluation contract</a>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
-      <div class="nav-shell footer-inner">
-        <div>
-          <div class="brand">
-            <img src="https://penguin.ooo/penguin-logo.svg" alt="" />
-            <span>RAG Bench Essential</span>
-          </div>
-          <p>Reproducible evaluation for production-shaped data tasks.</p>
-        </div>
-        <a href="https://github.com/Prism-Shadow/rag-bench-essential">GitHub ↗</a>
+      <div class="section-shell footer-inner">
+        <span>© 2026 Prism Shadow</span>
+        <a href="https://github.com/Prism-Shadow/rag-bench-essential/blob/main/EVALUATION.md">Evaluation contract ↗</a>
       </div>
     </footer>
   </body>

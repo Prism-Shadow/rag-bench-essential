@@ -15,46 +15,45 @@ toggle.addEventListener("click", () => {
   applyTheme(theme);
 });
 
-const chartRoot = document.querySelector("[data-results-charts]");
-const resultRows = [...document.querySelectorAll("tbody tr[data-chart-label]")].map((row) => {
-  const cells = row.querySelectorAll("td");
-  const [passed, total] = cells[2].textContent.trim().split("/").map(Number);
-  return {
-    label: row.dataset.chartLabel,
-    accuracy: (passed / total) * 100,
-    accuracyLabel: cells[2].textContent.trim(),
-    tokens: Number.parseFloat(cells[4].textContent),
-    tokensLabel: cells[4].textContent.trim(),
-    cost: Number.parseFloat(cells[5].textContent.replace("$", "")),
-    costLabel: cells[5].textContent.trim(),
-    highlight: row.classList.contains("highlight"),
-  };
-});
+const tableBody = document.querySelector(".results-body");
+const sortButtons = [...document.querySelectorAll("[data-sort]")];
+let activeSort = { key: "accuracy", direction: "desc" };
 
-const chartSpecs = [
-  { key: "accuracy", labelKey: "accuracyLabel", title: "Accuracy", hint: "higher is better ↑" },
-  { key: "tokens", labelKey: "tokensLabel", title: "Tokens", hint: "lower is better ↓" },
-  { key: "cost", labelKey: "costLabel", title: "Cost", hint: "lower is better ↓" },
-];
-
-chartSpecs.forEach(({ key, labelKey, title, hint }) => {
-  const max = key === "accuracy" ? 100 : Math.max(...resultRows.map((row) => row[key]));
-  const figure = document.createElement("figure");
-  figure.className = "chart-panel";
-  figure.innerHTML = `<figcaption><strong>${title}</strong><span>${hint}</span></figcaption>`;
-
-  const rows = document.createElement("div");
-  rows.className = "chart-rows";
-  resultRows.forEach((row) => {
-    const item = document.createElement("div");
-    item.className = `chart-row${row.highlight ? " is-highlight" : ""}`;
-    item.innerHTML = `
-      <span class="chart-label">${row.label}</span>
-      <span class="chart-track"><i style="--bar:${Math.max(1.5, (row[key] / max) * 100)}%"></i></span>
-      <b>${row[labelKey]}</b>
-    `;
-    rows.append(item);
+function updateRanks() {
+  [...tableBody.rows].forEach((row, index) => {
+    const badge = row.querySelector(".rank-badge");
+    badge.textContent = index + 1;
+    badge.className = `rank-badge${index < 3 ? ` rank-${index + 1}` : ""}`;
   });
-  figure.append(rows);
-  chartRoot.append(figure);
+}
+
+function updateActiveColumn(key) {
+  document.querySelectorAll("[data-column]").forEach((cell) => {
+    cell.classList.toggle("is-active", cell.dataset.column === key);
+  });
+}
+
+function sortResults(key, direction) {
+  const multiplier = direction === "asc" ? 1 : -1;
+  const rows = [...tableBody.rows];
+  rows.sort((a, b) => {
+    const difference = (Number(a.dataset[key]) - Number(b.dataset[key])) * multiplier;
+    return difference || Number(a.dataset.order) - Number(b.dataset.order);
+  });
+  rows.forEach((row) => tableBody.append(row));
+  activeSort = { key, direction };
+  sortButtons.forEach((button) => {
+    button.querySelector(".sort-arrow").textContent = button.dataset.sort === key ? (direction === "asc" ? "↑" : "↓") : "↕";
+  });
+  updateActiveColumn(key);
+  updateRanks();
+}
+
+sortButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const key = button.dataset.sort;
+    const defaultDirection = key === "accuracy" ? "desc" : "asc";
+    const direction = activeSort.key === key ? (activeSort.direction === "asc" ? "desc" : "asc") : defaultDirection;
+    sortResults(key, direction);
+  });
 });
