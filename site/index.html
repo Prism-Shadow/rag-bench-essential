@@ -31,7 +31,6 @@
           <span>RAG Bench Essential</span>
         </a>
         <div class="nav-links">
-          <a href="#benchmark">Benchmark</a>
           <a href="#results">Results</a>
           <a href="#evaluation">Evaluation</a>
           <a href="https://github.com/Prism-Shadow/rag-bench-essential">GitHub</a>
@@ -47,8 +46,7 @@
         <div class="eyebrow"><span class="status-dot"></span> Open evaluation package · Fixed 15</div>
         <h1>Measure whether an agent can finish the <span>whole job.</span></h1>
         <p class="hero-copy">
-          Fifteen production-shaped cases across long documents, spreadsheets, SQLite, cross-source analysis,
-          evidence binding, and client-ready delivery. Public payloads stay isolated from external truth.
+          Fifteen production-shaped data tasks. Public payloads, external scoring, and hard-gate PASS.
         </p>
         <div class="hero-actions">
           <a class="button button-primary" href="#results">Explore results <span>→</span></a>
@@ -57,46 +55,7 @@
         <div class="metric-strip" aria-label="Benchmark summary">
           <div><strong>15</strong><span>fixed cases</span></div>
           <div><strong>8</strong><span>published settings</span></div>
-          <div><strong>4</strong><span>hard-gate layers</span></div>
           <div><strong>100%</strong><span>external scoring</span></div>
-        </div>
-      </section>
-
-      <section id="benchmark" class="section shell">
-        <div class="section-heading">
-          <div>
-            <p class="kicker">THE BENCHMARK</p>
-            <h2>Small roster. High diagnostic value.</h2>
-          </div>
-          <p>
-            Each case is selected for a concrete capability boundary—not a formatting trick or a toy join.
-          </p>
-        </div>
-        <div class="capability-grid">
-          <article class="capability-card feature-card">
-            <span class="card-index">01</span>
-            <h3>Agentic retrieval</h3>
-            <p>Find the right evidence in long PDFs, OCR-heavy contracts, large corpora, and mixed business documents.</p>
-            <div class="mini-tags"><span>LongDA</span><span>DocVQA</span><span>DCI</span></div>
-          </article>
-          <article class="capability-card">
-            <span class="card-index">02</span>
-            <h3>Program semantics</h3>
-            <p>Operate on real spreadsheets and SQLite while preserving formulas, schemas, and task-specific logic.</p>
-            <div class="mini-tags"><span>Spider2-Lite</span><span>PrepBench</span></div>
-          </article>
-          <article class="capability-card">
-            <span class="card-index">03</span>
-            <h3>Evidence binding</h3>
-            <p>Connect final claims to the correct source values across documents instead of returning plausible text.</p>
-            <div class="mini-tags"><span>DocFinQA</span><span>MultiHiertt</span></div>
-          </article>
-          <article class="capability-card">
-            <span class="card-index">04</span>
-            <h3>Delivery contracts</h3>
-            <p>Produce usable workbooks, decks, PDFs, reports, and exact output paths—not partial analysis.</p>
-            <div class="mini-tags"><span>BankerToolBench</span><span>DV-World</span></div>
-          </article>
         </div>
       </section>
 
@@ -109,9 +68,8 @@
           <p>One retained run per setting. Accuracy is official hard PASS, not partial rubric credit.</p>
         </div>
 
-        <div class="scoreboard-layout">
-          <div class="ranking card-surface">
-            <div class="surface-head"><span>Accuracy</span><span>PASS / 15</span></div>
+        <div class="ranking card-surface">
+            <div class="surface-head"><span>Leading settings</span><span>Official PASS / 15</span></div>
             <div class="rank-row top">
               <div class="rank-label"><strong>Penguin Manual</strong><span>v0.1.5 · Goal off</span></div>
               <div class="rank-track"><i style="--score: 73.3%"></i></div><b>11</b>
@@ -132,22 +90,10 @@
               <div class="rank-label"><strong>Codex</strong><span>GPT-5.5 · xhigh</span></div>
               <div class="rank-track"><i style="--score: 66.7%"></i></div><b>10</b>
             </div>
-          </div>
-
-          <aside class="result-callout card-surface">
-            <p class="kicker">BEST CURRENT DEFAULT</p>
-            <strong class="big-score">11<span>/15</span></strong>
-            <h3>PenguinHarness v0.1.5 + Manual Skill</h3>
-            <p>Goal off · DeepSeek V4 Flash xhigh · full Skill injection</p>
-            <dl>
-              <div><dt>Tokens</dt><dd>12.38M</dd></div>
-              <div><dt>Cost</dt><dd>$0.1995</dd></div>
-              <div><dt>Wall total</dt><dd>97.8 min</dd></div>
-            </dl>
-          </aside>
         </div>
 
-        <div class="table-wrap card-surface" tabindex="0" aria-label="Complete benchmark result table">
+        <p class="table-hint" aria-hidden="true">Swipe to view the full result table →</p>
+        <div class="table-wrap card-surface" tabindex="0" aria-label="Complete benchmark result table; scroll horizontally on small screens">
           <table>
             <thead>
               <tr><th>Setting</th><th>Version & configuration</th><th>Acc</th><th>Wall</th><th>Tokens</th><th>Cost</th></tr>
@@ -165,7 +111,7 @@
           </table>
         </div>
         <p class="result-note">
-          Evaluator note · Claude Code’s BankerToolBench artifact was regraded after the 2026-08-10 workbook-locator fix, moving from 9/15 to 10/15. The other seven Banker artifacts were unavailable and retain their historical result.
+          Evaluator note · Claude Code’s 10/15 includes the BankerToolBench regrade under the 2026-08-10 fix. Other settings retain their historical result.
         </p>
       </section>
 
@@ -182,35 +128,16 @@
           <article><span>2</span><h3>External truth</h3><p>Gold answers, validators, rubrics, and visual prompts remain outside the workspace.</p></article>
           <article><span>3</span><h3>Hard-gate PASS</h3><p>Answer, evidence, intermediate semantics, and delivery must all satisfy the case contract.</p></article>
         </div>
-
-        <div class="case-roster card-surface">
-          <div>
-            <p class="kicker">FIXED ROSTER</p>
-            <h3>15 representative cases</h3>
-          </div>
-          <ol>
-            <li>Spider2-Lite</li><li>DCI / BrowseComp+</li><li>DocFinQA</li><li>DocVQA</li><li>LongDA</li>
-            <li>MultiHiertt</li><li>WorkspaceBench</li><li>DV-World</li><li>BankerToolBench</li><li>FinLongDocQA</li>
-            <li>DABstep</li><li>PrepBench</li><li>SpreadsheetBench</li><li>HarveyLab</li><li>FDABench</li>
-          </ol>
-        </div>
       </section>
 
-      <section class="cta shell">
+      <section class="compact-cta shell">
         <div>
-          <p class="kicker">RUN YOUR AGENT</p>
-          <h2>Reproduce the benchmark from one repository.</h2>
-          <p>Clone the payloads, stage an isolated case, then score the final workspace externally.</p>
+          <p class="kicker">OPEN EVALUATION PACKAGE</p>
+          <h2>Inspect the cases or run your own agent.</h2>
         </div>
-        <div class="terminal" aria-label="Quick start commands">
-          <div class="terminal-bar"><i></i><i></i><i></i><span>quick-start</span></div>
-          <pre><code><span>$</span> pip install -r requirements-eval.txt
-<span>$</span> python scripts/stage_case.py \
-    --case-id prepbench_loyalty_tier_normalization_hard \
-    --workspace /tmp/rag-bench/prepbench
-<span>$</span> python scripts/score_case.py \
-    --case-id prepbench_loyalty_tier_normalization_hard \
-    --workspace /tmp/rag-bench/prepbench</code></pre>
+        <div class="compact-actions">
+          <a class="button button-primary" href="https://github.com/Prism-Shadow/rag-bench-essential">View GitHub <span>→</span></a>
+          <a class="button button-secondary" href="https://github.com/Prism-Shadow/rag-bench-essential/blob/main/EVALUATION.md">Evaluation contract</a>
         </div>
       </section>
     </main>
