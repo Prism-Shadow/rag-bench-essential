@@ -29,9 +29,8 @@ const copy = {
     loadingResults: "Loading published results…",
     resourceNote: "Time is averaged per case; tokens and recorded cost are full-suite values. Penguin settings could use Gemini vision, but its proxy cost was not retained; Claude Code and Codex did not have that auxiliary tool.",
     regradeNote: "Claude Code includes the BankerToolBench regrade under the 2026-08-10 evaluator fix. Historical rows could not be regraded without their saved workspaces.",
-    chartEyebrow: "Efficiency view",
-    chartTitle: "Accuracy vs. recorded cost",
-    chartNote: "The cost axis is logarithmic because provider prices differ by orders of magnitude. Recorded cost is not a pure harness-efficiency measure.",
+    chartTitle: "Performance and cost by setup",
+    chartNote: "Colors show models; labels show harness setups. Cost is shown per case on a log scale.",
     coverageEyebrow: "Benchmark coverage",
     coverageTitle: "Fifteen hard cases from fifteen public benchmark families.",
     coverageDescription: "Each case keeps the source task recognizable while focusing on end-to-end analysis, evidence, and delivery.",
@@ -57,9 +56,9 @@ const copy = {
     currentEvaluatorTitle: "Scored with the current evaluator, including the BankerToolBench fix",
     historicalEvaluatorTitle: "Retained historical score; the saved workspace was unavailable for regrading",
     accuracyAxis: "Accuracy (%)",
-    costAxis: "Recorded cost / run (USD, log scale)",
+    costAxis: "Cost per case (USD, log scale)",
     loadError: "Unable to load published results.",
-    chartAria: "Scatter plot comparing accuracy and recorded cost for eight agent settings",
+    chartAria: "Scatter plot comparing accuracy and cost per case; colors show models and labels show harness setups",
   },
   zh: {
     title: "Data Analysis Bench 实验结果",
@@ -83,9 +82,8 @@ const copy = {
     loadingResults: "正在加载已发布结果…",
     resourceNote: "时间为每题平均值；Token 和已记录成本为全套合计。Penguin setting 可使用 Gemini 视觉工具，但没有保留其代理费用；Claude Code 和 Codex 没有该辅助工具。",
     regradeNote: "Claude Code 已包含 2026-08-10 修复 evaluator 后的 BankerToolBench 重评。历史结果行因没有保留 workspace 产物而无法重评。",
-    chartEyebrow: "效率视图",
-    chartTitle: "Accuracy 与已记录成本",
-    chartNote: "不同 provider 的价格相差多个数量级，因此成本轴使用对数刻度。已记录成本不能单独解释为 harness 效率。",
+    chartTitle: "不同配置的效果与成本",
+    chartNote: "颜色表示模型，标签表示 harness 配置；横轴为单题成本，使用对数刻度。",
     coverageEyebrow: "Benchmark 覆盖",
     coverageTitle: "15 道难题，来自 15 个公开 benchmark family。",
     coverageDescription: "每道题都保留上游任务的可识别性，同时聚焦端到端分析、证据和交付。",
@@ -111,9 +109,9 @@ const copy = {
     currentEvaluatorTitle: "使用当前 evaluator 评分，包含 BankerToolBench 修复",
     historicalEvaluatorTitle: "保留的历史分数；因缺少 workspace 而无法重评",
     accuracyAxis: "Accuracy（%）",
-    costAxis: "已记录成本 / 轮（美元，对数刻度）",
+    costAxis: "单题成本（美元，对数刻度）",
     loadError: "无法加载已发布结果。",
-    chartAria: "比较 8 个 agent setting 的 Accuracy 和已记录成本的散点图",
+    chartAria: "比较 8 个配置的 Accuracy 和单题成本；颜色表示模型，标签表示 harness 配置",
   },
 };
 
@@ -266,19 +264,52 @@ function applyTheme(theme) {
   drawChart();
 }
 
-function chartColor(framework) {
-  if (framework === "Claude Code") return "#f59e0b";
-  if (framework === "Codex") return "#10b981";
-  return "#6ea8fe";
+function chartColor(model) {
+  if (model === "Claude Opus 4.8") return "#ef4444";
+  if (model === "GPT-5.5") return "#10b981";
+  return "#2563eb";
+}
+
+function costPerCase(row) {
+  return row.recorded_cost_usd_per_run / row.accuracy_total;
+}
+
+function formatCaseCost(value) {
+  return value < 0.1 ? `$${value.toFixed(4)}` : `$${value.toFixed(2)}`;
+}
+
+function chartLabel(row) {
+  const labels = {
+    en: {
+      "penguin-015-manual": "PH .1.5 · manual",
+      "penguin-015-manual-goal": "PH .1.5 · manual + Goal",
+      "penguin-015-auto-state": "PH .1.5 · auto state",
+      "penguin-015-original": "PH .1.5 · no skill",
+      "penguin-001-manual": "PH .0.1 · manual",
+      "penguin-001-original": "PH .0.1 · no skill",
+      "claude-opus-48": "Claude Code",
+      "codex-gpt-55": "Codex",
+    },
+    zh: {
+      "penguin-015-manual": "PH .1.5 · 手写 Skill",
+      "penguin-015-manual-goal": "PH .1.5 · 手写 Skill + Goal",
+      "penguin-015-auto-state": "PH .1.5 · 自动优化 State",
+      "penguin-015-original": "PH .1.5 · 无 Skill",
+      "penguin-001-manual": "PH .0.1 · 手写 Skill",
+      "penguin-001-original": "PH .0.1 · 无 Skill",
+      "claude-opus-48": "Claude Code",
+      "codex-gpt-55": "Codex",
+    },
+  };
+  return labels[state.locale][row.id];
 }
 
 function drawChart() {
   if (!state.results.length || !canvas.clientWidth) return;
-  const styles = getComputedStyle(root);
-  const textColor = styles.getPropertyValue("--text").trim();
-  const mutedColor = styles.getPropertyValue("--muted").trim();
-  const lineColor = styles.getPropertyValue("--line").trim();
-  const surfaceColor = styles.getPropertyValue("--surface").trim();
+  const textColor = "#0f172a";
+  const mutedColor = "#64748b";
+  const lineColor = "#e2e8f0";
+  const surfaceColor = "#ffffff";
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -289,14 +320,14 @@ function drawChart() {
   context.clearRect(0, 0, width, height);
 
   const compact = width < 620;
-  const margin = { top: 24, right: 22, bottom: 58, left: compact ? 54 : 66 };
+  const margin = { top: 24, right: 28, bottom: 58, left: compact ? 52 : 64 };
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
-  const costs = state.results.map((row) => row.recorded_cost_usd_per_run);
-  const minLog = Math.log10(Math.min(...costs) / 1.25);
-  const maxLog = Math.log10(Math.max(...costs) * 1.25);
+  const costs = state.results.map(costPerCase);
+  const minLog = Math.log10(Math.min(...costs) / 1.5);
+  const maxLog = Math.log10(Math.max(...costs) * 1.4);
   const yMin = 50;
-  const yMax = 80;
+  const yMax = 76;
   const xPosition = (value) => margin.left + ((Math.log10(value) - minLog) / (maxLog - minLog)) * plotWidth;
   const yPosition = (value) => margin.top + ((yMax - value) / (yMax - yMin)) * plotHeight;
 
@@ -304,7 +335,7 @@ function drawChart() {
   context.lineWidth = 1;
   context.textBaseline = "middle";
   context.textAlign = "right";
-  [50, 60, 70, 80].forEach((tick) => {
+  [50, 60, 70].forEach((tick) => {
     const y = yPosition(tick);
     context.strokeStyle = lineColor;
     context.beginPath();
@@ -315,7 +346,7 @@ function drawChart() {
     context.fillText(String(tick), margin.left - 10, y);
   });
 
-  const xTicks = [0.2, 0.5, 1, 2, 5, 10, 20, 40].filter((tick) => Math.log10(tick) >= minLog && Math.log10(tick) <= maxLog);
+  const xTicks = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 3].filter((tick) => Math.log10(tick) >= minLog && Math.log10(tick) <= maxLog);
   context.textAlign = "center";
   xTicks.forEach((tick) => {
     const x = xPosition(tick);
@@ -339,16 +370,38 @@ function drawChart() {
   context.restore();
 
   state.chartPoints = state.results.map((row) => {
-    const x = xPosition(row.recorded_cost_usd_per_run);
+    const x = xPosition(costPerCase(row));
     const y = yPosition(accuracyPercent(row));
     context.beginPath();
     context.arc(x, y, 6.5, 0, Math.PI * 2);
-    context.fillStyle = chartColor(row.framework);
+    context.fillStyle = chartColor(row.model);
     context.fill();
     context.lineWidth = 2;
     context.strokeStyle = surfaceColor;
     context.stroke();
     return { x, y, row };
+  });
+
+  const labelOffsets = {
+    "penguin-015-manual": -13,
+    "penguin-015-manual-goal": 13,
+    "penguin-015-auto-state": -9,
+    "penguin-015-original": -11,
+    "penguin-001-manual": 12,
+    "penguin-001-original": -9,
+    "claude-opus-48": -11,
+    "codex-gpt-55": 12,
+  };
+  context.font = `${compact ? 9 : 10}px ui-sans-serif, system-ui, sans-serif`;
+  context.fillStyle = textColor;
+  context.textAlign = "left";
+  state.chartPoints.forEach(({ x, y, row }) => {
+    const label = chartLabel(row);
+    const labelWidth = context.measureText(label).width;
+    const preferLeft = row.id === "claude-opus-48" || x + labelWidth + 14 > width - margin.right;
+    const labelX = preferLeft ? x - labelWidth - 11 : x + 11;
+    const labelY = y + labelOffsets[row.id];
+    context.fillText(label, labelX, labelY);
   });
 }
 
@@ -367,7 +420,7 @@ function showChartTooltip(event) {
   }
   const row = point.row;
   const setting = state.locale === "zh" ? row.setting_zh : row.setting;
-  chartTooltip.innerHTML = `<strong>${escapeHtml(setting)}</strong><span>${escapeHtml(row.model)}</span><span>${row.accuracy_passes}/${row.accuracy_total} · ${formatCost(row.recorded_cost_usd_per_run)}</span>`;
+  chartTooltip.innerHTML = `<strong>${escapeHtml(setting)}</strong><span>${escapeHtml(row.model)}</span><span>${row.accuracy_passes}/${row.accuracy_total} · ${formatCaseCost(costPerCase(row))}/case</span>`;
   chartTooltip.hidden = false;
   const tooltipWidth = chartTooltip.offsetWidth;
   const tooltipHeight = chartTooltip.offsetHeight;

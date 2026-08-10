@@ -116,20 +116,19 @@
           <article class="chart-card" aria-labelledby="cost-chart-title">
             <header class="chart-heading">
               <div>
-                <p class="eyebrow" data-i18n="chartEyebrow">Efficiency view</p>
-                <h3 id="cost-chart-title" data-i18n="chartTitle">Accuracy vs. recorded cost</h3>
+                <h3 id="cost-chart-title" data-i18n="chartTitle">Performance and cost by setup</h3>
               </div>
-              <div class="chart-legend" aria-label="Framework legend">
-                <span><i class="legend-dot legend-penguin"></i>PenguinHarness</span>
-                <span><i class="legend-dot legend-claude"></i>Claude Code</span>
-                <span><i class="legend-dot legend-codex"></i>Codex</span>
+              <div class="chart-legend" aria-label="Model legend">
+                <span><i class="legend-dot legend-deepseek"></i>DeepSeek V4 Flash</span>
+                <span><i class="legend-dot legend-opus"></i>Claude Opus 4.8</span>
+                <span><i class="legend-dot legend-gpt"></i>GPT-5.5</span>
               </div>
             </header>
             <div class="chart-wrap">
               <canvas id="cost-chart" role="img" aria-label="Scatter plot comparing accuracy and recorded cost for eight settings"></canvas>
               <div class="chart-tooltip" role="status" aria-live="polite" hidden></div>
             </div>
-            <p class="chart-note" data-i18n="chartNote">The cost axis is logarithmic because provider prices differ by orders of magnitude. Recorded cost is not a pure harness-efficiency measure.</p>
+            <p class="chart-note" data-i18n="chartNote">Colors show models; labels show harness setups. Cost is shown per case on a log scale.</p>
           </article>
         </div>
       </section>
