@@ -240,7 +240,6 @@ th.is-active button { color: var(--brand); }
 }
 .chart-tooltip[hidden] { display: none; }
 .chart-tooltip strong { color: #0f172a; font-size: 11px; }
-.chart-note { margin: 10px auto 0; max-width: 860px; color: var(--muted); font-size: 11px; line-height: 1.6; }
 
 .coverage-section { padding-top: 64px; }
 .coverage-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -249,7 +248,6 @@ th.is-active button { color: var(--brand); }
 .coverage-grid p { margin: 8px 0 18px; color: var(--muted); font-size: 13px; line-height: 1.65; }
 .bench-tags { display: flex; flex-wrap: wrap; gap: 7px; }
 .bench-tags span { padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-soft); color: var(--muted-strong); font-size: 10px; }
-.coverage-note { margin: 16px 2px 0; color: var(--muted); font-size: 11px; text-align: center; }
 
 .footer-inner { display: grid; min-height: 112px; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 32px; color: var(--muted); font-size: 12px; }
 .footer-inner a { justify-self: end; }
