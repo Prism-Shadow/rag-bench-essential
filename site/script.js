@@ -1,7 +1,11 @@
 const root = document.documentElement;
 const themeToggle = document.querySelector(".theme-toggle");
+const themeIcon = document.querySelector(".theme-icon");
+const localeControl = document.querySelector(".locale-control");
 const localeToggle = document.querySelector(".locale-toggle");
 const localeLabel = document.querySelector(".locale-label");
+const localeMenu = document.querySelector(".locale-menu");
+const localeSystemLabel = document.querySelector(".locale-system-label");
 const tableHead = document.querySelector(".results-head");
 const tableBody = document.querySelector(".results-body");
 const chart = document.querySelector("#cost-chart");
@@ -94,10 +98,37 @@ const copy = {
 };
 
 const state = {
+  localePreference: ["en", "zh", "system"].includes(root.dataset.localePref) ? root.dataset.localePref : "system",
   locale: root.dataset.locale === "zh" ? "zh" : "en",
+  themeMode: ["light", "dark", "system"].includes(root.dataset.themeMode) ? root.dataset.themeMode : "system",
   results: [],
   sort: { key: "accuracy", direction: "desc" },
 };
+
+const localeNames = {
+  en: { en: "English", zh: "中文", system: "Follow system", language: "Language" },
+  zh: { en: "English", zh: "中文", system: "跟随系统", language: "语言" },
+};
+
+const themeNames = {
+  en: { light: "Light", dark: "Dark", system: "Follow system", label: "Theme" },
+  zh: { light: "浅色", dark: "深色", system: "跟随系统", label: "主题" },
+};
+
+const themeIcons = {
+  light: '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>',
+  dark: '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>',
+  system: '<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4"></path></svg>',
+};
+
+function systemLocale() {
+  return navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en";
+}
+
+function resolvedTheme(mode) {
+  if (mode !== "system") return mode;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
 
 const sortableColumns = {
   accuracy: { label: "accuracy", defaultDirection: "desc" },
@@ -212,17 +243,30 @@ function applyLocale() {
     const value = t[element.dataset.i18nHtml];
     if (value) element.innerHTML = value;
   });
-  localeLabel.textContent = state.locale === "zh" ? "中文" : "English";
-  localeToggle.setAttribute("aria-label", state.locale === "zh" ? "切换到英文" : "Switch to Chinese");
-  themeToggle.setAttribute("aria-label", state.locale === "zh" ? "切换颜色主题" : "Switch color theme");
+  const names = localeNames[state.locale];
+  localeLabel.textContent = names[state.localePreference];
+  localeSystemLabel.textContent = names.system;
+  localeToggle.title = names.language;
+  localeToggle.setAttribute("aria-label", names.language);
+  localeMenu.querySelectorAll("[data-locale-pref]").forEach((option) => {
+    option.setAttribute("aria-checked", String(option.dataset.localePref === state.localePreference));
+  });
+  applyTheme(state.themeMode);
   chart.setAttribute("aria-label", t.chartAria);
   renderTable();
   renderChart();
 }
 
-function applyTheme(theme) {
+function applyTheme(mode) {
+  state.themeMode = mode;
+  const theme = resolvedTheme(mode);
+  root.dataset.themeMode = mode;
   root.dataset.theme = theme;
-  themeToggle.setAttribute("aria-pressed", String(theme === "light"));
+  themeIcon.innerHTML = themeIcons[mode];
+  const names = themeNames[state.locale];
+  const label = `${names.label}: ${names[mode]}`;
+  themeToggle.title = label;
+  themeToggle.setAttribute("aria-label", label);
   document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#ffffff" : "#000000";
 }
 
@@ -277,15 +321,52 @@ function renderChart() {
 }
 
 themeToggle.addEventListener("click", () => {
-  const theme = root.dataset.theme === "dark" ? "light" : "dark";
-  localStorage.setItem("data-analysis-bench.theme", theme);
-  applyTheme(theme);
+  const next = { light: "dark", dark: "system", system: "light" }[state.themeMode];
+  localStorage.setItem("data-analysis-bench.theme", next);
+  applyTheme(next);
 });
 
 localeToggle.addEventListener("click", () => {
-  state.locale = state.locale === "zh" ? "en" : "zh";
-  localStorage.setItem("data-analysis-bench.locale", state.locale);
+  const open = localeMenu.hidden;
+  localeMenu.hidden = !open;
+  localeToggle.setAttribute("aria-expanded", String(open));
+});
+
+localeMenu.addEventListener("click", (event) => {
+  const option = event.target.closest("[data-locale-pref]");
+  if (!option) return;
+  state.localePreference = option.dataset.localePref;
+  state.locale = state.localePreference === "system" ? systemLocale() : state.localePreference;
+  root.dataset.localePref = state.localePreference;
+  localStorage.setItem("data-analysis-bench.locale", state.localePreference);
+  localeMenu.hidden = true;
+  localeToggle.setAttribute("aria-expanded", "false");
   applyLocale();
+});
+
+document.addEventListener("mousedown", (event) => {
+  if (!localeMenu.hidden && !localeControl.contains(event.target)) {
+    localeMenu.hidden = true;
+    localeToggle.setAttribute("aria-expanded", "false");
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !localeMenu.hidden) {
+    localeMenu.hidden = true;
+    localeToggle.setAttribute("aria-expanded", "false");
+    localeToggle.focus();
+  }
+});
+
+window.addEventListener("languagechange", () => {
+  if (state.localePreference !== "system") return;
+  state.locale = systemLocale();
+  applyLocale();
+});
+
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  if (state.themeMode === "system") applyTheme("system");
 });
 
 tableHead.addEventListener("click", (event) => {
@@ -300,7 +381,7 @@ tableHead.addEventListener("click", (event) => {
   renderTable();
 });
 
-applyTheme(root.dataset.theme === "light" ? "light" : "dark");
+applyTheme(state.themeMode);
 applyLocale();
 
 try {

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark" data-locale="en">
+<html lang="en" data-theme="dark" data-theme-mode="system" data-locale="en" data-locale-pref="system">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,16 +20,25 @@
     <title>Data Analysis Bench</title>
     <script>
       try {
-        const theme = localStorage.getItem("data-analysis-bench.theme");
-        document.documentElement.dataset.theme = theme || "dark";
+        const savedTheme = localStorage.getItem("data-analysis-bench.theme");
+        const themeMode = ["light", "dark", "system"].includes(savedTheme) ? savedTheme : "system";
+        const theme = themeMode === "system"
+          ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+          : themeMode;
+        document.documentElement.dataset.themeMode = themeMode;
+        document.documentElement.dataset.theme = theme;
         const savedLocale = localStorage.getItem("data-analysis-bench.locale");
-        const locale = savedLocale || (navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en");
+        const localePref = ["en", "zh", "system"].includes(savedLocale) ? savedLocale : "system";
+        const locale = localePref === "system"
+          ? (navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en")
+          : localePref;
+        document.documentElement.dataset.localePref = localePref;
         document.documentElement.dataset.locale = locale;
         document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
       } catch {}
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260810-11" />
-    <script src="script.js?v=20260810-11" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260810-12" />
+    <script src="script.js?v=20260810-12" defer></script>
   </head>
   <body>
     <div class="neon-bg" aria-hidden="true">
@@ -44,16 +53,39 @@
           <span>Data Analysis Bench</span>
         </a>
         <nav class="nav-actions" aria-label="Site controls">
-          <button class="locale-toggle" type="button" aria-label="Switch to Chinese">
-            <span class="globe-icon" aria-hidden="true"></span>
-            <span class="locale-label">English</span>
-            <span class="chevron-icon" aria-hidden="true"></span>
-          </button>
-          <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">
-            <span class="moon-icon" aria-hidden="true"></span>
+          <div class="locale-control">
+            <button class="locale-toggle" type="button" title="Language" aria-label="Language" aria-haspopup="menu" aria-expanded="false">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"></path>
+              </svg>
+              <span class="locale-label">Follow system</span>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="locale-menu" role="menu" hidden>
+              <button type="button" role="menuitemradio" data-locale-pref="en" aria-checked="false">
+                <span>English</span>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+              </button>
+              <button type="button" role="menuitemradio" data-locale-pref="zh" aria-checked="false">
+                <span>中文</span>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+              </button>
+              <button type="button" role="menuitemradio" data-locale-pref="system" aria-checked="true">
+                <span class="locale-system-label">Follow system</span>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+              </button>
+            </div>
+          </div>
+          <button class="theme-toggle" type="button" title="Theme: Follow system" aria-label="Theme: Follow system">
+            <span class="theme-icon" aria-hidden="true"></span>
           </button>
           <a class="github-link" href="https://github.com/Prism-Shadow/rag-bench-essential" aria-label="GitHub">
-            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/github.svg" alt="" />
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.78 1.05.78 2.12 0 1.53-.02 2.76-.02 3.14 0 .3.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"></path>
+            </svg>
           </a>
         </nav>
       </div>
