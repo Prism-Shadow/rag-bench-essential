@@ -41,8 +41,13 @@ workspace。`scripts/stage_case.py` 只会复制 `task.md`、`data/` 和 `env.md
 | Penguin w/ Manual Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 允许 | 9/15（60.0%） | 97.7 min | 16,435,689 | $0.2250 |
 | Penguin w/ Manual Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 允许 | 11/15（73.3%） | 97.8 min | 12,382,401 | $0.1995 |
 | Penguin w/ Manual Skill + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal on | 允许 | 11/15（73.3%） | 87.6 min | 17,650,180 | $0.2267 |
-| Claude Code | Claude Code CLI 2.1.191 / Claude Opus 4.8 / effort=max | 不允许 | 9/15（60.0%） | 159.1 min | 16,929,780 | $34.27 |
+| Claude Code | Claude Code CLI 2.1.191 / Claude Opus 4.8 / effort=max | 不允许 | 10/15（66.7%） | 159.1 min | 16,929,780 | $34.27 |
 | Codex | Codex CLI 0.146.0-alpha.9.2 / GPT-5.5 xhigh / no skill | 不允许 | 10/15（66.7%） | 108.9 min | 12,218,450 | $18.94 |
+
+2026-08-10 修正 BankerToolBench 的 workbook locator 后，Claude Code 的既有产物从
+FAIL 重评为 PASS（视觉 verdict 与产物 SHA 绑定且仍有效），因此由 9/15 更新为
+10/15。其余七个 setting 未保留该 case 的 workspace 产物，无法按新 evaluator
+重评；表中暂保留其历史结果，不据此猜测增减。
 
 ## DCI case
 

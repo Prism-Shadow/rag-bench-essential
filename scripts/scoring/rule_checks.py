@@ -818,26 +818,20 @@ def _as_number(value: Any) -> float | None:
     return num / 100.0 if "%" in raw else num
 
 
-def _near(values: list[float], target: float, tol: float = 1e-4) -> bool:
-    return any(abs(value - target) <= tol for value in values)
+def _axis_sequence_matches(values: list[Any], expected: list[float], tol: float = 1e-4) -> bool:
+    numbers = [_as_number(value) for value in values]
+    if any(value is None for value in numbers):
+        return False
+    actual = [float(value) for value in numbers if value is not None]
+    forward = all(abs(value - target) <= tol for value, target in zip(actual, expected))
+    reverse = all(abs(value - target) <= tol for value, target in zip(actual, reversed(expected)))
+    return forward or reverse
 
 
-def _extract_window_numbers(ws: Any, row: int, col: int) -> list[float]:
-    nums: list[float] = []
-    start_col = max(1, col - 2)
-    for r in range(row, min(ws.max_row, row + 10) + 1):
-        for c in range(start_col, min(ws.max_column, col + 10) + 1):
-            num = _as_number(ws.cell(r, c).value)
-            if num is not None:
-                nums.append(num)
-    return nums
-
-
-def _count_irr_cells(ws: Any, row: int, col: int) -> int:
+def _count_irr_grid_cells(ws: Any, row: int, col: int) -> int:
     count = 0
-    start_col = max(1, col - 2)
-    for r in range(row, min(ws.max_row, row + 10) + 1):
-        for c in range(start_col, min(ws.max_column, col + 10) + 1):
+    for r in range(row, row + 5):
+        for c in range(col, col + 5):
             value = ws.cell(r, c).value
             num = _as_number(value)
             if isinstance(value, str) and value.startswith("="):
@@ -847,45 +841,102 @@ def _count_irr_cells(ws: Any, row: int, col: int) -> int:
     return count
 
 
-def banker_workbook(ctx: ScoreContext) -> CheckResult:
+def _title_near_candidate(ws: Any, row: int, col: int, title: str) -> bool:
+    target = " ".join(title.lower().split())
+    for r in range(max(1, row - 4), row + 1):
+        for c in range(max(1, col - 2), min(ws.max_column, col + 6) + 1):
+            value = ws.cell(r, c).value
+            if isinstance(value, str) and target in " ".join(value.lower().split()):
+                return True
+    return False
+
+
+def _find_banker_table(ws: Any, table: dict[str, Any]) -> dict[str, Any]:
+    x_values = [float(value) for value in table["x_values"]]
+    y_values = [float(value) for value in table["y_values"]]
+    x_hits: list[tuple[int, int]] = []
+    for row in range(1, ws.max_row + 1):
+        for col in range(1, max(1, ws.max_column - 3)):
+            values = [ws.cell(row, col + offset).value for offset in range(5)]
+            if _axis_sequence_matches(values, x_values):
+                x_hits.append((row, col))
+
+    axis_candidates: list[dict[str, Any]] = []
+    for header_row, grid_col in x_hits:
+        for grid_row in range(header_row + 1, min(ws.max_row - 3, header_row + 3) + 1):
+            for y_col in range(max(1, grid_col - 2), grid_col):
+                values = [ws.cell(grid_row + offset, y_col).value for offset in range(5)]
+                if not _axis_sequence_matches(values, y_values):
+                    continue
+                irr_count = _count_irr_grid_cells(ws, grid_row, grid_col)
+                axis_candidates.append(
+                    {
+                        "header_row": header_row,
+                        "grid_row": grid_row,
+                        "grid_col": grid_col,
+                        "y_col": y_col,
+                        "irr_count": irr_count,
+                        "title_match": _title_near_candidate(
+                            ws, header_row, grid_col, str(table["title"])
+                        ),
+                    }
+                )
+
+    valid = [candidate for candidate in axis_candidates if candidate["irr_count"] == 25]
+    best = max(
+        valid or axis_candidates,
+        key=lambda candidate: (
+            candidate["irr_count"],
+            bool(candidate["title_match"]),
+            -candidate["grid_row"],
+            -candidate["grid_col"],
+        ),
+        default=None,
+    )
+    return {
+        "id": table["id"],
+        "passed": bool(valid),
+        "x_axis_found": bool(x_hits),
+        "y_axis_found": bool(axis_candidates),
+        "candidate": best,
+    }
+
+
+def check_banker_workbook(workbook_path: Path, expected: dict[str, Any]) -> CheckResult:
     try:
         from openpyxl import load_workbook
 
-        wb = load_workbook(ctx.workspace / ctx.expected["required_outputs"][0], data_only=False)
+        wb = load_workbook(workbook_path, data_only=False)
     except Exception as exc:
         return CheckResult(False, f"workbook unreadable: {exc}")
-    if ctx.expected["model_sheet"] not in wb.sheetnames:
-        return CheckResult(False, f"missing sheet {ctx.expected['model_sheet']}")
-    ws = wb[ctx.expected["model_sheet"]]
+    if expected["model_sheet"] not in wb.sheetnames:
+        return CheckResult(False, f"missing sheet {expected['model_sheet']}")
+    ws = wb[expected["model_sheet"]]
     errors: list[str] = []
-    if ws[ctx.expected["base_irr_cell"]].value is None:
-        errors.append(f"missing base IRR cell {ctx.expected['base_irr_cell']}")
-    for table in ctx.expected["tables"]:
-        candidates: list[tuple[int, int]] = []
-        target = table["title"].lower()
-        for row in ws.iter_rows():
-            for cell in row:
-                if isinstance(cell.value, str) and target in cell.value.lower():
-                    candidates.append((cell.row, cell.column))
-        if not candidates:
-            errors.append(f"{table['id']} title")
+    base_irr_present = ws[expected["base_irr_cell"]].value is not None
+    if not base_irr_present:
+        errors.append(f"missing base IRR cell {expected['base_irr_cell']}")
+    tables = [_find_banker_table(ws, table) for table in expected["tables"]]
+    for result in tables:
+        if result["passed"]:
             continue
-        best = (False, False, False, 0)
-        for candidate in candidates:
-            nums = _extract_window_numbers(ws, *candidate)
-            x_ok = all(_near(nums, value) for value in table["x_values"])
-            y_ok = all(_near(nums, value) for value in table["y_values"])
-            irr_count = _count_irr_cells(ws, *candidate)
-            grid_ok = irr_count >= 25
-            if sum([x_ok, y_ok, grid_ok]) > sum(best[:3]):
-                best = (x_ok, y_ok, grid_ok, irr_count)
-        if not best[0]:
-            errors.append(f"{table['id']} x-axis")
-        if not best[1]:
-            errors.append(f"{table['id']} y-axis")
-        if not best[2]:
-            errors.append(f"{table['id']} IRR grid")
-    return CheckResult(not errors, "workbook sensitivity tables pass" if not errors else "workbook sensitivity tables fail", {"errors": errors})
+        if not result["x_axis_found"]:
+            errors.append(f"{result['id']} x-axis")
+        elif not result["y_axis_found"]:
+            errors.append(f"{result['id']} y-axis")
+        else:
+            errors.append(f"{result['id']} IRR grid")
+    return CheckResult(
+        not errors,
+        "workbook sensitivity tables pass" if not errors else "workbook sensitivity tables fail",
+        {"errors": errors, "base_irr_present": base_irr_present, "tables": tables},
+    )
+
+
+def banker_workbook(ctx: ScoreContext) -> CheckResult:
+    return check_banker_workbook(
+        ctx.workspace / ctx.expected["required_outputs"][0], ctx.expected
+    )
 
 
 def _pptx_text(path: Path) -> tuple[list[str], int]:

@@ -18,3 +18,10 @@
 4. 保存最终 workspace、agent trace 和生成的 `score.json`。
 
 Rubric 只评价任务要求的最终产物。trace 用于诊断，不作为 official PASS 的评分输入。
+
+## BankerToolBench workbook locator
+
+`bankertoolbench_cake_lbo_sensitivity_hard` 按 5 个 x 轴值、5 个 y 轴值和相邻的
+5×5 IRR/formula 网格定位四张敏感性表。标题只用于候选并列时的辅助判断，不要求
+agent 逐字复用任务标题。外部 validator 与 rule scorer 共用同一实现，validator
+子进程使用当前 Python 解释器，避免虚拟环境依赖漂移。

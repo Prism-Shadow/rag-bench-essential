@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -23,7 +24,7 @@ def run_validator(workspace: Path, truth_dir: Path) -> dict[str, Any]:
     env = os.environ.copy()
     env["BENCH_TRUTH_DIR"] = str(truth_dir.resolve())
     proc = subprocess.run(
-        ["python3", str(validator.resolve())],
+        [sys.executable, str(validator.resolve())],
         cwd=workspace,
         env=env,
         text=True,
