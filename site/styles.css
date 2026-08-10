@@ -103,27 +103,29 @@ html[data-theme="dark"] .neon-blob { opacity: 0.14; }
 .nav-shell { min-height: 56px; display: flex; align-items: center; }
 .brand { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 650; letter-spacing: -0.02em; }
 .brand img { width: 28px; height: 28px; border-radius: 7px; }
-.nav-links { margin-left: auto; display: flex; align-items: center; gap: 2px; }
-.nav-links a {
-  padding: 7px 10px;
-  border-radius: 6px;
-  color: var(--muted-strong);
-  font-size: 14px;
-  transition: background-color 160ms ease, color 160ms ease;
-}
-.nav-links a:hover { background: var(--line-soft); color: var(--text); }
-.theme-toggle, .locale-toggle {
+.nav-actions { display: flex; margin-left: auto; align-items: center; gap: 6px; }
+.theme-toggle, .locale-toggle, .github-link {
+  display: inline-flex;
   width: 36px;
   height: 36px;
-  margin-left: 2px;
+  align-items: center;
+  justify-content: center;
   border: 1px solid transparent;
   border-radius: 8px;
   background: transparent;
   color: var(--muted-strong);
   cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
 }
-.locale-toggle { font-size: 12px; font-weight: 650; }
-.theme-toggle:hover, .locale-toggle:hover { border-color: var(--line); background: var(--surface-soft); color: var(--text); }
+.locale-toggle { width: auto; min-width: 108px; padding: 0 9px; gap: 9px; font-size: 14px; }
+.theme-toggle:hover, .locale-toggle:hover, .github-link:hover { border-color: var(--line); background: var(--surface-soft); color: var(--text); }
+.globe-icon { position: relative; width: 18px; height: 18px; flex: 0 0 auto; border: 1.5px solid currentColor; border-radius: 50%; }
+.globe-icon::before { position: absolute; inset: 2px 5px; border-right: 1px solid currentColor; border-left: 1px solid currentColor; border-radius: 50%; content: ""; }
+.globe-icon::after { position: absolute; top: 50%; right: 1px; left: 1px; border-top: 1px solid currentColor; content: ""; }
+.chevron-icon { width: 7px; height: 7px; margin: -3px 1px 0 2px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); }
+.moon-icon { width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; box-shadow: -5px 1px 0 0 currentColor; }
+.github-link img { width: 19px; height: 19px; opacity: 0.78; }
+html[data-theme="dark"] .github-link img { filter: invert(1); }
 
 .hero { position: relative; overflow: hidden; }
 .hero-dots {
@@ -276,7 +278,6 @@ th.is-active button { color: var(--brand); }
 .footer a:hover { color: var(--text); }
 
 @media (max-width: 760px) {
-  .nav-links a { display: none; }
   .hero-inner { padding: 72px 0 64px; }
   .hero-brand { flex-direction: column; gap: 10px; font-size: 28px; }
   .hero-brand img { width: 56px; height: 56px; }
@@ -295,6 +296,7 @@ th.is-active button { color: var(--brand); }
 }
 
 @media (max-width: 460px) {
+  .brand span { display: none; }
   .hero-actions { flex-direction: column; }
   .button { width: 100%; }
 }

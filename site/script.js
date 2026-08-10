@@ -1,6 +1,7 @@
 const root = document.documentElement;
 const themeToggle = document.querySelector(".theme-toggle");
 const localeToggle = document.querySelector(".locale-toggle");
+const localeLabel = document.querySelector(".locale-label");
 const tableHead = document.querySelector(".results-head");
 const tableBody = document.querySelector(".results-body");
 const chart = document.querySelector("#cost-chart");
@@ -9,8 +10,6 @@ const copy = {
   en: {
     title: "Data Analysis Bench",
     description: "Data Analysis Bench compares agents on 15 data-analysis tasks covering documents, spreadsheets, databases, multi-source analysis, and delivery.",
-    navResults: "Results",
-    navCases: "Cases",
     heroTitle: 'A benchmark for <span>end-to-end data analysis.</span>',
     heroCopy: "15 tasks covering documents, spreadsheets, databases, multi-source analysis, and delivery.",
     viewResults: "View results",
@@ -40,11 +39,10 @@ const copy = {
     analysisDescription: "Compute derived metrics and produce or validate analytical visuals.",
     footerText: "Data-analysis agent evaluation",
     rank: "#",
-    setting: "Setting",
+    setting: "Framework",
     model: "Model",
     accuracy: "Accuracy (%)",
-    averageTime: "Avg. time / case",
-    tokens: "Token usage (M)",
+    tokens: "Tokens (M)",
     recordedCost: "Cost ($)",
     accuracyAxis: "Accuracy (%)",
     costAxis: "Cost per case (USD)",
@@ -54,8 +52,6 @@ const copy = {
   zh: {
     title: "Data Analysis Bench 实验结果",
     description: "Data Analysis Bench 使用 15 道任务比较数据分析智能体，覆盖文档、表格、数据库、跨来源分析和交付。",
-    navResults: "结果",
-    navCases: "任务",
     heroTitle: '<span>端到端数据分析</span>评测。',
     heroCopy: "15 道任务，覆盖文档、电子表格、数据库、跨来源分析和交付。",
     viewResults: "查看结果",
@@ -85,10 +81,9 @@ const copy = {
     analysisDescription: "计算衍生指标，并生成或验证分析图表。",
     footerText: "数据分析智能体评测",
     rank: "#",
-    setting: "Setting",
-    model: "模型",
+    setting: "实验框架",
+    model: "模型名称",
     accuracy: "准确率（%）",
-    averageTime: "平均单题耗时",
     tokens: "Token 用量（M）",
     recordedCost: "成本（$）",
     accuracyAxis: "Accuracy（%）",
@@ -106,14 +101,9 @@ const state = {
 
 const sortableColumns = {
   accuracy: { label: "accuracy", defaultDirection: "desc" },
-  minutes_per_case: { label: "averageTime", defaultDirection: "asc" },
   tokens_m_per_run: { label: "tokens", defaultDirection: "asc" },
   recorded_cost_usd_per_run: { label: "recordedCost", defaultDirection: "asc" },
 };
-
-function minutesPerCase(row) {
-  return row.time_seconds_per_run / 60 / row.accuracy_total;
-}
 
 function tokensMPerRun(row) {
   return row.tokens_per_run / 1_000_000;
@@ -134,7 +124,6 @@ function accuracyPercent(row) {
 
 function valueForSort(row, key) {
   if (key === "accuracy") return row.accuracy_passes;
-  if (key === "minutes_per_case") return minutesPerCase(row);
   if (key === "tokens_m_per_run") return tokensMPerRun(row);
   return row[key];
 }
@@ -179,7 +168,6 @@ function renderTable() {
     <th>${t.setting}</th>
     <th>${t.model}</th>
     ${sortableHeader("accuracy")}
-    ${sortableHeader("minutes_per_case")}
     ${sortableHeader("tokens_m_per_run")}
     ${sortableHeader("recorded_cost_usd_per_run")}
   </tr>`;
@@ -203,7 +191,6 @@ function renderTable() {
             <strong>${percentage.toFixed(1)}%</strong>
           </span>
         </td>
-        <td class="numeric ${state.sort.key === "minutes_per_case" ? "is-active" : ""}" data-column="minutes_per_case">${minutesPerCase(row).toFixed(2)}m</td>
         <td class="numeric ${state.sort.key === "tokens_m_per_run" ? "is-active" : ""}" data-column="tokens_m_per_run">${tokensMPerRun(row).toFixed(2)}</td>
         <td class="numeric ${state.sort.key === "recorded_cost_usd_per_run" ? "is-active" : ""}" data-column="recorded_cost_usd_per_run">${formatRunCost(row.recorded_cost_usd_per_run)}</td>
       </tr>`;
@@ -225,8 +212,8 @@ function applyLocale() {
     const value = t[element.dataset.i18nHtml];
     if (value) element.innerHTML = value;
   });
-  localeToggle.textContent = state.locale === "zh" ? "EN" : "中";
-  localeToggle.setAttribute("aria-label", state.locale === "zh" ? "Switch to English" : "切换到中文");
+  localeLabel.textContent = state.locale === "zh" ? "中文" : "English";
+  localeToggle.setAttribute("aria-label", state.locale === "zh" ? "切换到英文" : "Switch to Chinese");
   themeToggle.setAttribute("aria-label", state.locale === "zh" ? "切换颜色主题" : "Switch color theme");
   chart.setAttribute("aria-label", t.chartAria);
   renderTable();
@@ -324,5 +311,5 @@ try {
   renderChart();
 } catch (error) {
   console.error(copy[state.locale].loadError, error);
-  tableBody.innerHTML = `<tr><td class="loading-cell" colspan="7">${copy[state.locale].loadError}</td></tr>`;
+  tableBody.innerHTML = `<tr><td class="loading-cell" colspan="6">${copy[state.locale].loadError}</td></tr>`;
 }

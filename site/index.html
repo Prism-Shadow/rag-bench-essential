@@ -28,8 +28,8 @@
         document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
       } catch {}
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260810-10" />
-    <script src="script.js?v=20260810-10" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260810-11" />
+    <script src="script.js?v=20260810-11" defer></script>
   </head>
   <body>
     <div class="neon-bg" aria-hidden="true">
@@ -43,14 +43,18 @@
           <img src="https://penguin.ooo/penguin-logo.svg" alt="" />
           <span>Data Analysis Bench</span>
         </a>
-        <nav class="nav-links" aria-label="Primary navigation">
-          <a href="#results" data-i18n="navResults">Results</a>
-          <a href="#coverage" data-i18n="navCases">Cases</a>
-          <a href="https://github.com/Prism-Shadow/rag-bench-essential">GitHub</a>
-          <button class="locale-toggle" type="button" aria-label="Switch to Chinese">中</button>
-          <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">
-            <span aria-hidden="true">◐</span>
+        <nav class="nav-actions" aria-label="Site controls">
+          <button class="locale-toggle" type="button" aria-label="Switch to Chinese">
+            <span class="globe-icon" aria-hidden="true"></span>
+            <span class="locale-label">English</span>
+            <span class="chevron-icon" aria-hidden="true"></span>
           </button>
+          <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">
+            <span class="moon-icon" aria-hidden="true"></span>
+          </button>
+          <a class="github-link" href="https://github.com/Prism-Shadow/rag-bench-essential" aria-label="GitHub">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/github.svg" alt="" />
+          </a>
         </nav>
       </div>
     </header>
@@ -104,7 +108,7 @@
             <table>
               <thead class="results-head"></thead>
               <tbody class="results-body">
-                <tr><td class="loading-cell" colspan="7" data-i18n="loadingResults">Loading published results…</td></tr>
+                <tr><td class="loading-cell" colspan="6" data-i18n="loadingResults">Loading published results…</td></tr>
               </tbody>
             </table>
           </div>
