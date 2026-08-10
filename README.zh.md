@@ -2,7 +2,7 @@
 
 语言：[English](README.md) | [中文](README.zh.md) | [实验结果](https://prism-shadow.github.io/rag-bench-essential/)
 
-Data Analysis Bench 是一套可复现的数据分析智能体评测，包含 15 道难度较高、接近真实工作流程的任务，覆盖长文档、扫描页面、层次表格、电子表格、SQLite 数据库、跨来源工作流、分析推理、可视化和交付要求。
+Data Analysis Bench 使用 15 道任务评测数据分析智能体，覆盖长文档、扫描页面、层次表格、电子表格、SQLite 数据库、跨来源工作流、可视化和交付。
 
 仓库保存每个公开任务的 payload，以及复现官方评分所需的 rubric、gold answer、validator、reference solution 和可选的视觉 judge prompt。其他 agent 可以只使用本仓库创建隔离 workspace 并完成评分。
 

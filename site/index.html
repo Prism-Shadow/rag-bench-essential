@@ -6,12 +6,12 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Data Analysis Bench is a reproducible suite of 15 difficult tasks spanning documents, spreadsheets, databases, multi-source analysis, and delivery."
+      content="Data Analysis Bench compares agents on 15 data-analysis tasks covering documents, spreadsheets, databases, multi-source analysis, and delivery."
     />
     <meta property="og:title" content="Data Analysis Bench" />
     <meta
       property="og:description"
-      content="Fifteen difficult, reproducible cases for evaluating end-to-end data analysis and delivery."
+      content="Results from 15 data-analysis tasks across documents, spreadsheets, databases, and multi-source workflows."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://prism-shadow.github.io/rag-bench-essential/" />
@@ -63,9 +63,9 @@
             <img src="https://penguin.ooo/penguin-logo.svg" alt="" />
             <span>Data Analysis Bench</span>
           </div>
-          <h1 data-i18n-html="heroTitle">A reproducible benchmark for <span>end-to-end data analysis.</span></h1>
+          <h1 data-i18n-html="heroTitle">A benchmark for <span>end-to-end data analysis.</span></h1>
           <p class="hero-copy" data-i18n="heroCopy">
-            Fifteen production-shaped tasks spanning documents, spreadsheets, databases, multi-source analysis, and delivery.
+            15 tasks covering documents, spreadsheets, databases, multi-source analysis, and delivery.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="#results"><span data-i18n="viewResults">View results</span> <span aria-hidden="true">→</span></a>
@@ -74,18 +74,18 @@
           <dl class="hero-stats" aria-label="Benchmark summary">
             <div>
               <dd>15</dd>
-              <dt data-i18n="benchmarkCases">Benchmark cases</dt>
-              <dd class="metric-desc" data-i18n="benchmarkCasesDesc">The same 15 tasks are used for every setting.</dd>
+              <dt data-i18n="benchmarkCases">Cases</dt>
+              <dd class="metric-desc" data-i18n="benchmarkCasesDesc">From 15 public benchmarks.</dd>
             </div>
             <div>
               <dd>8</dd>
-              <dt data-i18n="publishedSettings">Published settings</dt>
-              <dd class="metric-desc" data-i18n="publishedSettingsDesc">Eight agent, version, model, and skill configurations.</dd>
+              <dt data-i18n="publishedSettings">Settings</dt>
+              <dd class="metric-desc" data-i18n="publishedSettingsDesc">Eight configurations across PenguinHarness, Claude Code, and Codex.</dd>
             </div>
             <div class="accent">
               <dd>11/15</dd>
-              <dt data-i18n="highestScore">Highest hard-PASS score</dt>
-              <dd class="metric-desc" data-i18n="highestScoreDesc">The best setting passed every required gate on 11 cases.</dd>
+              <dt data-i18n="highestScore">Best result</dt>
+              <dd class="metric-desc" data-i18n="highestScoreDesc">Passed 11 cases.</dd>
             </div>
           </dl>
         </div>
@@ -95,8 +95,8 @@
         <div class="section-shell">
           <header class="section-heading">
             <p class="eyebrow" data-i18n="resultsEyebrow">Results</p>
-            <h2 data-i18n="resultsTitle">Current 15-case scoreboard</h2>
-            <p data-i18n="resultsDescription">One retained run per setting. Accuracy is official hard PASS, not partial rubric credit.</p>
+            <h2 data-i18n="resultsTitle">15-case results</h2>
+            <p data-i18n="resultsDescription">One run per setting. Accuracy counts hard PASS cases.</p>
           </header>
 
           <p class="table-hint" aria-hidden="true" data-i18n="tableHint">Swipe to view the full table →</p>
@@ -109,8 +109,8 @@
             </table>
           </div>
           <div class="result-notes">
-            <p data-i18n="resourceNote">Time is averaged per case; tokens and recorded cost are full-suite values. Penguin vision-proxy cost was not retained.</p>
-            <p data-i18n="regradeNote">Claude Code includes the BankerToolBench regrade under the 2026-08-10 evaluator fix. Historical rows could not be regraded without their saved workspaces.</p>
+            <p data-i18n="resourceNote">Time is averaged per case. Tokens and recorded cost cover one 15-case run. Penguin could use Gemini vision; its proxy cost was not retained. Claude Code and Codex had no auxiliary vision tool.</p>
+            <p data-i18n="regradeNote">Claude Code includes the 2026-08-10 BankerToolBench regrade. The other rows remain historical because their workspaces were not retained.</p>
           </div>
 
           <article class="chart-card" aria-labelledby="cost-chart-title">
@@ -137,8 +137,8 @@
         <div class="section-shell">
           <header class="section-heading">
             <p class="eyebrow" data-i18n="coverageEyebrow">Benchmark coverage</p>
-            <h2 data-i18n="coverageTitle">Fifteen hard cases from fifteen public benchmark families.</h2>
-            <p data-i18n="coverageDescription">Each case keeps the source task recognizable while focusing on end-to-end analysis, evidence, and delivery.</p>
+            <h2 data-i18n="coverageTitle">15 cases from 15 public benchmarks.</h2>
+            <p data-i18n="coverageDescription">One selected case from each benchmark.</p>
           </header>
           <div class="coverage-grid">
             <article>
@@ -162,7 +162,7 @@
               <div class="bench-tags"><span>DVWorld</span><span>DABStep</span></div>
             </article>
           </div>
-          <p class="coverage-note" data-i18n="coverageNote">This is a curated hard-case suite, not a replacement for each source benchmark’s full leaderboard.</p>
+          <p class="coverage-note" data-i18n="coverageNote">Full benchmark leaderboards remain the source for benchmark-wide results.</p>
         </div>
       </section>
     </main>
@@ -170,7 +170,7 @@
     <footer class="footer">
       <div class="section-shell footer-inner">
         <span>© 2026 Prism Shadow</span>
-        <span data-i18n="footerText">Reproducible data-analysis agent evaluation</span>
+        <span data-i18n="footerText">Data-analysis agent evaluation</span>
         <a href="https://github.com/Prism-Shadow/rag-bench-essential">GitHub ↗</a>
       </div>
     </footer>

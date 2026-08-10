@@ -2,7 +2,7 @@
 
 Languages: [English](README.md) | [中文](README.zh.md) | [Results site](https://prism-shadow.github.io/rag-bench-essential/)
 
-Data Analysis Bench is a reproducible suite of 15 difficult, production-shaped tasks for evaluating end-to-end data-analysis agents. It spans long documents, scanned pages, hierarchical tables, spreadsheets, SQLite databases, multi-source workflows, analytical reasoning, visualization, and delivery requirements.
+Data Analysis Bench evaluates data-analysis agents on 15 tasks covering long documents, scanned pages, hierarchical tables, spreadsheets, SQLite databases, multi-source workflows, visualization, and delivery.
 
 The repository includes each public task payload together with the rubric, gold answer, validator, reference solution, and optional visual-judge prompt needed to reproduce official scoring. Other agents can be staged and evaluated using this repository alone.
 
