@@ -1,5 +1,7 @@
 # RAG Bench Essential
 
+[Project website](https://prism-shadow.github.io/rag-bench-essential/) · [Evaluation contract](EVALUATION.md)
+
 本仓库保存当前固定的 15 个数据分析 benchmark case，以及复现官方评分所需的
 rubric、gold answer、validator、reference solution 和视觉 judge prompt。其他人可以
 只使用本仓库运行并评分自己的 agent。

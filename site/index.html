@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07111f" />
+    <meta
+      name="description"
+      content="RAG Bench Essential is a fixed suite of 15 production-shaped data analysis tasks with public payloads and external evaluation packages."
+    />
+    <meta property="og:title" content="RAG Bench Essential" />
+    <meta
+      property="og:description"
+      content="15 difficult, reproducible cases for evaluating agentic retrieval, analysis, evidence binding, and delivery."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://prism-shadow.github.io/rag-bench-essential/" />
+    <link rel="canonical" href="https://prism-shadow.github.io/rag-bench-essential/" />
+    <title>RAG Bench Essential — Fixed 15</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="nav-wrap">
+      <nav class="nav shell" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="RAG Bench Essential home">
+          <span class="brand-mark">R·B</span>
+          <span>RAG Bench Essential</span>
+        </a>
+        <div class="nav-links">
+          <a href="#benchmark">Benchmark</a>
+          <a href="#results">Results</a>
+          <a href="#evaluation">Evaluation</a>
+          <a href="https://github.com/Prism-Shadow/rag-bench-essential">GitHub</a>
+          <button class="theme-toggle" type="button" aria-label="Switch color theme" aria-pressed="false">
+            <span aria-hidden="true">◐</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero shell">
+        <div class="eyebrow"><span class="status-dot"></span> Open evaluation package · Fixed 15</div>
+        <h1>Measure whether an agent can finish the <span>whole job.</span></h1>
+        <p class="hero-copy">
+          Fifteen production-shaped cases across long documents, spreadsheets, SQLite, cross-source analysis,
+          evidence binding, and client-ready delivery. Public payloads stay isolated from external truth.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#results">Explore results <span>→</span></a>
+          <a class="button button-secondary" href="https://github.com/Prism-Shadow/rag-bench-essential">View repository</a>
+        </div>
+        <div class="metric-strip" aria-label="Benchmark summary">
+          <div><strong>15</strong><span>fixed cases</span></div>
+          <div><strong>8</strong><span>published settings</span></div>
+          <div><strong>4</strong><span>hard-gate layers</span></div>
+          <div><strong>100%</strong><span>external scoring</span></div>
+        </div>
+      </section>
+
+      <section id="benchmark" class="section shell">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">THE BENCHMARK</p>
+            <h2>Small roster. High diagnostic value.</h2>
+          </div>
+          <p>
+            Each case is selected for a concrete capability boundary—not a formatting trick or a toy join.
+          </p>
+        </div>
+        <div class="capability-grid">
+          <article class="capability-card feature-card">
+            <span class="card-index">01</span>
+            <h3>Agentic retrieval</h3>
+            <p>Find the right evidence in long PDFs, OCR-heavy contracts, large corpora, and mixed business documents.</p>
+            <div class="mini-tags"><span>LongDA</span><span>DocVQA</span><span>DCI</span></div>
+          </article>
+          <article class="capability-card">
+            <span class="card-index">02</span>
+            <h3>Program semantics</h3>
+            <p>Operate on real spreadsheets and SQLite while preserving formulas, schemas, and task-specific logic.</p>
+            <div class="mini-tags"><span>Spider2-Lite</span><span>PrepBench</span></div>
+          </article>
+          <article class="capability-card">
+            <span class="card-index">03</span>
+            <h3>Evidence binding</h3>
+            <p>Connect final claims to the correct source values across documents instead of returning plausible text.</p>
+            <div class="mini-tags"><span>DocFinQA</span><span>MultiHiertt</span></div>
+          </article>
+          <article class="capability-card">
+            <span class="card-index">04</span>
+            <h3>Delivery contracts</h3>
+            <p>Produce usable workbooks, decks, PDFs, reports, and exact output paths—not partial analysis.</p>
+            <div class="mini-tags"><span>BankerToolBench</span><span>DV-World</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="results" class="section shell">
+        <div class="section-heading results-heading">
+          <div>
+            <p class="kicker">RESULTS</p>
+            <h2>Current Fixed-15 scoreboard</h2>
+          </div>
+          <p>One retained run per setting. Accuracy is official hard PASS, not partial rubric credit.</p>
+        </div>
+
+        <div class="scoreboard-layout">
+          <div class="ranking card-surface">
+            <div class="surface-head"><span>Accuracy</span><span>PASS / 15</span></div>
+            <div class="rank-row top">
+              <div class="rank-label"><strong>Penguin Manual</strong><span>v0.1.5 · Goal off</span></div>
+              <div class="rank-track"><i style="--score: 73.3%"></i></div><b>11</b>
+            </div>
+            <div class="rank-row top">
+              <div class="rank-label"><strong>Penguin Manual + Goal</strong><span>v0.1.5</span></div>
+              <div class="rank-track"><i style="--score: 73.3%"></i></div><b>11</b>
+            </div>
+            <div class="rank-row">
+              <div class="rank-label"><strong>Penguin Auto</strong><span>v0.1.5</span></div>
+              <div class="rank-track"><i style="--score: 66.7%"></i></div><b>10</b>
+            </div>
+            <div class="rank-row">
+              <div class="rank-label"><strong>Claude Code</strong><span>Opus 4.8 · max</span></div>
+              <div class="rank-track"><i style="--score: 66.7%"></i></div><b>10</b>
+            </div>
+            <div class="rank-row">
+              <div class="rank-label"><strong>Codex</strong><span>GPT-5.5 · xhigh</span></div>
+              <div class="rank-track"><i style="--score: 66.7%"></i></div><b>10</b>
+            </div>
+          </div>
+
+          <aside class="result-callout card-surface">
+            <p class="kicker">BEST CURRENT DEFAULT</p>
+            <strong class="big-score">11<span>/15</span></strong>
+            <h3>PenguinHarness v0.1.5 + Manual Skill</h3>
+            <p>Goal off · DeepSeek V4 Flash xhigh · full Skill injection</p>
+            <dl>
+              <div><dt>Tokens</dt><dd>12.38M</dd></div>
+              <div><dt>Cost</dt><dd>$0.1995</dd></div>
+              <div><dt>Wall total</dt><dd>97.8 min</dd></div>
+            </dl>
+          </aside>
+        </div>
+
+        <div class="table-wrap card-surface" tabindex="0" aria-label="Complete benchmark result table">
+          <table>
+            <thead>
+              <tr><th>Setting</th><th>Version & configuration</th><th>Acc</th><th>Wall</th><th>Tokens</th><th>Cost</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Penguin w/o Skill</td><td>v0.0.1 · DeepSeek V4 Flash · Goal off</td><td>8/15</td><td>136.5m</td><td>18.51M</td><td>$0.2407</td></tr>
+              <tr><td>Penguin w/o Skill</td><td>v0.1.5 · DeepSeek V4 Flash · Goal off</td><td>9/15</td><td>89.8m</td><td>17.78M</td><td>$0.2231</td></tr>
+              <tr><td>Penguin w/ Auto Skill</td><td>v0.1.5 · Auto Agent State · Goal off</td><td>10/15</td><td>94.4m</td><td>13.75M</td><td>$0.2158</td></tr>
+              <tr><td>Penguin w/ Manual Skill</td><td>v0.0.1 · Full injection · Goal off</td><td>9/15</td><td>97.7m</td><td>16.44M</td><td>$0.2250</td></tr>
+              <tr class="highlight"><td>Penguin w/ Manual Skill</td><td>v0.1.5 · Full injection · Goal off</td><td>11/15</td><td>97.8m</td><td>12.38M</td><td>$0.1995</td></tr>
+              <tr><td>Penguin Manual + Goal</td><td>v0.1.5 · Full injection · Goal on</td><td>11/15</td><td>87.6m</td><td>17.65M</td><td>$0.2267</td></tr>
+              <tr><td>Claude Code</td><td>CLI 2.1.191 · Claude Opus 4.8 · max</td><td>10/15</td><td>159.1m</td><td>16.93M</td><td>$34.27</td></tr>
+              <tr><td>Codex</td><td>CLI 0.146.0-alpha.9.2 · GPT-5.5 · xhigh</td><td>10/15</td><td>108.9m</td><td>12.22M</td><td>$18.94</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="result-note">
+          Evaluator note · Claude Code’s BankerToolBench artifact was regraded after the 2026-08-10 workbook-locator fix, moving from 9/15 to 10/15. The other seven Banker artifacts were unavailable and retain their historical result.
+        </p>
+      </section>
+
+      <section id="evaluation" class="section shell">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">EVALUATION CONTRACT</p>
+            <h2>Public task in. External verdict out.</h2>
+          </div>
+          <p>The benchmark keeps agent execution simple while making result claims auditable.</p>
+        </div>
+        <div class="flow-grid">
+          <article><span>1</span><h3>Isolated workspace</h3><p>The agent sees only <code>task.md</code>, <code>data/</code>, and optional <code>env.md</code>.</p></article>
+          <article><span>2</span><h3>External truth</h3><p>Gold answers, validators, rubrics, and visual prompts remain outside the workspace.</p></article>
+          <article><span>3</span><h3>Hard-gate PASS</h3><p>Answer, evidence, intermediate semantics, and delivery must all satisfy the case contract.</p></article>
+        </div>
+
+        <div class="case-roster card-surface">
+          <div>
+            <p class="kicker">FIXED ROSTER</p>
+            <h3>15 representative cases</h3>
+          </div>
+          <ol>
+            <li>Spider2-Lite</li><li>DCI / BrowseComp+</li><li>DocFinQA</li><li>DocVQA</li><li>LongDA</li>
+            <li>MultiHiertt</li><li>WorkspaceBench</li><li>DV-World</li><li>BankerToolBench</li><li>FinLongDocQA</li>
+            <li>DABstep</li><li>PrepBench</li><li>SpreadsheetBench</li><li>HarveyLab</li><li>FDABench</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="cta shell">
+        <div>
+          <p class="kicker">RUN YOUR AGENT</p>
+          <h2>Reproduce the benchmark from one repository.</h2>
+          <p>Clone the payloads, stage an isolated case, then score the final workspace externally.</p>
+        </div>
+        <div class="terminal" aria-label="Quick start commands">
+          <div class="terminal-bar"><i></i><i></i><i></i><span>quick-start</span></div>
+          <pre><code><span>$</span> pip install -r requirements-eval.txt
+<span>$</span> python scripts/stage_case.py \
+    --case-id prepbench_loyalty_tier_normalization_hard \
+    --workspace /tmp/rag-bench/prepbench
+<span>$</span> python scripts/score_case.py \
+    --case-id prepbench_loyalty_tier_normalization_hard \
+    --workspace /tmp/rag-bench/prepbench</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer shell">
+      <div class="brand"><span class="brand-mark">R·B</span><span>RAG Bench Essential</span></div>
+      <p>Built for reproducible agent evaluation.</p>
+      <a href="https://github.com/Prism-Shadow/rag-bench-essential">GitHub ↗</a>
+    </footer>
+  </body>
+</html>
