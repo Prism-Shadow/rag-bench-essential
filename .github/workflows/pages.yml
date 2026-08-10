@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - codex/fix-banker-evaluator
     paths:
       - "site/**"
       - ".github/workflows/pages.yml"

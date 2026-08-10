@@ -6,7 +6,7 @@ const preferred = window.matchMedia("(prefers-color-scheme: light)").matches ? "
 function applyTheme(theme) {
   root.dataset.theme = theme;
   toggle.setAttribute("aria-pressed", String(theme === "light"));
-  document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#f5f8fc" : "#07111f";
+  document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#ffffff" : "#000000";
 }
 
 applyTheme(stored || preferred);
