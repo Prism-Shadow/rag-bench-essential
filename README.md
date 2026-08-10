@@ -33,7 +33,7 @@ Evaluator material is versioned for reproducibility, but it must never be copied
 
 ## Results
 
-Each setting retains one complete 15-case run. Accuracy is the number of official hard PASS results; time is averaged per case; token usage is the full-suite total. Cost is labeled **recorded cost** because Penguin settings could call `google/gemini-3.6-flash` for visual input and the OpenRouter proxy cost was not retained. Claude Code and Codex did not have that auxiliary vision tool.
+Each setting retains one complete 15-case run. Accuracy is the number of PASS results; time is averaged per case; token usage is the full-suite total. Cost is labeled **recorded cost** because Penguin settings could call `google/gemini-3.6-flash` for visual input and the OpenRouter proxy cost was not retained. Claude Code and Codex did not have that auxiliary vision tool.
 
 <!-- RESULTS_TABLE_START -->
 | Setting | Version and configuration | Accuracy | Avg. time / case (min) | Total tokens (M/run) | Recorded cost (USD/run) | Result basis |

@@ -28,8 +28,8 @@
         document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
       } catch {}
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260810-4" />
-    <script src="script.js?v=20260810-4" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260810-5" />
+    <script src="script.js?v=20260810-5" defer></script>
   </head>
   <body>
     <div class="neon-bg" aria-hidden="true">
@@ -96,11 +96,11 @@
           <header class="section-heading">
             <p class="eyebrow" data-i18n="resultsEyebrow">Results</p>
             <h2 data-i18n="resultsTitle">15-case results</h2>
-            <p data-i18n="resultsDescription">One run per setting. Accuracy counts hard PASS cases.</p>
+            <p data-i18n="resultsDescription">One run per setting. Accuracy counts PASS cases.</p>
           </header>
 
           <p class="table-hint" aria-hidden="true" data-i18n="tableHint">Swipe to view the full table →</p>
-          <div class="table-wrap" tabindex="0" aria-label="Complete benchmark result table; scroll horizontally on small screens">
+          <div class="table-wrap" aria-label="Complete benchmark result table">
             <table>
               <thead class="results-head"></thead>
               <tbody class="results-body">
@@ -114,20 +114,16 @@
               <div>
                 <h3 id="cost-chart-title" data-i18n="chartTitle">Performance and cost by setup</h3>
               </div>
-              <div class="chart-legend" aria-label="Model legend">
-                <span><i class="legend-dot legend-deepseek"></i>DeepSeek V4 Flash</span>
-                <span><i class="legend-dot legend-opus"></i>Claude Opus 4.8</span>
-                <span><i class="legend-dot legend-gpt"></i>GPT-5.5</span>
+              <div class="chart-legend" aria-label="Harness and model legend">
+                <span><i class="legend-dot legend-deepseek"></i>PenguinHarness · DeepSeek V4 Flash</span>
+                <span><i class="legend-dot legend-opus"></i>Claude Code · Claude Opus 4.8</span>
+                <span><i class="legend-dot legend-gpt"></i>Codex · GPT-5.5</span>
               </div>
             </header>
             <div class="chart-wrap">
               <div id="cost-chart" class="html-chart" role="group" aria-label="Scatter plot comparing accuracy and recorded cost for eight settings"></div>
             </div>
           </article>
-          <div class="result-notes">
-            <p data-i18n="resourceNote">Time is averaged per case. Tokens and recorded cost cover one 15-case run. Penguin could use Gemini vision; its proxy cost was not retained. Claude Code and Codex had no auxiliary vision tool.</p>
-            <p data-i18n="regradeNote">Claude Code includes the 2026-08-10 BankerToolBench regrade. The other rows remain historical because their workspaces were not retained.</p>
-          </div>
         </div>
       </section>
 

@@ -23,11 +23,9 @@ const copy = {
     highestScoreDesc: "Two Penguin v0.1.5 manual-Skill settings tie.",
     resultsEyebrow: "Results",
     resultsTitle: "15-case results",
-    resultsDescription: "One run per setting. Accuracy counts hard PASS cases.",
+    resultsDescription: "One run per setting. Accuracy counts PASS cases.",
     tableHint: "Swipe to view the full table →",
     loadingResults: "Loading published results…",
-    resourceNote: "Time is averaged per case. Tokens and recorded cost cover one 15-case run. Penguin could use Gemini vision; its proxy cost was not retained. Claude Code and Codex had no auxiliary vision tool.",
-    regradeNote: "Claude Code includes the 2026-08-10 BankerToolBench regrade. The other rows remain historical because their workspaces were not retained.",
     chartTitle: "Performance and cost by setup",
     coverageEyebrow: "Benchmark coverage",
     coverageTitle: "15 cases from 15 public benchmarks.",
@@ -51,7 +49,7 @@ const copy = {
     accuracyAxis: "Accuracy (%)",
     costAxis: "Cost per case (USD)",
     loadError: "Unable to load published results.",
-    chartAria: "Scatter plot comparing accuracy and cost per case; colors show models and labels show harness setups",
+    chartAria: "Scatter plot comparing accuracy and cost per case; colors show harness and model pairs",
   },
   zh: {
     title: "Data Analysis Bench 实验结果",
@@ -70,11 +68,9 @@ const copy = {
     highestScoreDesc: "Penguin v0.1.5 手写 Skill 两组配置并列。",
     resultsEyebrow: "实验结果",
     resultsTitle: "15 道任务结果表",
-    resultsDescription: "每个 setting 保留一轮结果。Accuracy 为 hard PASS 数量。",
+    resultsDescription: "每个 setting 保留一轮结果。Accuracy 为 PASS 数量。",
     tableHint: "滑动查看完整表格 →",
     loadingResults: "正在加载已发布结果…",
-    resourceNote: "时间为单题平均值。Token 和已记录成本按 15 道题合计。Penguin 可使用 Gemini 视觉工具，代理费用未保留。Claude Code 和 Codex 没有辅助视觉工具。",
-    regradeNote: "Claude Code 包含 2026-08-10 的 BankerToolBench 重评。其余行因未保留 workspace，继续使用历史结果。",
     chartTitle: "不同配置的效果与成本",
     coverageEyebrow: "Benchmark 覆盖",
     coverageTitle: "15 道任务，来自 15 个公开 benchmark。",
@@ -98,7 +94,7 @@ const copy = {
     accuracyAxis: "Accuracy（%）",
     costAxis: "单题成本（美元）",
     loadError: "无法加载已发布结果。",
-    chartAria: "比较 8 个配置的 Accuracy 和单题成本；颜色表示模型，标签表示 harness 配置",
+    chartAria: "比较 8 个配置的 Accuracy 和单题成本；颜色表示 harness 与模型组合",
   },
 };
 
@@ -257,32 +253,6 @@ function formatCaseCost(value) {
   return value < 0.1 ? `$${value.toFixed(4)}` : `$${value.toFixed(2)}`;
 }
 
-function chartLabel(row) {
-  const labels = {
-    en: {
-      "penguin-015-manual": "PH .1.5 · manual",
-      "penguin-015-manual-goal": "PH .1.5 · manual + Goal",
-      "penguin-015-auto-state": "PH .1.5 · auto state",
-      "penguin-015-original": "PH .1.5 · no skill",
-      "penguin-001-manual": "PH .0.1 · manual",
-      "penguin-001-original": "PH .0.1 · no skill",
-      "claude-opus-48": "Claude Code",
-      "codex-gpt-55": "Codex",
-    },
-    zh: {
-      "penguin-015-manual": "PH .1.5 · 手写 Skill",
-      "penguin-015-manual-goal": "PH .1.5 · 手写 Skill + Goal",
-      "penguin-015-auto-state": "PH .1.5 · 自动优化 State",
-      "penguin-015-original": "PH .1.5 · 无 Skill",
-      "penguin-001-manual": "PH .0.1 · 手写 Skill",
-      "penguin-001-original": "PH .0.1 · 无 Skill",
-      "claude-opus-48": "Claude Code",
-      "codex-gpt-55": "Codex",
-    },
-  };
-  return labels[state.locale][row.id];
-}
-
 function renderChart() {
   if (!state.results.length) return;
   const t = copy[state.locale];
@@ -294,16 +264,6 @@ function renderChart() {
   const yPosition = (value) => ((value - yMin) / (yMax - yMin)) * 100;
   const xTicks = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 3];
   const yTicks = [50, 60, 70];
-  const labelPositions = {
-    "penguin-015-manual": { side: "right", offset: -26 },
-    "penguin-015-manual-goal": { side: "right", offset: 10 },
-    "penguin-015-auto-state": { side: "right", offset: -18 },
-    "penguin-015-original": { side: "right", offset: -22 },
-    "penguin-001-manual": { side: "right", offset: 10 },
-    "penguin-001-original": { side: "right", offset: -18 },
-    "claude-opus-48": { side: "left", offset: -20 },
-    "codex-gpt-55": { side: "right", offset: 10 },
-  };
   const verticalGrid = xTicks.map((tick) => `
     <span class="chart-grid chart-grid-x" style="--position:${xPosition(tick)}%">
       <span class="chart-tick chart-tick-x">$${tick}</span>
@@ -313,12 +273,10 @@ function renderChart() {
       <span class="chart-tick chart-tick-y">${tick}</span>
     </span>`).join("");
   const points = state.results.map((row) => {
-    const labelPosition = labelPositions[row.id];
     const setting = state.locale === "zh" ? row.setting_zh : row.setting;
     const details = `${setting}, ${row.model}, ${row.accuracy_passes}/${row.accuracy_total}, ${formatCaseCost(costPerCase(row))}`;
-    return `<button class="chart-point ${chartModelClass(row.model)} label-${labelPosition.side}" style="--x:${xPosition(costPerCase(row))}%;--y:${yPosition(accuracyPercent(row))}%;--label-y:${labelPosition.offset}px" type="button" aria-label="${escapeHtml(details)}" title="${escapeHtml(details)}">
+    return `<button class="chart-point ${chartModelClass(row.model)}" style="--x:${xPosition(costPerCase(row))}%;--y:${yPosition(accuracyPercent(row))}%" type="button" aria-label="${escapeHtml(details)}" title="${escapeHtml(details)}">
       <span class="chart-point-dot" aria-hidden="true"></span>
-      <span class="chart-point-label" aria-hidden="true">${escapeHtml(chartLabel(row))}</span>
     </button>`;
   }).join("");
   chart.innerHTML = `<div class="chart-plot">

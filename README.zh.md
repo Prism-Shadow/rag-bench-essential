@@ -33,7 +33,7 @@ Data Analysis Bench 使用 15 道任务评测数据分析智能体，覆盖长�
 
 ## 实验结果
 
-每个 setting 保留一轮完整的 15-case 结果。Accuracy 按 official hard PASS 数量统计；时间为每题平均值；Token 为完整一轮的合计。成本明确标为“已记录成本”，因为 Penguin setting 允许使用 `google/gemini-3.6-flash` 处理视觉输入，但没有保留 OpenRouter 视觉代理费用。Claude Code 和 Codex 没有这个辅助视觉工具。
+每个 setting 保留一轮完整的 15-case 结果。Accuracy 按 PASS 数量统计；时间为每题平均值；Token 为完整一轮的合计。成本明确标为“已记录成本”，因为 Penguin setting 允许使用 `google/gemini-3.6-flash` 处理视觉输入，但没有保留 OpenRouter 视觉代理费用。Claude Code 和 Codex 没有这个辅助视觉工具。
 
 <!-- RESULTS_TABLE_START -->
 | Setting | 版本与配置 | Accuracy | 平均单题耗时（分钟） | 总 Token（百万/轮） | 已记录成本（美元/轮） | 结果口径 |
