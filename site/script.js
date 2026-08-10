@@ -3,8 +3,7 @@ const themeToggle = document.querySelector(".theme-toggle");
 const localeToggle = document.querySelector(".locale-toggle");
 const tableHead = document.querySelector(".results-head");
 const tableBody = document.querySelector(".results-body");
-const canvas = document.querySelector("#cost-chart");
-const chartTooltip = document.querySelector(".chart-tooltip");
+const chart = document.querySelector("#cost-chart");
 
 const copy = {
   en: {
@@ -17,11 +16,8 @@ const copy = {
     viewResults: "View results",
     viewGithub: "View on GitHub",
     benchmarkCases: "Cases",
-    benchmarkCasesDesc: "From 15 public benchmarks.",
     publishedSettings: "Settings",
-    publishedSettingsDesc: "Eight configurations across PenguinHarness, Claude Code, and Codex.",
     highestScore: "Best result",
-    highestScoreDesc: "Passed 11 cases.",
     resultsEyebrow: "Results",
     resultsTitle: "15-case results",
     resultsDescription: "One run per setting. Accuracy counts hard PASS cases.",
@@ -50,7 +46,7 @@ const copy = {
     tokens: "Tokens / run",
     recordedCost: "Recorded cost / run",
     accuracyAxis: "Accuracy (%)",
-    costAxis: "Cost per case (USD, log scale)",
+    costAxis: "Cost per case (USD)",
     loadError: "Unable to load published results.",
     chartAria: "Scatter plot comparing accuracy and cost per case; colors show models and labels show harness setups",
   },
@@ -64,11 +60,8 @@ const copy = {
     viewResults: "查看结果",
     viewGithub: "查看 GitHub",
     benchmarkCases: "任务",
-    benchmarkCasesDesc: "来自 15 个公开 benchmark。",
     publishedSettings: "配置",
-    publishedSettingsDesc: "PenguinHarness、Claude Code 和 Codex 共 8 组。",
     highestScore: "最佳结果",
-    highestScoreDesc: "通过 11 道。",
     resultsEyebrow: "实验结果",
     resultsTitle: "15 道任务结果表",
     resultsDescription: "每个 setting 保留一轮结果。Accuracy 为 hard PASS 数量。",
@@ -97,7 +90,7 @@ const copy = {
     tokens: "Token / 轮",
     recordedCost: "已记录成本 / 轮",
     accuracyAxis: "Accuracy（%）",
-    costAxis: "单题成本（美元，对数刻度）",
+    costAxis: "单题成本（美元）",
     loadError: "无法加载已发布结果。",
     chartAria: "比较 8 个配置的 Accuracy 和单题成本；颜色表示模型，标签表示 harness 配置",
   },
@@ -107,7 +100,6 @@ const state = {
   locale: root.dataset.locale === "zh" ? "zh" : "en",
   results: [],
   sort: { key: "accuracy", direction: "desc" },
-  chartPoints: [],
 };
 
 const sortableColumns = {
@@ -234,22 +226,21 @@ function applyLocale() {
   localeToggle.textContent = state.locale === "zh" ? "EN" : "中";
   localeToggle.setAttribute("aria-label", state.locale === "zh" ? "Switch to English" : "切换到中文");
   themeToggle.setAttribute("aria-label", state.locale === "zh" ? "切换颜色主题" : "Switch color theme");
-  canvas.setAttribute("aria-label", t.chartAria);
+  chart.setAttribute("aria-label", t.chartAria);
   renderTable();
-  drawChart();
+  renderChart();
 }
 
 function applyTheme(theme) {
   root.dataset.theme = theme;
   themeToggle.setAttribute("aria-pressed", String(theme === "light"));
   document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#ffffff" : "#000000";
-  drawChart();
 }
 
-function chartColor(model) {
-  if (model === "Claude Opus 4.8") return "#ef4444";
-  if (model === "GPT-5.5") return "#10b981";
-  return "#2563eb";
+function chartModelClass(model) {
+  if (model === "Claude Opus 4.8") return "model-opus";
+  if (model === "GPT-5.5") return "model-gpt";
+  return "model-deepseek";
 }
 
 function costPerCase(row) {
@@ -286,128 +277,49 @@ function chartLabel(row) {
   return labels[state.locale][row.id];
 }
 
-function drawChart() {
-  if (!state.results.length || !canvas.clientWidth) return;
-  const textColor = "#0f172a";
-  const mutedColor = "#64748b";
-  const lineColor = "#e2e8f0";
-  const surfaceColor = "#ffffff";
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.round(width * dpr);
-  canvas.height = Math.round(height * dpr);
-  const context = canvas.getContext("2d");
-  context.setTransform(dpr, 0, 0, dpr, 0, 0);
-  context.clearRect(0, 0, width, height);
-
-  const compact = width < 620;
-  const margin = { top: 24, right: 28, bottom: 58, left: compact ? 52 : 64 };
-  const plotWidth = width - margin.left - margin.right;
-  const plotHeight = height - margin.top - margin.bottom;
-  const costs = state.results.map(costPerCase);
-  const minLog = Math.log10(Math.min(...costs) / 1.5);
-  const maxLog = Math.log10(Math.max(...costs) * 1.4);
+function renderChart() {
+  if (!state.results.length) return;
+  const t = copy[state.locale];
+  const xMin = Math.log10(0.01);
+  const xMax = Math.log10(3);
   const yMin = 50;
   const yMax = 76;
-  const xPosition = (value) => margin.left + ((Math.log10(value) - minLog) / (maxLog - minLog)) * plotWidth;
-  const yPosition = (value) => margin.top + ((yMax - value) / (yMax - yMin)) * plotHeight;
-
-  context.font = `${compact ? 10 : 11}px ui-sans-serif, system-ui, sans-serif`;
-  context.lineWidth = 1;
-  context.textBaseline = "middle";
-  context.textAlign = "right";
-  [50, 60, 70].forEach((tick) => {
-    const y = yPosition(tick);
-    context.strokeStyle = lineColor;
-    context.beginPath();
-    context.moveTo(margin.left, y);
-    context.lineTo(width - margin.right, y);
-    context.stroke();
-    context.fillStyle = mutedColor;
-    context.fillText(String(tick), margin.left - 10, y);
-  });
-
-  const xTicks = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 3].filter((tick) => Math.log10(tick) >= minLog && Math.log10(tick) <= maxLog);
-  context.textAlign = "center";
-  xTicks.forEach((tick) => {
-    const x = xPosition(tick);
-    context.strokeStyle = lineColor;
-    context.beginPath();
-    context.moveTo(x, margin.top);
-    context.lineTo(x, height - margin.bottom);
-    context.stroke();
-    context.fillStyle = mutedColor;
-    context.fillText(`$${tick}`, x, height - margin.bottom + 18);
-  });
-
-  const t = copy[state.locale];
-  context.fillStyle = mutedColor;
-  context.font = `11px ui-sans-serif, system-ui, sans-serif`;
-  context.fillText(t.costAxis, margin.left + plotWidth / 2, height - 12);
-  context.save();
-  context.translate(14, margin.top + plotHeight / 2);
-  context.rotate(-Math.PI / 2);
-  context.fillText(t.accuracyAxis, 0, 0);
-  context.restore();
-
-  state.chartPoints = state.results.map((row) => {
-    const x = xPosition(costPerCase(row));
-    const y = yPosition(accuracyPercent(row));
-    context.beginPath();
-    context.arc(x, y, 6.5, 0, Math.PI * 2);
-    context.fillStyle = chartColor(row.model);
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = surfaceColor;
-    context.stroke();
-    return { x, y, row };
-  });
-
-  const labelOffsets = {
-    "penguin-015-manual": -13,
-    "penguin-015-manual-goal": 13,
-    "penguin-015-auto-state": -9,
-    "penguin-015-original": -11,
-    "penguin-001-manual": 12,
-    "penguin-001-original": -9,
-    "claude-opus-48": -11,
-    "codex-gpt-55": 12,
+  const xPosition = (value) => ((Math.log10(value) - xMin) / (xMax - xMin)) * 100;
+  const yPosition = (value) => ((value - yMin) / (yMax - yMin)) * 100;
+  const xTicks = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 3];
+  const yTicks = [50, 60, 70];
+  const labelPositions = {
+    "penguin-015-manual": { side: "right", offset: -26 },
+    "penguin-015-manual-goal": { side: "right", offset: 10 },
+    "penguin-015-auto-state": { side: "right", offset: -18 },
+    "penguin-015-original": { side: "right", offset: -22 },
+    "penguin-001-manual": { side: "right", offset: 10 },
+    "penguin-001-original": { side: "right", offset: -18 },
+    "claude-opus-48": { side: "left", offset: -20 },
+    "codex-gpt-55": { side: "right", offset: 10 },
   };
-  context.font = `${compact ? 9 : 10}px ui-sans-serif, system-ui, sans-serif`;
-  context.fillStyle = textColor;
-  context.textAlign = "left";
-  state.chartPoints.forEach(({ x, y, row }) => {
-    const label = chartLabel(row);
-    const labelWidth = context.measureText(label).width;
-    const preferLeft = row.id === "claude-opus-48" || x + labelWidth + 14 > width - margin.right;
-    const labelX = preferLeft ? x - labelWidth - 11 : x + 11;
-    const labelY = y + labelOffsets[row.id];
-    context.fillText(label, labelX, labelY);
-  });
-}
-
-function hideChartTooltip() {
-  chartTooltip.hidden = true;
-}
-
-function showChartTooltip(event) {
-  const bounds = canvas.getBoundingClientRect();
-  const x = event.clientX - bounds.left;
-  const y = event.clientY - bounds.top;
-  const point = state.chartPoints.find((candidate) => Math.hypot(candidate.x - x, candidate.y - y) <= 12);
-  if (!point) {
-    hideChartTooltip();
-    return;
-  }
-  const row = point.row;
-  const setting = state.locale === "zh" ? row.setting_zh : row.setting;
-  chartTooltip.innerHTML = `<strong>${escapeHtml(setting)}</strong><span>${escapeHtml(row.model)}</span><span>${row.accuracy_passes}/${row.accuracy_total} · ${formatCaseCost(costPerCase(row))}/case</span>`;
-  chartTooltip.hidden = false;
-  const tooltipWidth = chartTooltip.offsetWidth;
-  const tooltipHeight = chartTooltip.offsetHeight;
-  chartTooltip.style.left = `${Math.min(Math.max(point.x + 12, 8), bounds.width - tooltipWidth - 8)}px`;
-  chartTooltip.style.top = `${Math.max(point.y - tooltipHeight - 12, 8)}px`;
+  const verticalGrid = xTicks.map((tick) => `
+    <span class="chart-grid chart-grid-x" style="--position:${xPosition(tick)}%">
+      <span class="chart-tick chart-tick-x">$${tick}</span>
+    </span>`).join("");
+  const horizontalGrid = yTicks.map((tick) => `
+    <span class="chart-grid chart-grid-y" style="--position:${yPosition(tick)}%">
+      <span class="chart-tick chart-tick-y">${tick}</span>
+    </span>`).join("");
+  const points = state.results.map((row) => {
+    const labelPosition = labelPositions[row.id];
+    const setting = state.locale === "zh" ? row.setting_zh : row.setting;
+    const details = `${setting}, ${row.model}, ${row.accuracy_passes}/${row.accuracy_total}, ${formatCaseCost(costPerCase(row))}`;
+    return `<button class="chart-point ${chartModelClass(row.model)} label-${labelPosition.side}" style="--x:${xPosition(costPerCase(row))}%;--y:${yPosition(accuracyPercent(row))}%;--label-y:${labelPosition.offset}px" type="button" aria-label="${escapeHtml(details)}" title="${escapeHtml(details)}">
+      <span class="chart-point-dot" aria-hidden="true"></span>
+      <span class="chart-point-label" aria-hidden="true">${escapeHtml(chartLabel(row))}</span>
+    </button>`;
+  }).join("");
+  chart.innerHTML = `<div class="chart-plot">
+    ${verticalGrid}${horizontalGrid}${points}
+    <span class="chart-axis-title chart-axis-x">${escapeHtml(t.costAxis)}</span>
+    <span class="chart-axis-title chart-axis-y">${escapeHtml(t.accuracyAxis)}</span>
+  </div>`;
 }
 
 themeToggle.addEventListener("click", () => {
@@ -434,20 +346,6 @@ tableHead.addEventListener("click", (event) => {
   renderTable();
 });
 
-canvas.addEventListener("pointermove", showChartTooltip);
-canvas.addEventListener("pointerleave", hideChartTooltip);
-
-let resizeFrame;
-const redrawOnResize = () => {
-  cancelAnimationFrame(resizeFrame);
-  resizeFrame = requestAnimationFrame(drawChart);
-};
-if ("ResizeObserver" in window) {
-  new ResizeObserver(redrawOnResize).observe(canvas);
-} else {
-  window.addEventListener("resize", redrawOnResize);
-}
-
 applyTheme(root.dataset.theme === "light" ? "light" : "dark");
 applyLocale();
 
@@ -456,7 +354,7 @@ try {
   if (!Array.isArray(payload.results)) throw new Error("embedded results are missing");
   state.results = payload.results;
   renderTable();
-  drawChart();
+  renderChart();
 } catch (error) {
   console.error(copy[state.locale].loadError, error);
   tableBody.innerHTML = `<tr><td class="loading-cell" colspan="7">${copy[state.locale].loadError}</td></tr>`;

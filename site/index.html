@@ -75,17 +75,14 @@
             <div>
               <dd>15</dd>
               <dt data-i18n="benchmarkCases">Cases</dt>
-              <dd class="metric-desc" data-i18n="benchmarkCasesDesc">From 15 public benchmarks.</dd>
             </div>
             <div>
               <dd>8</dd>
               <dt data-i18n="publishedSettings">Settings</dt>
-              <dd class="metric-desc" data-i18n="publishedSettingsDesc">Eight configurations across PenguinHarness, Claude Code, and Codex.</dd>
             </div>
             <div class="accent">
               <dd>11/15</dd>
               <dt data-i18n="highestScore">Best result</dt>
-              <dd class="metric-desc" data-i18n="highestScoreDesc">Passed 11 cases.</dd>
             </div>
           </dl>
         </div>
@@ -108,10 +105,6 @@
               </tbody>
             </table>
           </div>
-          <div class="result-notes">
-            <p data-i18n="resourceNote">Time is averaged per case. Tokens and recorded cost cover one 15-case run. Penguin could use Gemini vision; its proxy cost was not retained. Claude Code and Codex had no auxiliary vision tool.</p>
-            <p data-i18n="regradeNote">Claude Code includes the 2026-08-10 BankerToolBench regrade. The other rows remain historical because their workspaces were not retained.</p>
-          </div>
 
           <article class="chart-card" aria-labelledby="cost-chart-title">
             <header class="chart-heading">
@@ -125,10 +118,13 @@
               </div>
             </header>
             <div class="chart-wrap">
-              <canvas id="cost-chart" role="img" aria-label="Scatter plot comparing accuracy and recorded cost for eight settings"></canvas>
-              <div class="chart-tooltip" role="status" aria-live="polite" hidden></div>
+              <div id="cost-chart" class="html-chart" role="group" aria-label="Scatter plot comparing accuracy and recorded cost for eight settings"></div>
             </div>
           </article>
+          <div class="result-notes">
+            <p data-i18n="resourceNote">Time is averaged per case. Tokens and recorded cost cover one 15-case run. Penguin could use Gemini vision; its proxy cost was not retained. Claude Code and Codex had no auxiliary vision tool.</p>
+            <p data-i18n="regradeNote">Claude Code includes the 2026-08-10 BankerToolBench regrade. The other rows remain historical because their workspaces were not retained.</p>
+          </div>
         </div>
       </section>
 
