@@ -51,10 +51,6 @@ const copy = {
     averageTime: "Avg. time / case",
     tokens: "Tokens / run",
     recordedCost: "Recorded cost / run",
-    currentEvaluator: "Current evaluator",
-    historicalEvaluator: "Historical evaluator",
-    currentEvaluatorTitle: "Scored with the current evaluator, including the BankerToolBench fix",
-    historicalEvaluatorTitle: "Retained historical score; the saved workspace was unavailable for regrading",
     accuracyAxis: "Accuracy (%)",
     costAxis: "Cost per case (USD, log scale)",
     loadError: "Unable to load published results.",
@@ -104,10 +100,6 @@ const copy = {
     averageTime: "平均单题耗时",
     tokens: "Token / 轮",
     recordedCost: "已记录成本 / 轮",
-    currentEvaluator: "当前 evaluator",
-    historicalEvaluator: "历史 evaluator",
-    currentEvaluatorTitle: "使用当前 evaluator 评分，包含 BankerToolBench 修复",
-    historicalEvaluatorTitle: "保留的历史分数；因缺少 workspace 而无法重评",
     accuracyAxis: "Accuracy（%）",
     costAxis: "单题成本（美元，对数刻度）",
     loadError: "无法加载已发布结果。",
@@ -207,9 +199,6 @@ function renderTable() {
       const configuration = state.locale === "zh" ? row.configuration_zh : row.configuration;
       const setup = row.framework === "PenguinHarness" ? `${row.framework} ${row.version}` : row.framework;
       const percentage = accuracyPercent(row);
-      const basisCurrent = row.result_basis === "current-evaluator";
-      const basisLabel = basisCurrent ? t.currentEvaluator : t.historicalEvaluator;
-      const basisTitle = basisCurrent ? t.currentEvaluatorTitle : t.historicalEvaluatorTitle;
       const rankClass = index < 3 ? ` rank-${index + 1}` : "";
       return `<tr>
         <td class="rank-cell"><span class="rank-badge${rankClass}">${index + 1}</span></td>
@@ -219,12 +208,9 @@ function renderTable() {
         </td>
         <td>${escapeHtml(row.model)}</td>
         <td class="numeric accuracy-cell ${state.sort.key === "accuracy" ? "is-active" : ""}" data-column="accuracy">
-          <span class="accuracy-stack">
-            <span class="accuracy-measure">
-              <span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:${percentage}%"></span></span>
-              <strong>${row.accuracy_passes}/${row.accuracy_total}</strong>
-            </span>
-            <span class="basis-badge ${basisCurrent ? "basis-current" : "basis-historical"}" title="${escapeHtml(basisTitle)}">${basisLabel}</span>
+          <span class="accuracy-measure">
+            <span class="accuracy-track" aria-hidden="true"><span class="accuracy-fill" style="--accuracy:${percentage}%"></span></span>
+            <strong>${row.accuracy_passes}/${row.accuracy_total}</strong>
           </span>
         </td>
         <td class="numeric ${state.sort.key === "minutes_per_case" ? "is-active" : ""}" data-column="minutes_per_case">${minutesPerCase(row).toFixed(2)}m</td>
