@@ -73,7 +73,7 @@ def results_table(payload: dict, locale: str) -> str:
     if locale == "zh":
         header = (
             "| Setting | 版本与配置 | Accuracy | 平均单题耗时（分钟） | "
-            "平均单题 Token（百万） | 平均单题记录成本（美元） | 结果口径 |"
+            "平均单题 Token（百万） | 平均单题成本（美元） | 结果口径 |"
         )
         basis_labels = {
             "current-evaluator": "当前 evaluator",
@@ -82,7 +82,7 @@ def results_table(payload: dict, locale: str) -> str:
     else:
         header = (
             "| Setting | Version and configuration | Accuracy | Avg. time / case (min) | "
-            "Avg. tokens (M/case) | Recorded cost (USD/case) | Result basis |"
+            "Avg. tokens (M/case) | Cost (USD/case) | Result basis |"
         )
         basis_labels = {
             "current-evaluator": "Current evaluator",

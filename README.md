@@ -33,10 +33,10 @@ Evaluator material is versioned for reproducibility, but it must never be copied
 
 ## Results
 
-Each setting retains one complete 15-case run. Accuracy is the number of PASS results; time, token usage, and recorded cost are averaged per case. Penguin settings could call `google/gemini-3.6-flash` for visual input, but the OpenRouter proxy cost was not retained. Claude Code and Codex did not have that auxiliary vision tool.
+Each setting retains one complete 15-case run. Accuracy is the number of PASS results; time, token usage, and cost are averaged per case. Penguin settings could call `google/gemini-3.6-flash` for visual input, but the OpenRouter proxy cost was not retained. Claude Code and Codex did not have that auxiliary vision tool.
 
 <!-- RESULTS_TABLE_START -->
-| Setting | Version and configuration | Accuracy | Avg. time / case (min) | Avg. tokens (M/case) | Recorded cost (USD/case) | Result basis |
+| Setting | Version and configuration | Accuracy | Avg. time / case (min) | Avg. tokens (M/case) | Cost (USD/case) | Result basis |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
 | Penguin · Manual Tuning | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual tuning / Goal off | 11/15 (73.3%) | 6.52 | 0.83 | $0.0133 | Historical evaluator |
 | Penguin · Manual Tuning + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual tuning / Goal on | 11/15 (73.3%) | 5.84 | 1.18 | $0.0151 | Historical evaluator |

@@ -33,10 +33,10 @@ Data Analysis Bench 使用 15 道任务评测数据分析智能体，覆盖长�
 
 ## 实验结果
 
-每个 setting 保留一轮完整的 15-case 结果。Accuracy 按 PASS 数量统计；时间、Token 和记录成本均为单题平均值。Penguin setting 允许使用 `google/gemini-3.6-flash` 处理视觉输入，但没有保留 OpenRouter 视觉代理费用。Claude Code 和 Codex 没有这个辅助视觉工具。
+每个 setting 保留一轮完整的 15-case 结果。Accuracy 按 PASS 数量统计；时间、Token 和成本均为单题平均值。Penguin setting 允许使用 `google/gemini-3.6-flash` 处理视觉输入，但没有保留 OpenRouter 视觉代理费用。Claude Code 和 Codex 没有这个辅助视觉工具。
 
 <!-- RESULTS_TABLE_START -->
-| Setting | 版本与配置 | Accuracy | 平均单题耗时（分钟） | 平均单题 Token（百万） | 平均单题记录成本（美元） | 结果口径 |
+| Setting | 版本与配置 | Accuracy | 平均单题耗时（分钟） | 平均单题 Token（百万） | 平均单题成本（美元） | 结果口径 |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
 | Penguin · 手动调优 | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / 手动调优 / Goal 关闭 | 11/15 (73.3%) | 6.52 | 0.83 | $0.0133 | 历史 evaluator |
 | Penguin · 手动调优 + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / 手动调优 / Goal 开启 | 11/15 (73.3%) | 5.84 | 1.18 | $0.0151 | 历史 evaluator |
