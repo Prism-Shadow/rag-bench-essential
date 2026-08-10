@@ -35,16 +35,18 @@ workspace。`scripts/stage_case.py` 只会复制 `task.md`、`data/` 和 `env.md
 
 ## Results
 
-| Setting | 版本与配置 | Gemini 视觉 | Acc | 时间（15 case wall 合计） | Total tokens | Cost |
+每个 setting 保留一轮完整的 15-case 结果。Accuracy 按 official hard PASS 统计；时间为每题平均值，Token 和成本为完整一轮的合计。
+
+| Setting | 版本与配置 | Gemini 视觉 | Accuracy | Avg. time / case (min) | Total tokens (M/run) | Total cost (USD/run) |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Penguin w/o Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / no skill / Goal off | 允许 | 8/15（53.3%） | 136.5 min | 18,506,930 | $0.2407 |
-| Penguin w/o Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / no skill / Goal off | 允许 | 9/15（60.0%） | 89.8 min | 17,779,786 | $0.2231 |
-| Penguin w/ Auto Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / auto Agent State / Goal off | 允许 | 10/15（66.7%） | 94.4 min | 13,752,946 | $0.2158 |
-| Penguin w/ Manual Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 允许 | 9/15（60.0%） | 97.7 min | 16,435,689 | $0.2250 |
-| Penguin w/ Manual Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 允许 | 11/15（73.3%） | 97.8 min | 12,382,401 | $0.1995 |
-| Penguin w/ Manual Skill + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal on | 允许 | 11/15（73.3%） | 87.6 min | 17,650,180 | $0.2267 |
-| Claude Code | Claude Code CLI 2.1.191 / Claude Opus 4.8 / effort=max | 不允许 | 10/15（66.7%） | 159.1 min | 16,929,780 | $34.27 |
-| Codex | Codex CLI 0.146.0-alpha.9.2 / GPT-5.5 xhigh / no skill | 不允许 | 10/15（66.7%） | 108.9 min | 12,218,450 | $18.94 |
+| Penguin w/o Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / no skill / Goal off | 允许 | 8/15（53.3%） | 9.10 | 18.51 | $0.2407 |
+| Penguin w/o Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / no skill / Goal off | 允许 | 9/15（60.0%） | 5.99 | 17.78 | $0.2231 |
+| Penguin w/ Auto-optimized Agent State | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / one-round auto-optimized Agent State / Goal off | 允许 | 10/15（66.7%） | 6.29 | 13.75 | $0.2158 |
+| Penguin w/ Manual Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 允许 | 9/15（60.0%） | 6.51 | 16.44 | $0.2250 |
+| Penguin w/ Manual Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 允许 | 11/15（73.3%） | 6.52 | 12.38 | $0.1995 |
+| Penguin w/ Manual Skill + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal on | 允许 | 11/15（73.3%） | 5.84 | 17.65 | $0.2267 |
+| Claude Code | Claude Code CLI 2.1.191 / Claude Opus 4.8 / effort=max | 不允许 | 10/15（66.7%） | 10.61 | 16.93 | $34.27 |
+| Codex | Codex CLI 0.146.0-alpha.9.2 / GPT-5.5 xhigh / no skill | 不允许 | 10/15（66.7%） | 7.26 | 12.22 | $18.94 |
 
 2026-08-10 修正 BankerToolBench 的 workbook locator 后，Claude Code 的既有产物从
 FAIL 重评为 PASS（视觉 verdict 与产物 SHA 绑定且仍有效），因此由 9/15 更新为
