@@ -168,10 +168,23 @@ html[data-theme="dark"] .button-primary { border-color: #f3f4f6; background: #f3
 html[data-theme="dark"] .button-primary:hover { border-color: #ffffff; background: #ffffff; }
 .button-secondary { background: var(--surface); }
 .button-secondary:hover { background: var(--surface-soft); }
-.hero-stats { max-width: 760px; margin: 48px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.hero-stats div { display: block; padding: 20px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-soft); }
-.hero-stats dt { margin-top: 5px; color: var(--muted-strong); font-size: 12px; font-weight: 600; }
-.hero-stats dd { margin: 0; font-size: 24px; font-weight: 650; letter-spacing: -0.03em; }
+.hero-stats { max-width: 900px; margin: 48px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.hero-stats div {
+  position: relative;
+  display: block;
+  min-height: 142px;
+  overflow: hidden;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 94%, var(--brand) 6%), var(--surface-soft));
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.08);
+  text-align: left;
+}
+.hero-stats div::before { position: absolute; top: 0; right: 22px; left: 22px; height: 1px; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--brand) 58%, transparent), transparent); content: ""; }
+.hero-stats dt { margin-top: 3px; color: var(--muted-strong); font-size: 12px; font-weight: 650; }
+.hero-stats dd { margin: 0; font-size: 28px; font-weight: 650; letter-spacing: -0.03em; }
+.hero-stats .metric-desc { margin-top: 15px; color: var(--muted); font-size: 11px; font-weight: 450; line-height: 1.55; letter-spacing: 0; }
 .hero-stats .accent dd { color: var(--brand); }
 
 .section { padding: 96px 0; }
@@ -258,8 +271,8 @@ th.is-active button { color: var(--brand); }
   .hero-inner { padding: 72px 0 64px; }
   .hero-brand { flex-direction: column; gap: 10px; font-size: 28px; }
   .hero-brand img { width: 56px; height: 56px; }
-  .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
-  .hero-stats > div:last-child { grid-column: 1 / -1; }
+  .hero-stats { grid-template-columns: 1fr; gap: 12px; }
+  .hero-stats div { min-height: 0; }
   .section { padding: 72px 0; }
   .section-heading { margin-bottom: 40px; }
   .coverage-grid { grid-template-columns: 1fr; }
