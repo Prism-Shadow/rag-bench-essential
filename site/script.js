@@ -416,17 +416,13 @@ if ("ResizeObserver" in window) {
 applyTheme(root.dataset.theme === "light" ? "light" : "dark");
 applyLocale();
 
-fetch("results.json?v=20260810-1")
-  .then((response) => {
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
-  })
-  .then((payload) => {
-    state.results = payload.results;
-    renderTable();
-    drawChart();
-  })
-  .catch((error) => {
-    console.error(copy[state.locale].loadError, error);
-    tableBody.innerHTML = `<tr><td class="loading-cell" colspan="7">${copy[state.locale].loadError}</td></tr>`;
-  });
+try {
+  const payload = JSON.parse(document.querySelector("#results-data").textContent);
+  if (!Array.isArray(payload.results)) throw new Error("embedded results are missing");
+  state.results = payload.results;
+  renderTable();
+  drawChart();
+} catch (error) {
+  console.error(copy[state.locale].loadError, error);
+  tableBody.innerHTML = `<tr><td class="loading-cell" colspan="7">${copy[state.locale].loadError}</td></tr>`;
+}

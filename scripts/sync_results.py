@@ -10,6 +10,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 RESULTS_PATH = REPO_ROOT / "site" / "results.json"
 START_MARKER = "<!-- RESULTS_TABLE_START -->"
 END_MARKER = "<!-- RESULTS_TABLE_END -->"
+SITE_START_MARKER = "<!-- RESULTS_DATA_START -->"
+SITE_END_MARKER = "<!-- RESULTS_DATA_END -->"
 
 
 def load_results() -> dict:
@@ -120,15 +122,34 @@ def readme_updates(payload: dict) -> dict[Path, str]:
     return updates
 
 
+def site_update(payload: dict) -> tuple[Path, str]:
+    path = REPO_ROOT / "site" / "index.html"
+    content = path.read_text(encoding="utf-8")
+    if SITE_START_MARKER not in content or SITE_END_MARKER not in content:
+        raise ValueError("site/index.html is missing embedded results markers")
+    before, remainder = content.split(SITE_START_MARKER, 1)
+    _, after = remainder.split(SITE_END_MARKER, 1)
+    embedded = json.dumps(payload, ensure_ascii=False, indent=2)
+    block = f'{SITE_START_MARKER}\n    <script id="results-data" type="application/json">\n{embedded}\n    </script>\n    {SITE_END_MARKER}'
+    return path, f"{before}{block}{after}"
+
+
+def published_updates(payload: dict) -> dict[Path, str]:
+    updates = readme_updates(payload)
+    path, content = site_update(payload)
+    updates[path] = content
+    return updates
+
+
 def check_readmes(payload: dict) -> list[str]:
     errors: list[str] = []
     try:
-        updates = readme_updates(payload)
+        updates = published_updates(payload)
     except (OSError, ValueError) as exc:
         return [str(exc)]
     for path, expected in updates.items():
         if path.read_text(encoding="utf-8") != expected:
-            errors.append(f"{path.name} results table is out of sync; run scripts/sync_results.py")
+            errors.append(f"{path.relative_to(REPO_ROOT)} is out of sync; run scripts/sync_results.py")
     return errors
 
 
@@ -153,7 +174,7 @@ def main() -> int:
         print("published results and README tables are in sync")
         return 0
 
-    for path, content in readme_updates(payload).items():
+    for path, content in published_updates(payload).items():
         path.write_text(content, encoding="utf-8")
         print(f"updated {path.relative_to(REPO_ROOT)}")
     return 0
