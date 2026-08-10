@@ -167,10 +167,11 @@ html[data-theme="dark"] .button-primary { border-color: #f3f4f6; background: #f3
 html[data-theme="dark"] .button-primary:hover { border-color: #ffffff; background: #ffffff; }
 .button-secondary { background: var(--surface); }
 .button-secondary:hover { background: var(--surface-soft); }
-.hero-stats { max-width: 768px; margin: 48px auto 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-.hero-stats div { display: flex; flex-direction: column-reverse; }
-.hero-stats dt { margin-top: 4px; color: var(--muted); font-size: 12px; }
+.hero-stats { max-width: 960px; margin: 48px auto 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+.hero-stats div { display: block; }
+.hero-stats dt { margin-top: 5px; color: var(--muted-strong); font-size: 12px; font-weight: 600; }
 .hero-stats dd { margin: 0; font-size: 24px; font-weight: 650; letter-spacing: -0.03em; }
+.hero-stats small { display: block; max-width: 190px; margin: 7px auto 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
 .hero-stats .accent dd { color: var(--brand); }
 
 .section { padding: 96px 0; }
