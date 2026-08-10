@@ -18,9 +18,9 @@ const copy = {
     benchmarkCases: "Cases",
     benchmarkCasesDesc: "Complex data-analysis tasks spanning documents, spreadsheets, databases, and multi-source workflows.",
     publishedSettings: "Settings",
-    publishedSettingsDesc: "Multiple Penguin setups, plus Claude Code and Codex.",
+    publishedSettingsDesc: "Multiple PenguinHarness setups, plus Claude Code and Codex.",
     highestScore: "Best result",
-    highestScoreDesc: "Penguin v0.1.5 manual Skill.",
+    highestScoreDesc: "PenguinHarness v0.1.5 manual tuning.",
     resultsEyebrow: "Results",
     resultsTitle: "15-case results",
     resultsDescription: "One run per setting. Accuracy counts PASS cases.",
@@ -63,9 +63,9 @@ const copy = {
     benchmarkCases: "任务",
     benchmarkCasesDesc: "复杂数据分析任务，覆盖文档、电子表格、数据库与跨来源工作流。",
     publishedSettings: "配置",
-    publishedSettingsDesc: "覆盖 Penguin 多种配置，并加入 Claude Code 与 Codex。",
+    publishedSettingsDesc: "覆盖 PenguinHarness 多种配置，并加入 Claude Code 与 Codex。",
     highestScore: "最佳结果",
-    highestScoreDesc: "Penguin v0.1.5 手写 Skill。",
+    highestScoreDesc: "PenguinHarness v0.1.5 手动调优。",
     resultsEyebrow: "实验结果",
     resultsTitle: "15 道任务结果表",
     resultsDescription: "每个 setting 保留一轮结果。Accuracy 为 PASS 数量。",
@@ -273,10 +273,13 @@ function renderChart() {
       <span class="chart-tick chart-tick-y">${tick}</span>
     </span>`).join("");
   const points = state.results.map((row) => {
-    const setting = state.locale === "zh" ? row.setting_zh : row.setting;
-    const details = `${setting}, ${row.model}, ${row.accuracy_passes}/${row.accuracy_total}, ${formatCaseCost(costPerCase(row))}`;
-    return `<button class="chart-point ${chartModelClass(row.model)}" style="--x:${xPosition(costPerCase(row))}%;--y:${yPosition(accuracyPercent(row))}%" type="button" aria-label="${escapeHtml(details)}" title="${escapeHtml(details)}">
+    const configuration = state.locale === "zh" ? row.configuration_zh : row.configuration;
+    const setup = row.framework === "PenguinHarness" ? `${row.framework} ${row.version}` : row.framework;
+    const details = `${setup}, ${configuration}, ${row.model}, ${row.accuracy_passes}/${row.accuracy_total}, ${formatCaseCost(costPerCase(row))}`;
+    const tooltipSide = xPosition(costPerCase(row)) > 72 ? " tooltip-left" : "";
+    return `<button class="chart-point ${chartModelClass(row.model)}${tooltipSide}" style="--x:${xPosition(costPerCase(row))}%;--y:${yPosition(accuracyPercent(row))}%" type="button" aria-label="${escapeHtml(details)}">
       <span class="chart-point-dot" aria-hidden="true"></span>
+      <span class="chart-point-tooltip" aria-hidden="true"><strong>${escapeHtml(setup)}</strong><span>${escapeHtml(configuration)}</span></span>
     </button>`;
   }).join("");
   chart.innerHTML = `<div class="chart-plot">

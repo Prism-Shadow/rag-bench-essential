@@ -38,14 +38,14 @@ Each setting retains one complete 15-case run. Accuracy is the number of PASS re
 <!-- RESULTS_TABLE_START -->
 | Setting | Version and configuration | Accuracy | Avg. time / case (min) | Total tokens (M/run) | Recorded cost (USD/run) | Result basis |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
-| Penguin w/ Manual Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 11/15 (73.3%) | 6.52 | 12.38 | $0.1995 | Historical evaluator |
-| Penguin w/ Manual Skill + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual Skill / Goal on | 11/15 (73.3%) | 5.84 | 17.65 | $0.2267 | Historical evaluator |
-| Penguin w/ Auto-optimized Agent State | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / one-round auto-optimized Agent State / Goal off | 10/15 (66.7%) | 6.29 | 13.75 | $0.2158 | Historical evaluator |
+| Penguin · Manual Tuning | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual tuning / Goal off | 11/15 (73.3%) | 6.52 | 12.38 | $0.1995 | Historical evaluator |
+| Penguin · Manual Tuning + Goal | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / manual tuning / Goal on | 11/15 (73.3%) | 5.84 | 17.65 | $0.2267 | Historical evaluator |
+| Penguin · Agent Self-Tuning | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / one-round agent self-tuning / Goal off | 10/15 (66.7%) | 6.29 | 13.75 | $0.2158 | Historical evaluator |
 | Claude Code | Claude Code CLI 2.1.191 / Claude Opus 4.8 / effort=max | 10/15 (66.7%) | 10.61 | 16.93 | $34.27 | Current evaluator |
-| Codex | Codex CLI 0.146.0-alpha.9.2 / GPT-5.5 xhigh / no skill | 10/15 (66.7%) | 7.26 | 12.22 | $18.94 | Historical evaluator |
-| Penguin w/o Skill | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / no skill / Goal off | 9/15 (60.0%) | 5.99 | 17.78 | $0.2231 | Historical evaluator |
-| Penguin w/ Manual Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / manual Skill / Goal off | 9/15 (60.0%) | 6.51 | 16.44 | $0.2250 | Historical evaluator |
-| Penguin w/o Skill | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / no skill / Goal off | 8/15 (53.3%) | 9.10 | 18.51 | $0.2407 | Historical evaluator |
+| Codex | Codex CLI 0.146.0-alpha.9.2 / GPT-5.5 xhigh | 10/15 (66.7%) | 7.26 | 12.22 | $18.94 | Historical evaluator |
+| Penguin | PenguinHarness v0.1.5 / DeepSeek V4 Flash xhigh / Goal off | 9/15 (60.0%) | 5.99 | 17.78 | $0.2231 | Historical evaluator |
+| Penguin · Manual Tuning | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / manual tuning / Goal off | 9/15 (60.0%) | 6.51 | 16.44 | $0.2250 | Historical evaluator |
+| Penguin | PenguinHarness v0.0.1 / DeepSeek V4 Flash xhigh / Goal off | 8/15 (53.3%) | 9.10 | 18.51 | $0.2407 | Historical evaluator |
 <!-- RESULTS_TABLE_END -->
 
 Claude Code's 10/15 includes the BankerToolBench regrade after the 2026-08-10 evaluator fix. Its saved visual verdict remains valid because it is bound to the deliverable SHA. The other seven settings did not retain the required workspace artifact, so their published scores remain explicitly marked as historical rather than being guessed under the new evaluator.
